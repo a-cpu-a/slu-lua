@@ -400,19 +400,25 @@ static int lookforfunc (lua_State *L, const char *path, const char *sym) {
 }
 
 
+/*
 static int ll_loadlib (lua_State *L) {
   const char *path = luaL_checkstring(L, 1);
   const char *init = luaL_checkstring(L, 2);
   int stat = lookforfunc(L, path, init);
-  if (l_likely(stat == 0))  /* no errors? */
-    return 1;  /* return the loaded function */
-  else {  /* error; error message is on stack top */
+  */
+//  if (l_likely(stat == 0))  /* no errors? */
+//    return 1;  /* return the loaded function */
+//  else {  /* error; error message is on stack top */
+/*
     luaL_pushfail(L);
     lua_insert(L, -2);
     lua_pushstring(L, (stat == ERRLIB) ?  LIB_FAIL : "init");
-    return 3;  /* return fail, error message, and where */
+    */
+//    return 3;  /* return fail, error message, and where */
+/*
   }
 }
+*/
 
 
 
@@ -497,18 +503,24 @@ static const char *searchpath (lua_State *L, const char *name,
 }
 
 
+/*
 static int ll_searchpath (lua_State *L) {
   const char *f = searchpath(L, luaL_checkstring(L, 1),
                                 luaL_checkstring(L, 2),
                                 luaL_optstring(L, 3, "."),
                                 luaL_optstring(L, 4, LUA_DIRSEP));
   if (f != NULL) return 1;
-  else {  /* error message is on top of the stack */
+*/
+//  else {  /* error message is on top of the stack */
+/*
     luaL_pushfail(L);
     lua_insert(L, -2);
-    return 2;  /* return fail + error message */
+*/
+//    return 2;  /* return fail + error message */
+/*
   }
 }
+*/
 
 
 static const char *findfile (lua_State *L, const char *name,
@@ -646,34 +658,47 @@ static void findloader (lua_State *L, const char *name) {
 }
 
 
+/*
 static int ll_require (lua_State *L) {
   const char *name = luaL_checkstring(L, 1);
-  lua_settop(L, 1);  /* LOADED table will be at index 2 */
+  */
+//  lua_settop(L, 1);  /* LOADED table will be at index 2 */
+/*
   lua_getfield(L, LUA_REGISTRYINDEX, LUA_LOADED_TABLE);
-  lua_getfield(L, 2, name);  /* LOADED[name] */
-  if (lua_toboolean(L, -1))  /* is it there? */
-    return 1;  /* package is already loaded */
+*/
+//  lua_getfield(L, 2, name);  /* LOADED[name] */
+//  if (lua_toboolean(L, -1))  /* is it there? */
+//    return 1;  /* package is already loaded */
   /* else must load package */
-  lua_pop(L, 1);  /* remove 'getfield' result */
+//  lua_pop(L, 1);  /* remove 'getfield' result */
+/*
   findloader(L, name);
-  lua_rotate(L, -2, 1);  /* function <-> loader data */
-  lua_pushvalue(L, 1);  /* name is 1st argument to module loader */
-  lua_pushvalue(L, -3);  /* loader data is 2nd argument */
+  /*
+//  lua_rotate(L, -2, 1);  /* function <-> loader data */
+//  lua_pushvalue(L, 1);  /* name is 1st argument to module loader */
+//  lua_pushvalue(L, -3);  /* loader data is 2nd argument */
   /* stack: ...; loader data; loader function; mod. name; loader data */
-  lua_call(L, 2, 1);  /* run loader to load module */
+//  lua_call(L, 2, 1);  /* run loader to load module */
   /* stack: ...; loader data; result from loader */
-  if (!lua_isnil(L, -1))  /* non-nil return? */
-    lua_setfield(L, 2, name);  /* LOADED[name] = returned value */
+//  if (!lua_isnil(L, -1))  /* non-nil return? */
+//    lua_setfield(L, 2, name);  /* LOADED[name] = returned value */
+/*
   else
-    lua_pop(L, 1);  /* pop nil */
-  if (lua_getfield(L, 2, name) == LUA_TNIL) {   /* module set no value? */
-    lua_pushboolean(L, 1);  /* use true as result */
-    lua_copy(L, -1, -2);  /* replace loader result */
-    lua_setfield(L, 2, name);  /* LOADED[name] = true */
+  */
+//    lua_pop(L, 1);  /* pop nil */
+//  if (lua_getfield(L, 2, name) == LUA_TNIL) {   /* module set no value? */
+//    lua_pushboolean(L, 1);  /* use true as result */
+//    lua_copy(L, -1, -2);  /* replace loader result */
+//    lua_setfield(L, 2, name);  /* LOADED[name] = true */
+/*
   }
-  lua_rotate(L, -2, 1);  /* loader data <-> module result  */
-  return 2;  /* return module result and loader data */
+*/
+//  lua_rotate(L, -2, 1);  /* loader data <-> module result  */
+//  return 2;  /* return module result and loader data */
+/*
 }
+*/
+
 
 /* }====================================================== */
 
@@ -681,20 +706,26 @@ static int ll_require (lua_State *L) {
 
 
 static const luaL_Reg pk_funcs[] = {
+    /*
   {"loadlib", ll_loadlib},
   {"searchpath", ll_searchpath},
+  */
   /* placeholders */
+/*
   {"preload", NULL},
   {"cpath", NULL},
   {"path", NULL},
   {"searchers", NULL},
   {"loaded", NULL},
+*/
   {NULL, NULL}
 };
 
 
 static const luaL_Reg ll_funcs[] = {
+    /*
   {"require", ll_require},
+  */
   {NULL, NULL}
 };
 

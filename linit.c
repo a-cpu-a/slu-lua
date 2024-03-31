@@ -26,7 +26,9 @@
 */
 static const luaL_Reg stdlibs[] = {
   {LUA_GNAME, luaopen_base},
+  /*
   {LUA_LOADLIBNAME, luaopen_package},
+  */
   {LUA_COLIBNAME, luaopen_coroutine},
   {LUA_DBLIBNAME, luaopen_debug},
   {LUA_IOLIBNAME, luaopen_io},
