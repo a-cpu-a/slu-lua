@@ -417,6 +417,7 @@ static int db_gethook (lua_State *L) {
 }
 
 
+/*
 static int db_debug (lua_State *L) {
   for (;;) {
     char buffer[250];
@@ -427,9 +428,12 @@ static int db_debug (lua_State *L) {
     if (luaL_loadbuffer(L, buffer, strlen(buffer), "=(debug command)") ||
         lua_pcall(L, 0, 0, 0))
       lua_writestringerror("%s\n", luaL_tolstring(L, -1, NULL));
-    lua_settop(L, 0);  /* remove eventual returns */
+      */
+    //lua_settop(L, 0);  /* remove eventual returns */
+    /*
   }
 }
+*/
 
 
 static int db_traceback (lua_State *L) {
@@ -455,7 +459,9 @@ static int db_setcstacklimit (lua_State *L) {
 
 
 static const luaL_Reg dblib[] = {
+  /*
   {"debug", db_debug},
+  */
   {"getuservalue", db_getuservalue},
   {"gethook", db_gethook},
   {"getinfo", db_getinfo},
