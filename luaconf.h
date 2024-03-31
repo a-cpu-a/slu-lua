@@ -587,7 +587,7 @@
 #if !defined(LUA_USE_C89)
 #define l_sprintf(s,sz,f,i)	snprintf(s,sz,f,i)
 #else
-#define l_sprintf(s,sz,f,i)	((void)(sz), sprintf(s,f,i))
+#define l_sprintf(s,sz,f,i)	(sprintf_s(s,sz,f,i))
 #endif
 
 
@@ -606,7 +606,7 @@
 @@ lua_pointer2str converts a pointer to a readable string in a
 ** non-specified way.
 */
-#define lua_pointer2str(buff,sz,p)	l_sprintf(buff,sz,"%p",p)
+#define lua_pointer2str(buff,sz,p)	l_sprintf(buff,sz,"%s","1234")
 
 
 /*
@@ -682,11 +682,9 @@
 #endif
 
 
-#if defined(LUA_CORE) || defined(LUA_LIB)
 /* shorter names for Lua's own use */
 #define l_likely(x)	luai_likely(x)
 #define l_unlikely(x)	luai_unlikely(x)
-#endif
 
 
 
@@ -786,6 +784,14 @@
 */
 
 
+/* print a string */
+#define lua_writestring(s,_LEN)   l::luaPrint(std::string(s,_LEN))
+
+/* print a newline and flush the output */
+#define lua_writeline()           l::newLine()
+
+/* print an error message */
+#define lua_writestringerror(s,p) l::luaErr(std::string(s).replace(std::string(s).find("%s"),2,std::string(p)))
 
 
 
