@@ -798,12 +798,7 @@ const char *luaG_addinfo (lua_State *L, const char *msg, TString *src,
                                         int line) {
   char buff[LUA_IDSIZE];
   if (src)
-  {
-      if (tsslen(src) == 0)
-          strcpy(buff, "file");
-      else
-        luaO_chunkid(buff, getstr(src), tsslen(src));
-  }
+      luaO_chunkid(buff, getstr(src), tsslen(src));
   else {  /* no source available; use "?" instead */
     buff[0] = '?'; buff[1] = '\0';
   }

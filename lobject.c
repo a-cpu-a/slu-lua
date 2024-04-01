@@ -584,12 +584,6 @@ void luaO_chunkid (char *out, const char *source, size_t srclen) {
     }
   }
   else {  /* string; format as [string "source"] */
-    
-    if (srclen == 0) {
-      strcpy(out,"file");
-      return;
-    }
-    
     const char *nl = strchr(source, '\n');  /* find first new line (if any) */
     addstr(out, PRE, LL(PRE));  /* add prefix */
     bufflen -= LL(PRE RETS POS) + 1;  /* save space for prefix+suffix+'\0' */
