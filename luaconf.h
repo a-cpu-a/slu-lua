@@ -806,6 +806,7 @@
 #define LUACC_FOR           LUACC_COL_HEADER "219m"  // for
 #define LUACC_FUNCTION      LUACC_COL_HEADER "203m"  // function
 #define LUACC_ARGUMENT      LUACC_COL_HEADER "159m"  // argument
+#define LUACC_BOOLEAN       LUACC_COL_HEADER "81m"   // bool boolean
 
 
 #endif
