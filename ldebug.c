@@ -768,7 +768,7 @@ l_noret luaG_callerror (lua_State *L, const TValue *o) {
 
 
 l_noret luaG_forerror (lua_State *L, const TValue *o, const char *what) {
-  luaG_runerror(L, "bad 'for' %s (number expected, got %s)",
+  luaG_runerror(L, LUACC_INVALID "bad" LUACC_STRING_SINGLE " '" LUACC_FOR "for" LUACC_STRING_SINGLE "'" LUACC_DEFAULT " %s (" LUACC_NUMBER "number " LUACC_DEFAULT "expected, got %s)",
                    what, luaT_objtypename(L, o));
 }
 
@@ -820,7 +820,7 @@ const char *luaG_addinfo (lua_State *L, const char *msg, TString *src,
   else {  /* no source available; use "?" instead */
     buff[0] = '?'; buff[1] = '\0';
   }
-  return luaO_pushfstring(L, "%s:%d: %s", buff, line, msg);
+  return luaO_pushfstring(L, "%s:" LUACC_NUMBER "%d" LUACC_DEFAULT ": %s", buff, line, msg);
 }
 
 
