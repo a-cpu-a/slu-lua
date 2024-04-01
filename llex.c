@@ -82,7 +82,7 @@ void luaX_init (lua_State *L) {
 const char *luaX_token2str (LexState *ls, int token) {
   if (token < FIRST_RESERVED) {  /* single-byte symbols? */
     if (lisprint(token))
-      return luaO_pushfstring(ls->L, "'%c'", token);
+      return luaO_pushfstring(ls->L, LUACC_STRING_SINGLE "'" LUACC_STRING_INNER "%c" LUACC_STRING_SINGLE "'" LUACC_DEFAULT, token);
     else  /* control character */
       return luaO_pushfstring(ls->L, "'<\\%d>'", token);
   }
@@ -101,7 +101,7 @@ static const char *txtToken (LexState *ls, int token) {
     case TK_NAME: case TK_STRING:
     case TK_FLT: case TK_INT:
       save(ls, '\0');
-      return luaO_pushfstring(ls->L, "'%s'", luaZ_buffer(ls->buff));
+      return luaO_pushfstring(ls->L, LUACC_STRING_SINGLE "'" LUACC_DEFAULT "%s" LUACC_STRING_SINGLE "'" LUACC_DEFAULT, luaZ_buffer(ls->buff));
     default:
       return luaX_token2str(ls, token);
   }
@@ -243,7 +243,7 @@ static int read_numeral (LexState *ls, SemInfo *seminfo) {
     save_and_next(ls);  /* force an error */
   save(ls, '\0');
   if (luaO_str2num(luaZ_buffer(ls->buff), &obj) == 0)  /* format error? */
-    lexerror(ls, "malformed number", TK_FLT);
+    lexerror(ls, LUACC_INVALID "malformed " LUACC_NUMBER "number" LUACC_DEFAULT, TK_FLT);
   if (ttisinteger(&obj)) {
     seminfo->i = ivalue(&obj);
     return TK_INT;
@@ -285,9 +285,9 @@ static void read_long_string (LexState *ls, SemInfo *seminfo, size_t sep) {
   for (;;) {
     switch (ls->current) {
       case EOZ: {  /* error */
-        const char *what = (seminfo ? "string" : "comment");
+        const char *what = (seminfo ? LUACC_STRING_DOUBLE "string" LUACC_DEFAULT : "comment");
         const char *msg = luaO_pushfstring(ls->L,
-                     "unfinished long %s (starting at line %d)", what, line);
+            LUACC_INVALID "unfinished" LUACC_INVALID " long %s (starting at line %d)", what, line);
         lexerror(ls, msg, TK_EOS);
         break;  /* to avoid warnings */
       }
@@ -344,14 +344,14 @@ static unsigned long readutf8esc (LexState *ls) {
   unsigned long r;
   int i = 4;  /* chars to be removed: '\', 'u', '{', and first digit */
   save_and_next(ls);  /* skip 'u' */
-  esccheck(ls, ls->current == '{', "missing '{'");
+  esccheck(ls, ls->current == '{', LUACC_INVALID "missing " LUACC_STRING_SINGLE "'" LUACC_BRACKET "{" LUACC_STRING_SINGLE "'" LUACC_DEFAULT);
   r = gethexa(ls);  /* must have at least one digit */
   while (cast_void(save_and_next(ls)), lisxdigit(ls->current)) {
     i++;
     esccheck(ls, r <= (0x7FFFFFFFu >> 4), "UTF-8 value too large");
     r = (r << 4) + luaO_hexavalue(ls->current);
   }
-  esccheck(ls, ls->current == '}', "missing '}'");
+  esccheck(ls, ls->current == '}', LUACC_INVALID "missing " LUACC_STRING_SINGLE "'" LUACC_BRACKET "}" LUACC_STRING_SINGLE "'" LUACC_DEFAULT);
   next(ls);  /* skip '}' */
   luaZ_buffremove(ls->buff, i);  /* remove saved chars from buffer */
   return r;
@@ -384,11 +384,11 @@ static void read_string (LexState *ls, int del, SemInfo *seminfo) {
   while (ls->current != del) {
     switch (ls->current) {
       case EOZ:
-        lexerror(ls, "unfinished string", TK_EOS);
+        lexerror(ls, LUACC_INVALID "unfinished " LUACC_STRING_DOUBLE "string" LUACC_DEFAULT, TK_EOS);
         break;  /* to avoid warnings */
       case '\n':
       case '\r':
-        lexerror(ls, "unfinished string", TK_STRING);
+        lexerror(ls, LUACC_INVALID "unfinished " LUACC_STRING_DOUBLE "string" LUACC_DEFAULT, TK_STRING);
         break;  /* to avoid warnings */
       case '\\': {  /* escape sequences */
         int c;  /* final character to be saved */
@@ -418,7 +418,7 @@ static void read_string (LexState *ls, int del, SemInfo *seminfo) {
             goto no_save;
           }
           default: {
-            esccheck(ls, lisdigit(ls->current), "invalid escape sequence");
+            esccheck(ls, lisdigit(ls->current), LUACC_INVALID "invalid" LUACC_DEFAULT " escape sequence");
             c = readdecesc(ls);  /* digital escape '\ddd' */
             goto only_save;
           }
@@ -480,7 +480,7 @@ static int llex (LexState *ls, SemInfo *seminfo) {
           return TK_STRING;
         }
         else if (sep == 0)  /* '[=...' missing second bracket? */
-          lexerror(ls, "invalid long string delimiter", TK_STRING);
+          lexerror(ls, LUACC_INVALID "invalid" LUACC_DEFAULT " long " LUACC_STRING_DOUBLE "string" LUACC_DEFAULT " delimiter", TK_STRING);
         return '[';
       }
       case '=': {

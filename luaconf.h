@@ -794,12 +794,18 @@
 #define lua_writestringerror(s,p) l::luaErr(std::string(s).replace(std::string(s).find("%s"),2,std::string(p)))
 
 
-#define LUACC_COL_HEADER "\x1b[" //ansi color
+#define LUACC_COL_HEADER "\x1b[38;5;" //ansi color
 
-#define LUACC_DEFAULT       LUACC_COL_HEADER "123m" // ,[]:.
-#define LUACC_STRING_DOUBLE LUACC_COL_HEADER "245m" // "<- ->"
-#define LUACC_STRING_INNER  LUACC_COL_HEADER "13m"  // "this stuff inside the quotes"
-#define LUACC_NUMBER        LUACC_COL_HEADER "99m"  // 123.1553
+#define LUACC_DEFAULT       LUACC_COL_HEADER "15m" // ,[]:.
+#define LUACC_STRING_DOUBLE LUACC_COL_HEADER "114m" // "<- ->" string '<- ->'
+#define LUACC_STRING_SINGLE LUACC_COL_HEADER "151m" // '<- ->'
+#define LUACC_STRING_INNER  LUACC_COL_HEADER "40m"  // "this stuff inside the quotes"
+#define LUACC_NUMBER        LUACC_COL_HEADER "208m"  // 123.1553
+#define LUACC_BRACKET       LUACC_COL_HEADER "221m"  // {}
+#define LUACC_INVALID       LUACC_COL_HEADER "217m"  // not missing invalid unfinished malformed bad
+#define LUACC_FOR           LUACC_COL_HEADER "219m"  // for
+#define LUACC_FUNCTION      LUACC_COL_HEADER "203m"  // function
+#define LUACC_ARGUMENT      LUACC_COL_HEADER "159m"  // argument
 
 
 #endif

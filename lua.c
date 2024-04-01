@@ -108,7 +108,7 @@ static void print_usage (const char *badoption) {
 ** (if present)
 */
 static void l_message (const char *pname, const char *msg) {
-  if (pname) lua_writestringerror("%s: ", pname);
+  if (pname) lua_writestringerror(LUACC_DEFAULT "%s: ", pname);
   lua_writestringerror("%s\n", msg);
 }
 
