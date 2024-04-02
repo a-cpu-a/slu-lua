@@ -212,7 +212,7 @@ static int forprep (lua_State *L, StkId ra) {
     lua_Integer step = ivalue(pstep);
     lua_Integer limit;
     if (step == 0)
-      luaG_runerror(L, "'for' step is zero");
+      luaG_runerror(L, LUACC_STRING_SINGLE "'" LUACC_FOR "for" LUACC_STRING_SINGLE "'" LUACC_DEFAULT " step is " LUACC_NUMBER "zero" LUACC_DEFAULT);
     setivalue(s2v(ra + 3), init);  /* control variable */
     if (forlimit(L, init, plimit, &limit, step))
       return 1;  /* skip the loop */
@@ -242,7 +242,7 @@ static int forprep (lua_State *L, StkId ra) {
     if (l_unlikely(!tonumber(pinit, &init)))
       luaG_forerror(L, pinit, "initial value");
     if (step == 0)
-      luaG_runerror(L, "'for' step is zero");
+      luaG_runerror(L, "'" LUACC_FOR "for" LUACC_STRING_SINGLE "'" LUACC_DEFAULT " step is " LUACC_NUMBER "zero" LUACC_DEFAULT);
     if (luai_numlt(0, step) ? luai_numlt(limit, init)
                             : luai_numlt(init, limit))
       return 1;  /* skip the loop */
@@ -316,7 +316,7 @@ void luaV_finishget (lua_State *L, const TValue *t, TValue *key, StkId val,
     }
     /* else repeat (tail call 'luaV_finishget') */
   }
-  luaG_runerror(L, "'__index' chain too long; possible loop");
+  luaG_runerror(L, LUACC_STRING_SINGLE "'" LUACC_DEFAULT "__index" LUACC_STRING_SINGLE "'" LUACC_DEFAULT " chain too long; possible loop");
 }
 
 
@@ -361,7 +361,7 @@ void luaV_finishset (lua_State *L, const TValue *t, TValue *key,
     }
     /* else 'return luaV_finishset(L, t, key, val, slot)' (loop) */
   }
-  luaG_runerror(L, "'__newindex' chain too long; possible loop");
+  luaG_runerror(L, "'" LUACC_DEFAULT "__newindex" LUACC_STRING_SINGLE "'" LUACC_DEFAULT " chain too long; possible loop");
 }
 
 
@@ -658,7 +658,7 @@ void luaV_concat (lua_State *L, int total) {
         size_t l = vslen(s2v(top - n - 1));
         if (l_unlikely(l >= (MAX_SIZE/sizeof(char)) - tl)) {
           L->top.p = top - total;  /* pop strings to avoid wasting stack */
-          luaG_runerror(L, "string length overflow");
+          luaG_runerror(L, LUACC_STRING_DOUBLE "string" LUACC_DEFAULT " length overflow");
         }
         tl += l;
       }
@@ -720,7 +720,7 @@ void luaV_objlen (lua_State *L, StkId ra, const TValue *rb) {
 lua_Integer luaV_idiv (lua_State *L, lua_Integer m, lua_Integer n) {
   if (l_unlikely(l_castS2U(n) + 1u <= 1u)) {  /* special cases: -1 or 0 */
     if (n == 0)
-      luaG_runerror(L, "attempt to divide by zero");
+      luaG_runerror(L, "attempt to divide by " LUACC_NUMBER "zero" LUACC_DEFAULT);
     return intop(-, 0, m);   /* n==-1; avoid overflow with 0x80000...//-1 */
   }
   else {
