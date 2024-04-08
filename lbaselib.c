@@ -348,13 +348,18 @@ static int load_aux (lua_State *L, int status, int envidx) {
 */
 
 
-/*
+static const char *getMode (lua_State *L, int idx) {
+  const char *mode = luaL_optstring(L, idx, "bt");
+  if (strchr(mode, 'B') != NULL)  /* Lua code cannot use fixed buffers */
+    luaL_argerror(L, idx, "invalid mode");
+  return mode;
+}
+
+
 static int luaB_loadfile (lua_State *L) {
   const char *fname = luaL_optstring(L, 1, NULL);
-  const char *mode = luaL_optstring(L, 2, NULL);
-  */
-  //int env = (!lua_isnone(L, 3) ? 3 : 0);  /* 'env' index or 0 if no 'env' */
-  /*
+  const char *mode = getMode(L, 2);
+  int env = (!lua_isnone(L, 3) ? 3 : 0);  /* 'env' index or 0 if no 'env' */
   int status = luaL_loadfilex(L, fname, mode);
   return load_aux(L, status, env);
 }
@@ -410,7 +415,6 @@ static int luaB_load (lua_State *L) {
   //if (s != NULL) {  /* loading a string? */
 /*
 const char *chunkname = luaL_optstring(L, 2, s);
-    status = luaL_loadbufferx(L, s, l, chunkname, mode);
   }
   */
 //  else {  /* loading from a reader function */
