@@ -811,7 +811,8 @@ static const luaL_Reg meth[] = {
 ** metamethods for file handles
 */
 static const luaL_Reg metameth[] = {
-  {"__index", NULL},  /* place holder */
+	
+  {"__index", NULL},  /* placeholder */
     /*
   {"__gc", f_gc},
   {"__close", f_gc},
