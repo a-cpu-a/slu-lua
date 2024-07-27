@@ -289,6 +289,7 @@ static int getfield (lua_State *L, const char *key, int d, int delta) {
 
 
 static const char *checkoption (lua_State *L, const char *conv,
+<<<<<<< HEAD
 	ptrdiff_t convlen, char *buff) {
 	const char *option = LUA_STRFTIMEOPTIONS;
 	int oplen = 1;  /* length of options being checked */
@@ -304,6 +305,23 @@ static const char *checkoption (lua_State *L, const char *conv,
 	luaL_argerror(L, 1,
 		lua_pushfstring(L, "invalid conversion specifier '%%%s'", conv));
 	return conv;  /* to avoid warnings */
+=======
+                                ptrdiff_t convlen, char *buff) {
+  const char *option = LUA_STRFTIMEOPTIONS;
+  unsigned oplen = 1;  /* length of options being checked */
+  for (; *option != '\0' && oplen <= convlen; option += oplen) {
+    if (*option == '|')  /* next block? */
+      oplen++;  /* will check options with next length (+1) */
+    else if (memcmp(conv, option, oplen) == 0) {  /* match? */
+      memcpy(buff, conv, oplen);  /* copy valid option to buffer */
+      buff[oplen] = '\0';
+      return conv + oplen;  /* return next item */
+    }
+  }
+  luaL_argerror(L, 1,
+    lua_pushfstring(L, "invalid conversion specifier '%%%s'", conv));
+  return conv;  /* to avoid warnings */
+>>>>>>> 21a26f52 (Added gcc option '-Wconversion')
 }
 
 
