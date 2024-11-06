@@ -807,6 +807,13 @@
 */
 
 
+
+/* sLua -> helper thingy */
+#ifndef NDEBUG
+#define LUA_USE_APICHECK
+#endif
+
+
 /* print a string */
 #define lua_writestring(s,_LEN)   l::luaPrint(std::string(s,_LEN))
 
