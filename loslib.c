@@ -20,6 +20,7 @@
 
 #include "lauxlib.h"
 #include "lualib.h"
+#include "llimits.h"
 
 
 /*
@@ -160,6 +161,7 @@ static int os_execute (lua_State *L) {
 /*
 static int os_remove (lua_State *L) {
   const char *filename = luaL_checkstring(L, 1);
+  errno = 0;
   return luaL_fileresult(L, remove(filename) == 0, filename);
 }
 */
@@ -169,6 +171,7 @@ static int os_remove (lua_State *L) {
 static int os_rename (lua_State *L) {
   const char *fromname = luaL_checkstring(L, 1);
   const char *toname = luaL_checkstring(L, 2);
+  errno = 0;
   return luaL_fileresult(L, rename(fromname, toname) == 0, NULL);
 }
 */
@@ -286,21 +289,21 @@ static int getfield (lua_State *L, const char *key, int d, int delta) {
 
 
 static const char *checkoption (lua_State *L, const char *conv,
-	ptrdiff_t convlen, char *buff) {
-	const char *option = LUA_STRFTIMEOPTIONS;
-	int oplen = 1;  /* length of options being checked */
-	for (; *option != '\0' && oplen <= convlen; option += oplen) {
-		if (*option == '|')  /* next block? */
-			oplen++;  /* will check options with next length (+1) */
-		else if (memcmp(conv, option, oplen) == 0) {  /* match? */
-			memcpy(buff, conv, oplen);  /* copy valid option to buffer */
-			buff[oplen] = '\0';
-			return conv + oplen;  /* return next item */
-		}
-	}
-	luaL_argerror(L, 1,
-		lua_pushfstring(L, "invalid conversion specifier '%%%s'", conv));
-	return conv;  /* to avoid warnings */
+                                ptrdiff_t convlen, char *buff) {
+  const char *option = LUA_STRFTIMEOPTIONS;
+  unsigned oplen = 1;  /* length of options being checked */
+  for (; *option != '\0' && oplen <= convlen; option += oplen) {
+    if (*option == '|')  /* next block? */
+      oplen++;  /* will check options with next length (+1) */
+    else if (memcmp(conv, option, oplen) == 0) {  /* match? */
+      memcpy(buff, conv, oplen);  /* copy valid option to buffer */
+      buff[oplen] = '\0';
+      return conv + oplen;  /* return next item */
+    }
+  }
+  luaL_argerror(L, 1,
+    lua_pushfstring(L, "invalid conversion specifier '%%%s'", conv));
+  return conv;  /* to avoid warnings */
 }
 
 
