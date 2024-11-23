@@ -426,14 +426,30 @@ LUA_INL void lua_register(lua_State* L, const char* name, lua_CFunction fn) {
     lua_pushcfunction(L, fn); lua_setglobal(L, name);
 }
 
-#define lua_isfunction(L,n)			(lua_type(L, (n)) == LUA_TFUNCTION)
-#define lua_istable(L,n)			(lua_type(L, (n)) == LUA_TTABLE)
-#define lua_islightuserdata(L,n)	(lua_type(L, (n)) == LUA_TLIGHTUSERDATA)
-#define lua_isnil(L,n)				(lua_type(L, (n)) == LUA_TNIL)
-#define lua_isboolean(L,n)			(lua_type(L, (n)) == LUA_TBOOLEAN)
-#define lua_isthread(L,n)			(lua_type(L, (n)) == LUA_TTHREAD)
-#define lua_isnone(L,n)				(lua_type(L, (n)) == LUA_TNONE)
-#define lua_isnoneornil(L, n)		(lua_type(L, (n)) <= 0)
+LUA_INL bool lua_isfunction(lua_State* L, int idx) {
+    return lua_type(L, idx) == LUA_TFUNCTION;
+}
+LUA_INL bool lua_istable(lua_State* L, int idx) {
+    return lua_type(L, idx) == LUA_TTABLE;
+}
+LUA_INL bool lua_islightuserdata(lua_State* L, int idx) {
+    return lua_type(L, idx) == LUA_TLIGHTUSERDATA;
+}
+LUA_INL bool lua_isnil(lua_State* L, int idx) {
+    return lua_type(L, idx) == LUA_TNIL;
+}
+LUA_INL bool lua_isboolean(lua_State* L, int idx) {
+    return lua_type(L, idx) == LUA_TBOOLEAN;
+}
+LUA_INL bool lua_isthread(lua_State* L, int idx) {
+    return lua_type(L, idx) == LUA_TTHREAD;
+}
+LUA_INL bool lua_isnone(lua_State* L, int idx) {
+    return lua_type(L, idx) == LUA_TNONE;
+}
+LUA_INL bool lua_isnoneornil(lua_State* L, int idx) {
+    return lua_type(L, idx) <= 0;
+}
 
 #define lua_pushliteral(L, s)	lua_pushstring(L, "" s)
 
