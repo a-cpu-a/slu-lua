@@ -700,21 +700,21 @@ constexpr inline int LUA_VCCL = makevariant(LUA_TFUNCTION, 2);  /* C closure */
 
 
 //Forward declare:
-struct LClosure gco2lcl(const GCObject* o);
-struct CClosure gco2ccl(const GCObject* o);
-union Closure gco2cl(const GCObject* o);
+LClosure* gco2lcl(const GCObject* o);
+CClosure* gco2ccl(const GCObject* o);
+Closure*  gco2cl(const GCObject* o);
 
-LUA_INL auto ttisfunction(const TValue* o)	{ return checktype(o, LUA_TFUNCTION); }
-LUA_INL auto ttisLclosure(const TValue* o)	{ return checktag((o), ctb(LUA_VLCL)); }
-LUA_INL auto ttislcf(const TValue* o)		{ return checktag((o), LUA_VLCF); }
-LUA_INL auto ttisCclosure(const TValue* o)	{ return checktag((o), ctb(LUA_VCCL)); }
-LUA_INL auto ttisclosure(const TValue* o)	{ return (ttisLclosure(o) || ttisCclosure(o)); }
-LUA_INL auto isLfunction(const TValue* o)	{ return ttisLclosure(o); }
+LUA_INL bool ttisfunction(const TValue* o)	{ return checktype(o, LUA_TFUNCTION); }
+LUA_INL bool ttisLclosure(const TValue* o)	{ return checktag((o), ctb(LUA_VLCL)); }
+LUA_INL bool ttislcf(const TValue* o)		{ return checktag((o), LUA_VLCF); }
+LUA_INL bool ttisCclosure(const TValue* o)	{ return checktag((o), ctb(LUA_VCCL)); }
+LUA_INL bool ttisclosure(const TValue* o)	{ return (ttisLclosure(o) || ttisCclosure(o)); }
+LUA_INL bool isLfunction(const TValue* o)	{ return ttisLclosure(o); }
 
-LUA_INL union Closure	clvalue(TValue* o)	{ return check_exp(ttisclosure(o), gco2cl(val_(o).gc)); }
-LUA_INL struct LClosure clLvalue(TValue* o) { return check_exp(ttisLclosure(o), gco2lcl(val_(o).gc)); }
-LUA_INL lua_CFunction	fvalue(TValue* o)	{ return check_exp(ttislcf(o), val_(o).f); }
-LUA_INL struct CClosure clCvalue(TValue* o) { return check_exp(ttisCclosure(o), gco2ccl(val_(o).gc)); }
+LUA_INL Closure*		clvalue(const TValue* o)	{ return check_exp(ttisclosure(o), gco2cl(val_(o).gc)); }
+LUA_INL LClosure*		clLvalue(const TValue* o)	{ return check_exp(ttisLclosure(o), gco2lcl(val_(o).gc)); }
+LUA_INL lua_CFunction	fvalue(const TValue* o)		{ return check_exp(ttislcf(o), val_(o).f); }
+LUA_INL CClosure*		clCvalue(const TValue* o)	{ return check_exp(ttisCclosure(o), gco2ccl(val_(o).gc)); }
 
 #define fvalueraw(v)	((v).f)
 

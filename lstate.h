@@ -394,9 +394,9 @@ union GCUnion {
 	check_exp(novariant((o)->tt) == LUA_TSTRING, &((cast_u(o))->ts))
 #define gco2u(o)  check_exp((o)->tt == LUA_VUSERDATA, &((cast_u(o))->u))
 
-LUA_INL LClosure gco2lcl(const GCObject* o) { return check_exp((o)->tt == LUA_VLCL, &((cast_u(o))->cl.l)); }
-LUA_INL CClosure gco2ccl(const GCObject* o) { return check_exp((o)->tt == LUA_VCCL, &((cast_u(o))->cl.c)); }
-LUA_INL Closure  gco2cl(const GCObject* o)  { return check_exp(novariant((o)->tt) == LUA_TFUNCTION, &((cast_u(o))->cl)); }
+LUA_INL LClosure* gco2lcl(const GCObject* o) { return check_exp((o)->tt == LUA_VLCL, &((cast_u(o))->cl.l)); }
+LUA_INL CClosure* gco2ccl(const GCObject* o) { return check_exp((o)->tt == LUA_VCCL, &((cast_u(o))->cl.c)); }
+LUA_INL Closure*  gco2cl(const GCObject* o)  { return check_exp(novariant((o)->tt) == LUA_TFUNCTION, &((cast_u(o))->cl)); }
 
 #define gco2t(o)  check_exp((o)->tt == LUA_VTABLE, &((cast_u(o))->h))
 #define gco2p(o)  check_exp((o)->tt == LUA_VPROTO, &((cast_u(o))->p))
