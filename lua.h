@@ -12,8 +12,7 @@
 #include <stdarg.h>
 #include <stddef.h>
 
-//inline + try to force inlining its code
-#define LUA_INLINED_API inline
+#define LUA_INL inline
 
 
 #define LUA_COPYRIGHT	LUA_RELEASE "  Copyright (C) 1994-2024 Lua.org, PUC-Rio"
@@ -298,7 +297,7 @@ LUA_API int   (lua_setiuservalue) (lua_State *L, int idx, int n);
 LUA_API void  (lua_callk) (lua_State *L, int nargs, int nresults,
                            lua_KContext ctx, lua_KFunction k);
 
-LUA_INLINED_API void lua_call(lua_State* L, int nargs, int nresults) { 
+LUA_INL void lua_call(lua_State* L, int nargs, int nresults) { 
     lua_callk(L, nargs, nresults, 0, NULL);
 }
 
@@ -306,7 +305,7 @@ LUA_INLINED_API void lua_call(lua_State* L, int nargs, int nresults) {
 LUA_API int   (lua_pcallk) (lua_State *L, int nargs, int nresults, int errfunc,
                             lua_KContext ctx, lua_KFunction k);
 
-LUA_INLINED_API int lua_pcall(lua_State* L, int nargs, int nresults, int errfunc) {
+LUA_INL int lua_pcall(lua_State* L, int nargs, int nresults, int errfunc) {
     return lua_pcallk(L, nargs, nresults, errfunc, 0, NULL); 
 }
 
@@ -327,7 +326,7 @@ LUA_API int  (lua_resume)     (lua_State *L, lua_State *from, int narg,
 LUA_API int  (lua_status)     (lua_State *L);
 LUA_API int (lua_isyieldable) (lua_State *L);
 
-LUA_INLINED_API int lua_yield(lua_State* L,  int nresults) {
+LUA_INL int lua_yield(lua_State* L,  int nresults) {
     return lua_yieldk(L, nresults, 0, NULL);
 }
 
@@ -405,16 +404,27 @@ LUA_API void (lua_closeslot) (lua_State *L, int idx);
 
 #define lua_getextraspace(L)	((void *)((char *)(L) - LUA_EXTRASPACE))
 
-#define lua_tonumber(L,i)	lua_tonumberx(L,(i),NULL)
-#define lua_tointeger(L,i)	lua_tointegerx(L,(i),NULL)
+LUA_INL lua_Number lua_tonumber(lua_State* L, int idx) {
+    return lua_tonumberx(L, idx, nullptr);
+}
+LUA_INL lua_Integer lua_tointeger(lua_State* L, int idx) {
+    return lua_tointegerx(L, idx, nullptr);
+}
 
-#define lua_pop(L,n)		lua_settop(L, -(n)-1)
+LUA_INL void lua_pop(lua_State* L, int count) {
+    lua_settop(L, -count-1);
+}
 
-#define lua_newtable(L)			lua_createtable(L, 0, 0)
+LUA_INL void lua_newtable(lua_State* L) {
+    lua_createtable(L, 0,0);
+}
 
-#define lua_register(L,n,f) 	(lua_pushcfunction(L, (f)), lua_setglobal(L, (n)))
-
-#define lua_pushcfunction(L,f)	lua_pushcclosure(L, (f), 0)
+LUA_INL void lua_pushcfunction(lua_State* L,lua_CFunction fn) {
+    lua_pushcclosure(L, fn, 0);
+}
+LUA_INL void lua_register(lua_State* L, const char* name, lua_CFunction fn) {
+    lua_pushcfunction(L, fn); lua_setglobal(L, name);
+}
 
 #define lua_isfunction(L,n)			(lua_type(L, (n)) == LUA_TFUNCTION)
 #define lua_istable(L,n)			(lua_type(L, (n)) == LUA_TTABLE)
@@ -427,17 +437,23 @@ LUA_API void (lua_closeslot) (lua_State *L, int idx);
 
 #define lua_pushliteral(L, s)	lua_pushstring(L, "" s)
 
-#define lua_pushglobaltable(L)  \
-	((void)lua_rawgeti(L, LUA_REGISTRYINDEX, LUA_RIDX_GLOBALS))
+LUA_INL void lua_pushglobaltable(lua_State* L) {
+    ((void)lua_rawgeti(L, LUA_REGISTRYINDEX, LUA_RIDX_GLOBALS));
+}
 
-#define lua_tostring(L,i)	lua_tolstring(L, (i), NULL)
+LUA_INL const char* lua_tostring(lua_State* L, int idx) {
+    return lua_tolstring(L, idx, nullptr);
+}
 
-
-#define lua_insert(L,idx)	lua_rotate(L, (idx), 1)
-
-#define lua_remove(L,idx)	(lua_rotate(L, (idx), -1), lua_pop(L, 1))
-
-#define lua_replace(L,idx)	(lua_copy(L, -1, (idx)), lua_pop(L, 1))
+LUA_INL void lua_insert(lua_State* L, int idx) {
+    lua_rotate(L, idx, 1);
+}
+LUA_INL void lua_remove(lua_State* L, int idx) {
+    lua_rotate(L, idx, -1); lua_pop(L, 1);
+}
+LUA_INL void lua_replace(lua_State* L, int idx) {
+    lua_copy(L, -1, idx); lua_pop(L, 1);
+}
 
 /* }============================================================== */
 
