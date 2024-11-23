@@ -632,56 +632,6 @@ typedef struct Proto
 
 
 /*
-** {==================================================================
-** Functions
-** ===================================================================
-*/
-
-constexpr inline int LUA_VUPVAL = makevariant(LUA_TUPVAL, 0);
-
-
-/* Variant tags for functions */
-constexpr inline int LUA_VLCL = makevariant(LUA_TFUNCTION, 0);  /* Lua closure */
-constexpr inline int LUA_VLCF = makevariant(LUA_TFUNCTION, 1);  /* light C function */
-constexpr inline int LUA_VCCL = makevariant(LUA_TFUNCTION, 2);  /* C closure */
-
-
-//Forward declare:
-struct LClosure gco2lcl(const GCObject* o);
-struct CClosure gco2ccl(const GCObject* o);
-union Closure gco2cl(const GCObject* o);
-
-LUA_INL auto ttisfunction(const TValue* o)	{ return checktype(o, LUA_TFUNCTION); }
-LUA_INL auto ttisLclosure(const TValue* o)	{ return checktag((o), ctb(LUA_VLCL)); }
-LUA_INL auto ttislcf(const TValue* o)		{ return checktag((o), LUA_VLCF); }
-LUA_INL auto ttisCclosure(const TValue* o)	{ return checktag((o), ctb(LUA_VCCL)); }
-LUA_INL auto ttisclosure(const TValue* o)	{ return (ttisLclosure(o) || ttisCclosure(o)); }
-LUA_INL auto isLfunction(const TValue* o)	{ return ttisLclosure(o); }
-
-LUA_INL union Closure	clvalue(TValue* o)	{ return check_exp(ttisclosure(o), gco2cl(val_(o).gc)); }
-LUA_INL struct LClosure clLvalue(TValue* o) { return check_exp(ttisLclosure(o), gco2lcl(val_(o).gc)); }
-LUA_INL lua_CFunction	fvalue(TValue* o)	{ return check_exp(ttislcf(o), val_(o).f); }
-LUA_INL struct CClosure clCvalue(TValue* o) { return check_exp(ttisCclosure(o), gco2ccl(val_(o).gc)); }
-
-#define fvalueraw(v)	((v).f)
-
-#define setclLvalue(L,obj,x) \
-  { TValue *io = (obj); LClosure *x_ = (x); \
-    val_(io).gc = obj2gco(x_); settt_(io, ctb(LUA_VLCL)); \
-    checkliveness(L,io); }
-
-#define setclLvalue2s(L,o,cl)	setclLvalue(L,s2v(o),cl)
-
-#define setfvalue(obj,x) \
-  { TValue *io=(obj); val_(io).f=(x); settt_(io, LUA_VLCF); }
-
-#define setclCvalue(L,obj,x) \
-  { TValue *io = (obj); CClosure *x_ = (x); \
-    val_(io).gc = obj2gco(x_); settt_(io, ctb(LUA_VCCL)); \
-    checkliveness(L,io); }
-
-
-/*
 ** Upvalues for Lua closures
 */
 typedef struct UpVal
@@ -732,6 +682,57 @@ typedef union Closure
 
 
 #define getproto(o)	(clLvalue(o)->p)
+
+/*
+** {==================================================================
+** Functions
+** ===================================================================
+*/
+
+
+constexpr inline int LUA_VUPVAL = makevariant(LUA_TUPVAL, 0);
+
+
+/* Variant tags for functions */
+constexpr inline int LUA_VLCL = makevariant(LUA_TFUNCTION, 0);  /* Lua closure */
+constexpr inline int LUA_VLCF = makevariant(LUA_TFUNCTION, 1);  /* light C function */
+constexpr inline int LUA_VCCL = makevariant(LUA_TFUNCTION, 2);  /* C closure */
+
+
+//Forward declare:
+struct LClosure gco2lcl(const GCObject* o);
+struct CClosure gco2ccl(const GCObject* o);
+union Closure gco2cl(const GCObject* o);
+
+LUA_INL auto ttisfunction(const TValue* o)	{ return checktype(o, LUA_TFUNCTION); }
+LUA_INL auto ttisLclosure(const TValue* o)	{ return checktag((o), ctb(LUA_VLCL)); }
+LUA_INL auto ttislcf(const TValue* o)		{ return checktag((o), LUA_VLCF); }
+LUA_INL auto ttisCclosure(const TValue* o)	{ return checktag((o), ctb(LUA_VCCL)); }
+LUA_INL auto ttisclosure(const TValue* o)	{ return (ttisLclosure(o) || ttisCclosure(o)); }
+LUA_INL auto isLfunction(const TValue* o)	{ return ttisLclosure(o); }
+
+LUA_INL union Closure	clvalue(TValue* o)	{ return check_exp(ttisclosure(o), gco2cl(val_(o).gc)); }
+LUA_INL struct LClosure clLvalue(TValue* o) { return check_exp(ttisLclosure(o), gco2lcl(val_(o).gc)); }
+LUA_INL lua_CFunction	fvalue(TValue* o)	{ return check_exp(ttislcf(o), val_(o).f); }
+LUA_INL struct CClosure clCvalue(TValue* o) { return check_exp(ttisCclosure(o), gco2ccl(val_(o).gc)); }
+
+#define fvalueraw(v)	((v).f)
+
+#define setclLvalue(L,obj,x) \
+  { TValue *io = (obj); LClosure *x_ = (x); \
+    val_(io).gc = obj2gco(x_); settt_(io, ctb(LUA_VLCL)); \
+    checkliveness(L,io); }
+
+#define setclLvalue2s(L,o,cl)	setclLvalue(L,s2v(o),cl)
+
+#define setfvalue(obj,x) \
+  { TValue *io=(obj); val_(io).f=(x); settt_(io, LUA_VLCF); }
+
+#define setclCvalue(L,obj,x) \
+  { TValue *io = (obj); CClosure *x_ = (x); \
+    val_(io).gc = obj2gco(x_); settt_(io, ctb(LUA_VCCL)); \
+    checkliveness(L,io); }
+
 
 /* }================================================================== */
 
