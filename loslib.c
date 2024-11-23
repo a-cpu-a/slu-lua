@@ -22,6 +22,7 @@
 #include "lualib.h"
 #include "llimits.h"
 
+#ifdef SLUA_OS_LIB
 
 /*
 ** {==================================================================
@@ -140,7 +141,7 @@
 #endif
 
 
-/*
+
 static int os_execute (lua_State *L) {
   const char *cmd = luaL_optstring(L, 1, NULL);
   int stat;
@@ -149,35 +150,34 @@ static int os_execute (lua_State *L) {
   if (cmd != NULL)
 	return luaL_execresult(L, stat);
   else {
-  */
-  //lua_pushboolean(L, stat);  /* true if there is a shell */
- /*
- return 1;
+  
+    lua_pushboolean(L, stat);  /* true if there is a shell */
+ 
+    return 1;
+  }
 }
-}
-*/
 
 
-/*
+
 static int os_remove (lua_State *L) {
   const char *filename = luaL_checkstring(L, 1);
   errno = 0;
   return luaL_fileresult(L, remove(filename) == 0, filename);
 }
-*/
 
 
-/*
+
+
 static int os_rename (lua_State *L) {
   const char *fromname = luaL_checkstring(L, 1);
   const char *toname = luaL_checkstring(L, 2);
   errno = 0;
   return luaL_fileresult(L, rename(fromname, toname) == 0, NULL);
 }
-*/
 
 
-/*
+
+
 static int os_tmpname (lua_State *L) {
   char buff[LUA_TMPNAMBUFSIZE];
   int err;
@@ -187,25 +187,25 @@ static int os_tmpname (lua_State *L) {
   lua_pushstring(L, buff);
   return 1;
 }
-*/
 
 
-/*
+
+
 static int os_getenv (lua_State *L) {
-*/
-//  lua_pushstring(L, getenv(luaL_checkstring(L, 1)));  /* if NULL push nil */
-/*
+
+  lua_pushstring(L, getenv(luaL_checkstring(L, 1)));  /* if NULL push nil */
+
   return 1;
 }
-*/
 
 
-/*
+
+
 static int os_clock (lua_State *L) {
   lua_pushnumber(L, ((lua_Number)clock())/(lua_Number)CLOCKS_PER_SEC);
   return 1;
 }
-*/
+
 
 
 /*
@@ -318,54 +318,54 @@ static time_t l_checktime (lua_State *L, int arg) {
 #define SIZETIMEFMT	250
 
 
-/*
+
 static int os_date (lua_State *L) {
   size_t slen;
   const char *s = luaL_optlstring(L, 1, "%c", &slen);
   time_t t = luaL_opt(L, l_checktime, 2, time(NULL));
-*/
-//  const char *se = s + slen;  /* 's' end */
-/*
+
+  const char *se = s + slen;  /* 's' end */
+
   struct tm tmr, *stm;
-*/
-//  if (*s == '!') {  /* UTC? */
-/*
+
+  if (*s == '!') {  /* UTC? */
+
 	stm = l_gmtime(&t, &tmr);
-//    s++;  /* skip '!' */
-/*
+    s++;  /* skip '!' */
+
   }
   else
 	stm = l_localtime(&t, &tmr);
-*/
-//  if (stm == NULL)  /* invalid date? */
-/*
+
+  if (stm == NULL)  /* invalid date? */
+
 	return luaL_error(L,
 				 "date result cannot be represented in this installation");
   if (strcmp(s, "*t") == 0) {
-*/
-//    lua_createtable(L, 0, 9);  /* 9 = number of fields */
-/*
+
+    lua_createtable(L, 0, 9);  /* 9 = number of fields */
+
 	setallfields(L, stm);
   }
   else {
-*/
-//    char cc[4];  /* buffer for individual conversion specifiers */
-/*
+
+    char cc[4];  /* buffer for individual conversion specifiers */
+
 	luaL_Buffer b;
 	cc[0] = '%';
 	luaL_buffinit(L, &b);
 	while (s < se) {
-*/
-//      if (*s != '%')  /* not a conversion specifier? */
-/*
+
+      if (*s != '%')  /* not a conversion specifier? */
+
 		luaL_addchar(&b, *s++);
 	  else {
 		size_t reslen;
 		char *buff = luaL_prepbuffsize(&b, SIZETIMEFMT);
-*/
-//        s++;  /* skip '%' */
-//        s = checkoption(L, s, se - s, cc + 1);  /* copy specifier to 'cc' */
-/*
+
+        s++;  /* skip '%' */
+        s = checkoption(L, s, se - s, cc + 1);  /* copy specifier to 'cc' */
+
 		reslen = strftime(buff, SIZETIMEFMT, cc, stm);
 	   luaL_addsize(&b, reslen);
 	  }
@@ -378,16 +378,16 @@ static int os_date (lua_State *L) {
 
 static int os_time (lua_State *L) {
   time_t t;
-  */
-  //  if (lua_isnoneornil(L, 1))  /* called without args? */
-  //    t = time(NULL);  /* get current time */
-	/*
+  
+    if (lua_isnoneornil(L, 1))  /* called without args? */
+      t = time(NULL);  /* get current time */
+	
 	else {
 	  struct tm ts;
 	  luaL_checktype(L, 1, LUA_TTABLE);
 	  */
-	  //lua_settop(L, 1);  /* make sure table is at the top */
-	  /*
+	  lua_settop(L, 1);  /* make sure table is at the top */
+	  
 	  ts.tm_year = getfield(L, "year", -1, 1900);
 	  ts.tm_mon = getfield(L, "month", -1, 1);
 	  ts.tm_mday = getfield(L, "day", -1, 0);
@@ -396,9 +396,9 @@ static int os_time (lua_State *L) {
 	  ts.tm_sec = getfield(L, "sec", 0, 0);
 	  ts.tm_isdst = getboolfield(L, "isdst");
 	  t = mktime(&ts);
-	  */
-	  //setallfields(L, &ts);  /* update fields with normalized values */
-	/*
+	  
+	  setallfields(L, &ts);  /* update fields with normalized values */
+	
 	}
 	if (t != (time_t)(l_timet)t || t == (time_t)(-1))
 	  return luaL_error(L,
@@ -414,12 +414,12 @@ static int os_time (lua_State *L) {
 	lua_pushnumber(L, (lua_Number)difftime(t1, t2));
 	return 1;
   }
-  */
+  
 
   /* }====================================================== */
 
 
-/*
+
 static int os_setlocale (lua_State *L) {
   static const int cat[] = {LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY,
                       LC_NUMERIC, LC_TIME};
@@ -440,16 +440,19 @@ static int os_exit (lua_State *L) {
 	status = (int)luaL_optinteger(L, 1, EXIT_SUCCESS);
   if (lua_toboolean(L, 2))
 	lua_close(L);
-	*/
-	//if (L) exit(status);  /* 'if' to avoid warnings for unreachable 'return' */
-	/*
+	
+	if (L) exit(status);  /* 'if' to avoid warnings for unreachable 'return' */
+	
 	return 0;
   }
-  */
+  
 
+#endif
 
 static const luaL_Reg syslib[] = {
-	/*
+
+#ifdef SLUA_OS_LIB
+	
   {"clock",     os_clock},
   {"date",      os_date},
   {"difftime",  os_difftime},
@@ -461,7 +464,8 @@ static const luaL_Reg syslib[] = {
   {"setlocale", os_setlocale},
   {"time",      os_time},
   {"tmpname",   os_tmpname},
-  */
+  
+#endif
   {NULL, NULL}
 };
 
