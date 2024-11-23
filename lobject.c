@@ -408,9 +408,7 @@ int luaO_utf8esc (char *buff, unsigned long x) {
 ** digits, the final '\0', plus the significant digits, which are
 ** approximately the *_DIG attribute.
 */
-#if LUA_N2SBUFFSZ < (20 + l_floatatt(DIG))
-#error "invalid value for LUA_N2SBUFFSZ"
-#endif
+static_assert(LUA_N2SBUFFSZ >= (20 + l_floatatt(DIG)), "invalid value for LUA_N2SBUFFSZ");
 
 
 /*

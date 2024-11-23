@@ -12,6 +12,9 @@
 #include <stdarg.h>
 #include <stddef.h>
 
+//inline + try to force inlining its code
+#define LUA_INLINED_API inline
+
 
 #define LUA_COPYRIGHT	LUA_RELEASE "  Copyright (C) 1994-2024 Lua.org, PUC-Rio"
 #define LUA_AUTHORS	"R. Ierusalimschy, L. H. de Figueiredo, W. Celes"
@@ -294,11 +297,19 @@ LUA_API int   (lua_setiuservalue) (lua_State *L, int idx, int n);
 */
 LUA_API void  (lua_callk) (lua_State *L, int nargs, int nresults,
                            lua_KContext ctx, lua_KFunction k);
-#define lua_call(L,n,r)		lua_callk(L, (n), (r), 0, NULL)
+
+LUA_INLINED_API void lua_call(lua_State* L, int nargs, int nresults) { 
+    lua_callk(L, nargs, nresults, 0, NULL);
+}
+
 
 LUA_API int   (lua_pcallk) (lua_State *L, int nargs, int nresults, int errfunc,
                             lua_KContext ctx, lua_KFunction k);
-#define lua_pcall(L,n,r,f)	lua_pcallk(L, (n), (r), (f), 0, NULL)
+
+LUA_INLINED_API int lua_pcall(lua_State* L, int nargs, int nresults, int errfunc) {
+    return lua_pcallk(L, nargs, nresults, errfunc, 0, NULL); 
+}
+
 
 LUA_API int   (lua_load) (lua_State *L, lua_Reader reader, void *dt,
                           const char *chunkname, const char *mode);
@@ -316,7 +327,9 @@ LUA_API int  (lua_resume)     (lua_State *L, lua_State *from, int narg,
 LUA_API int  (lua_status)     (lua_State *L);
 LUA_API int (lua_isyieldable) (lua_State *L);
 
-#define lua_yield(L,n)		   lua_yieldk(L, (n), 0, NULL)
+LUA_INLINED_API int lua_yield(lua_State* L,  int nresults) {
+    return lua_yieldk(L, nresults, 0, NULL);
+}
 
 
 /*
@@ -373,7 +386,7 @@ LUA_API int   (lua_next) (lua_State *L, int idx);
 LUA_API void  (lua_concat) (lua_State *L, int n);
 LUA_API void  (lua_len)    (lua_State *L, int idx);
 
-#define LUA_N2SBUFFSZ	64
+constexpr inline int LUA_N2SBUFFSZ = 64;
 LUA_API unsigned  (lua_numbertostrbuff) (lua_State *L, int idx, char *buff);
 LUA_API size_t  (lua_stringtonumber) (lua_State *L, const char *s);
 
