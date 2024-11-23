@@ -235,7 +235,9 @@ LUALIB_API void (luaL_pushresult) (luaL_Buffer *B);
 LUALIB_API void (luaL_pushresultsize) (luaL_Buffer *B, size_t sz);
 LUALIB_API char *(luaL_buffinitsize) (lua_State *L, luaL_Buffer *B, size_t sz);
 
-#define luaL_prepbuffer(B)	luaL_prepbuffsize(B, LUAL_BUFFERSIZE)
+LUA_INL char luaL_prepbuffer(luaL_Buffer* B) {
+    return luaL_prepbuffsize(B, LUAL_BUFFERSIZE);
+}
 
 /* }====================================================== */
 
