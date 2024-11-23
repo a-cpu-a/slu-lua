@@ -487,11 +487,19 @@ LUA_INL void lua_replace(lua_State* L, int idx) {
 
 #endif
 
-#define lua_newuserdata(L,s)	lua_newuserdatauv(L,s,1)
-#define lua_getuservalue(L,idx)	lua_getiuservalue(L,idx,1)
-#define lua_setuservalue(L,idx)	lua_setiuservalue(L,idx,1)
+LUA_INL int lua_newuserdata(lua_State* L, size_t sz) {
+    return lua_newuserdatauv(L, sz, 1);
+}
+LUA_INL int lua_getuservalue(lua_State* L, int idx) {
+    return lua_getiuservalue(L, idx, 1);
+}
+LUA_INL int lua_setuservalue(lua_State* L,int idx) {
+    return lua_setiuservalue(L, idx, 1);
+}
 
-#define lua_resetthread(L)	lua_closethread(L,NULL)
+LUA_INL int lua_resetthread(lua_State* L) {
+    return lua_closethread(L, nullptr);
+}
 
 /* }============================================================== */
 
