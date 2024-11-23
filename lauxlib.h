@@ -222,9 +222,12 @@ struct luaL_Buffer {
   ((void)((B)->n < (B)->size || luaL_prepbuffsize((B), 1)), \
    ((B)->b[(B)->n++] = (c)))
 
-#define luaL_addsize(B,s)	((B)->n += (s))
-
-#define luaL_buffsub(B,s)	((B)->n -= (s))
+LUA_INL size_t luaL_addsize(luaL_Buffer* B, size_t s) {
+    return B->n += s;
+}
+LUA_INL size_t luaL_buffsub(luaL_Buffer* B, size_t s) {
+    return B->n -= s;
+}
 
 LUALIB_API void (luaL_buffinit) (lua_State *L, luaL_Buffer *B);
 LUALIB_API char *(luaL_prepbuffsize) (luaL_Buffer *B, size_t sz);
