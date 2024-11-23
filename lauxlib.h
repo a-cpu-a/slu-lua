@@ -218,17 +218,6 @@ struct luaL_Buffer {
 #define luaL_buffaddr(bf)	((bf)->b)
 
 
-#define luaL_addchar(B,c) \
-  ((void)((B)->n < (B)->size || luaL_prepbuffsize((B), 1)), \
-   ((B)->b[(B)->n++] = (c)))
-
-LUA_INL size_t luaL_addsize(luaL_Buffer* B, size_t s) {
-    return B->n += s;
-}
-LUA_INL size_t luaL_buffsub(luaL_Buffer* B, size_t s) {
-    return B->n -= s;
-}
-
 LUALIB_API void (luaL_buffinit) (lua_State *L, luaL_Buffer *B);
 LUALIB_API char *(luaL_prepbuffsize) (luaL_Buffer *B, size_t sz);
 LUALIB_API void (luaL_addlstring) (luaL_Buffer *B, const char *s, size_t l);
@@ -238,7 +227,19 @@ LUALIB_API void (luaL_pushresult) (luaL_Buffer *B);
 LUALIB_API void (luaL_pushresultsize) (luaL_Buffer *B, size_t sz);
 LUALIB_API char *(luaL_buffinitsize) (lua_State *L, luaL_Buffer *B, size_t sz);
 
-LUA_INL char luaL_prepbuffer(luaL_Buffer* B) {
+LUA_INL void luaL_addchar(luaL_Buffer* B, char c) {
+    B->n < B->size || luaL_prepbuffsize(B, 1);
+    B->b[B->n++] = c;
+}
+
+LUA_INL size_t luaL_addsize(luaL_Buffer* B, size_t s) {
+    return B->n += s;
+}
+LUA_INL size_t luaL_buffsub(luaL_Buffer* B, size_t s) {
+    return B->n -= s;
+}
+
+LUA_INL char* luaL_prepbuffer(luaL_Buffer* B) {
     return luaL_prepbuffsize(B, LUAL_BUFFERSIZE);
 }
 
