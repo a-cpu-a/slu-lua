@@ -17,12 +17,12 @@
 #define LUA_AUTHORS	"R. Ierusalimschy, L. H. de Figueiredo, W. Celes"
 
 
-#define LUA_VERSION_MAJOR_N		5
-#define LUA_VERSION_MINOR_N		5
-#define LUA_VERSION_RELEASE_N	0
+constexpr inline int LUA_VERSION_MAJOR_N	 = 5;
+constexpr inline int LUA_VERSION_MINOR_N	 = 5;
+constexpr inline int LUA_VERSION_RELEASE_N   = 0;
 
-#define LUA_VERSION_NUM  (LUA_VERSION_MAJOR_N * 100 + LUA_VERSION_MINOR_N)
-#define LUA_VERSION_RELEASE_NUM  (LUA_VERSION_NUM * 100 + LUA_VERSION_RELEASE_N)
+constexpr inline int LUA_VERSION_NUM         = LUA_VERSION_MAJOR_N * 100 + LUA_VERSION_MINOR_N;
+constexpr inline int LUA_VERSION_RELEASE_NUM = LUA_VERSION_NUM * 100 + LUA_VERSION_RELEASE_N;
 
 
 #include "luaconf.h"
@@ -32,7 +32,7 @@
 #define LUA_SIGNATURE	"\x1bLua"
 
 /* option for multiple returns in 'lua_pcall' and 'lua_call' */
-#define LUA_MULTRET	(-1)
+constexpr inline int LUA_MULTRET = -1;
 
 
 /*
@@ -40,107 +40,109 @@
 ** (-LUAI_MAXSTACK is the minimum valid index; we keep some free empty
 ** space after that to help overflow detection)
 */
-#define LUA_REGISTRYINDEX	(-LUAI_MAXSTACK - 1000)
+constexpr inline int LUA_REGISTRYINDEX = -LUAI_MAXSTACK - 1000;
 #define lua_upvalueindex(i)	(LUA_REGISTRYINDEX - (i))
 
 
 /* thread status */
-#define LUA_OK			0
-#define LUA_YIELD		1
-#define LUA_ERRRUN		2
-#define LUA_ERRSYNTAX	3
-#define LUA_ERRMEM		4
-#define LUA_ERRERR		5
+constexpr inline int LUA_OK			= 0;
+constexpr inline int LUA_YIELD		= 1;
+constexpr inline int LUA_ERRRUN		= 2;
+constexpr inline int LUA_ERRSYNTAX	= 3;
+constexpr inline int LUA_ERRMEM		= 4;
+constexpr inline int LUA_ERRERR     = 5;
 
 
-typedef struct lua_State lua_State;
+using lua_State = struct lua_State;
+//^^^ makes it so you dont need to define "lua_State" yet (forward declaration)
 
 
 /*
 ** basic types
 */
-#define LUA_TNONE		(-1)
+constexpr inline int LUA_TNONE          = -1;
 
-#define LUA_TNIL			0
-#define LUA_TBOOLEAN		1
-#define LUA_TLIGHTUSERDATA	2
-#define LUA_TNUMBER			3
-#define LUA_TSTRING			4
-#define LUA_TTABLE			5
-#define LUA_TFUNCTION		6
-#define LUA_TUSERDATA		7
-#define LUA_TTHREAD			8
+constexpr inline int LUA_TNIL			= 0;
+constexpr inline int LUA_TBOOLEAN		= 1;
+constexpr inline int LUA_TLIGHTUSERDATA	= 2;
+constexpr inline int LUA_TNUMBER		= 3;
+constexpr inline int LUA_TSTRING		= 4;
+constexpr inline int LUA_TTABLE			= 5;
+constexpr inline int LUA_TFUNCTION		= 6;
+constexpr inline int LUA_TUSERDATA		= 7;
+constexpr inline int LUA_TTHREAD        = 8;
 
-#define LUA_NUMTYPES		9
+constexpr inline int LUA_NUMTYPES       = 9;
 
 
 
 /* minimum Lua stack available to a C function */
-#define LUA_MINSTACK	20
+constexpr inline int LUA_MINSTACK = 20;
 
 
 /* predefined values in the registry */
 /* index 1 is reserved for the reference mechanism */
-#define LUA_RIDX_GLOBALS	2
-#define LUA_RIDX_MAINTHREAD	3
-#define LUA_RIDX_LAST		3
+constexpr inline int LUA_RIDX_GLOBALS       = 2;
+constexpr inline int LUA_RIDX_MAINTHREAD    = 3;
+constexpr inline int LUA_RIDX_LAST          = 3;
 
 
 /* type of numbers in Lua */
-typedef LUA_NUMBER lua_Number;
+using lua_Number = LUA_NUMBER;
 
 
 /* type for integer functions */
-typedef LUA_INTEGER lua_Integer;
+using lua_Integer = LUA_INTEGER;
 
 /* unsigned integer type */
-typedef LUA_UNSIGNED lua_Unsigned;
+using lua_Unsigned = LUA_UNSIGNED;
 
 /* type for continuation-function contexts */
-typedef LUA_KCONTEXT lua_KContext;
+using lua_KContext = LUA_KCONTEXT;
 
 
 /*
 ** Type for C functions registered with Lua
 */
-typedef int (*lua_CFunction) (lua_State *L);
+using lua_CFunction = int (*) (lua_State *L);
 
 /*
 ** Type for continuation functions
 */
-typedef int (*lua_KFunction) (lua_State *L, int status, lua_KContext ctx);
+using lua_KFunction = int (*) (lua_State *L, int status, lua_KContext ctx);
 
 
 /*
 ** Type for functions that read/write blocks when loading/dumping Lua chunks
 */
-typedef const char * (*lua_Reader) (lua_State *L, void *ud, size_t *sz);
+using lua_Reader =  const char * (*) (lua_State *L, void *ud, size_t *sz);
 
-typedef int (*lua_Writer) (lua_State *L, const void *p, size_t sz, void *ud);
+using lua_Writer = int (*) (lua_State *L, const void *p, size_t sz, void *ud);
 
 
 /*
 ** Type for memory-allocation functions
 */
-typedef void * (*lua_Alloc) (void *ud, void *ptr, size_t osize, size_t nsize);
+using lua_Alloc = void * (*) (void *ud, void *ptr, size_t osize, size_t nsize);
 
 
 /*
 ** Type for warning functions
 */
-typedef void (*lua_WarnFunction) (void *ud, const char *msg, int tocont);
+using lua_WarnFunction = void (*) (void *ud, const char *msg, int tocont);
 
 
 /*
 ** Type used by the debug API to collect debug information
 */
-typedef struct lua_Debug lua_Debug;
+using lua_Debug = struct lua_Debug;
+//^^^ makes it so you dont need to define "lua_Debug" yet (forward declaration)
 
 
 /*
 ** Functions to be called by the debugger in specific events
 */
-typedef void (*lua_Hook) (lua_State *L, lua_Debug *ar);
+using lua_Hook = void (*) (lua_State *L, lua_Debug *ar);
 
 
 /*
@@ -212,26 +214,26 @@ LUA_API const void     *(lua_topointer) (lua_State *L, int idx);
 ** Comparison and arithmetic functions
 */
 
-#define LUA_OPADD	0	/* ORDER TM, ORDER OP */
-#define LUA_OPSUB	1
-#define LUA_OPMUL	2
-#define LUA_OPMOD	3
-#define LUA_OPPOW	4
-#define LUA_OPDIV	5
-#define LUA_OPIDIV	6
-#define LUA_OPBAND	7
-#define LUA_OPBOR	8
-#define LUA_OPBXOR	9
-#define LUA_OPSHL	10
-#define LUA_OPSHR	11
-#define LUA_OPUNM	12
-#define LUA_OPBNOT	13
+constexpr inline int LUA_OPADD	= 0; /* ORDER TM, ORDER OP */
+constexpr inline int LUA_OPSUB	= 1;
+constexpr inline int LUA_OPMUL	= 2;
+constexpr inline int LUA_OPMOD	= 3;
+constexpr inline int LUA_OPPOW	= 4;
+constexpr inline int LUA_OPDIV	= 5;
+constexpr inline int LUA_OPIDIV	= 6;
+constexpr inline int LUA_OPBAND	= 7;
+constexpr inline int LUA_OPBOR	= 8;
+constexpr inline int LUA_OPBXOR	= 9;
+constexpr inline int LUA_OPSHL	= 10;
+constexpr inline int LUA_OPSHR	= 11;
+constexpr inline int LUA_OPUNM	= 12;
+constexpr inline int LUA_OPBNOT = 13;
 
 LUA_API void  (lua_arith) (lua_State *L, int op);
 
-#define LUA_OPEQ	0
-#define LUA_OPLT	1
-#define LUA_OPLE	2
+constexpr inline int LUA_OPEQ	= 0;
+constexpr inline int LUA_OPLT	= 1;
+constexpr inline int LUA_OPLE   = 2;
 
 LUA_API int   (lua_rawequal) (lua_State *L, int idx1, int idx2);
 LUA_API int   (lua_compare) (lua_State *L, int idx1, int idx2, int op);
@@ -328,33 +330,33 @@ LUA_API void (lua_warning)  (lua_State *L, const char *msg, int tocont);
 ** garbage-collection options
 */
 
-#define LUA_GCSTOP			0
-#define LUA_GCRESTART		1
-#define LUA_GCCOLLECT		2
-#define LUA_GCCOUNT			3
-#define LUA_GCCOUNTB		4
-#define LUA_GCSTEP			5
-#define LUA_GCISRUNNING		6
-#define LUA_GCGEN			7
-#define LUA_GCINC			8
-#define LUA_GCPARAM			9
+constexpr inline int LUA_GCSTOP		 = 0;
+constexpr inline int LUA_GCRESTART	 = 1;
+constexpr inline int LUA_GCCOLLECT	 = 2;
+constexpr inline int LUA_GCCOUNT	 = 3;
+constexpr inline int LUA_GCCOUNTB	 = 4;
+constexpr inline int LUA_GCSTEP		 = 5;
+constexpr inline int LUA_GCISRUNNING = 6;
+constexpr inline int LUA_GCGEN		 = 7;
+constexpr inline int LUA_GCINC		 = 8;
+constexpr inline int LUA_GCPARAM     = 9;
 
 
 /*
 ** garbage-collection parameters
 */
 /* parameters for generational mode */
-#define LUA_GCPMINORMUL		0  /* control minor collections */
-#define LUA_GCPMAJORMINOR	1  /* control shift major->minor */
-#define LUA_GCPMINORMAJOR	2  /* control shift minor->major */
+constexpr inline int LUA_GCPMINORMUL	= 0;  /* control minor collections */
+constexpr inline int LUA_GCPMAJORMINOR 	= 1;  /* control shift major->minor */
+constexpr inline int LUA_GCPMINORMAJOR	= 2;  /* control shift minor->major */
 
 /* parameters for incremental mode */
-#define LUA_GCPPAUSE		3  /* size of pause between successive GCs */
-#define LUA_GCPSTEPMUL		4  /* GC "speed" */
-#define LUA_GCPSTEPSIZE		5  /* GC granularity */
+constexpr inline int LUA_GCPPAUSE		= 3;  /* size of pause between successive GCs */
+constexpr inline int LUA_GCPSTEPMUL		= 4;  /* GC "speed" */
+constexpr inline int LUA_GCPSTEPSIZE	= 5;  /* GC granularity */
 
 /* number of parameters */
-#define LUA_GCPN		6
+constexpr inline int LUA_GCPN = 6;
 
 
 LUA_API int (lua_gc) (lua_State *L, int what, ...);
@@ -458,20 +460,20 @@ LUA_API void (lua_closeslot) (lua_State *L, int idx);
 /*
 ** Event codes
 */
-#define LUA_HOOKCALL	 0
-#define LUA_HOOKRET	     1
-#define LUA_HOOKLINE	 2
-#define LUA_HOOKCOUNT	 3
-#define LUA_HOOKTAILCALL 4
+constexpr inline int LUA_HOOKCALL     = 0;
+constexpr inline int LUA_HOOKRET      = 1;
+constexpr inline int LUA_HOOKLINE     = 2;
+constexpr inline int LUA_HOOKCOUNT    = 3;
+constexpr inline int LUA_HOOKTAILCALL = 4;
 
 
 /*
 ** Event masks
 */
-#define LUA_MASKCALL	(1 << LUA_HOOKCALL)
-#define LUA_MASKRET	    (1 << LUA_HOOKRET)
-#define LUA_MASKLINE	(1 << LUA_HOOKLINE)
-#define LUA_MASKCOUNT	(1 << LUA_HOOKCOUNT)
+constexpr inline int LUA_MASKCALL     = 1 << LUA_HOOKCALL;
+constexpr inline int LUA_MASKRET      = 1 << LUA_HOOKRET;
+constexpr inline int LUA_MASKLINE     = 1 << LUA_HOOKLINE;
+constexpr inline int LUA_MASKCOUNT    = 1 << LUA_HOOKCOUNT;
 
 
 LUA_API int (lua_getstack) (lua_State *L, int level, lua_Debug *ar);
