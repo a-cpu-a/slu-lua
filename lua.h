@@ -402,7 +402,9 @@ LUA_API void (lua_closeslot) (lua_State *L, int idx);
 ** ===============================================================
 */
 
-#define lua_getextraspace(L)	((void *)((char *)(L) - LUA_EXTRASPACE))
+LUA_INL void* lua_getextraspace(lua_State* L) {
+    return (void*)((char*)(L)-LUA_EXTRASPACE);
+}
 
 LUA_INL lua_Number lua_tonumber(lua_State* L, int idx) {
     return lua_tonumberx(L, idx, nullptr);
