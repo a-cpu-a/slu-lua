@@ -115,13 +115,13 @@
 */
 
 /* predefined options for LUA_INT_TYPE */
-#define LUA_INT_INT		1
+#define LUA_INT_INT			1
 #define LUA_INT_LONG		2
 #define LUA_INT_LONGLONG	3
 
 /* predefined options for LUA_FLOAT_TYPE */
-#define LUA_FLOAT_FLOAT		1
-#define LUA_FLOAT_DOUBLE	2
+#define LUA_FLOAT_FLOAT			1
+#define LUA_FLOAT_DOUBLE		2
 #define LUA_FLOAT_LONGDOUBLE	3
 
 
@@ -709,7 +709,7 @@
 
 
 /* shorter names for Lua's own use */
-#define l_likely(x)	luai_likely(x)
+#define l_likely(x)		luai_likely(x)
 #define l_unlikely(x)	luai_unlikely(x)
 
 
@@ -758,9 +758,9 @@
 ** (It must fit into max(int)/2.)
 */
 #if 1000000 < (INT_MAX / 2)
-#define LUAI_MAXSTACK		1000000
+constexpr inline int LUAI_MAXSTACK = 1000000;
 #else
-#define LUAI_MAXSTACK		(INT_MAX / 2u)
+constexpr inline int LUAI_MAXSTACK = (INT_MAX / 2u);
 #endif
 
 
@@ -769,7 +769,7 @@
 ** a Lua state with very fast access.
 ** CHANGE it if you need a different size.
 */
-#define LUA_EXTRASPACE		(sizeof(void *))
+constexpr inline int LUA_EXTRASPACE = sizeof(void*);
 
 
 /*
@@ -777,14 +777,14 @@
 ** of a function in debug information.
 ** CHANGE it if you want a different size.
 */
-#define LUA_IDSIZE	60
+constexpr inline int LUA_IDSIZE = 60;
 
 
 /*
 @@ LUAL_BUFFERSIZE is the initial buffer size used by the lauxlib
 ** buffer system.
 */
-#define LUAL_BUFFERSIZE   ((int)(16 * sizeof(void*) * sizeof(lua_Number)))
+constexpr inline int LUAL_BUFFERSIZE = (int)(16 * sizeof(void*) * sizeof(LUA_NUMBER));
 
 
 /*
