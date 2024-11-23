@@ -140,28 +140,45 @@ extern "C++" {
     }
 }
 
-#define luaL_argcheck(L, cond,arg,extramsg)	\
-	((void)(luai_likely(cond) || luaL_argerror(L, (arg), (extramsg))))
+LUA_INL void luaL_argcheck(lua_State* L,bool cond,int arg, const char* extramsg) {
+    if (luai_likely(cond))
+        return;// No error
+    luaL_argerror(L, arg, extramsg);
+}
+LUA_INL void luaL_argexpected(lua_State* L, bool cond, int arg, const char* tname) {
+    if (luai_likely(cond))
+        return;// No error
+    luaL_typeerror(L, arg, tname);
+}
 
-#define luaL_argexpected(L,cond,arg,tname)	\
-	((void)(luai_likely(cond) || luaL_typeerror(L, (arg), (tname))))
+LUA_INL const char* luaL_checkstring(lua_State* L, int arg) {
+    return luaL_checklstring(L, arg,nullptr);
+}
+LUA_INL const char* luaL_optstring(lua_State* L, int arg,const char* def) {
+    return luaL_optlstring(L, arg, def, nullptr);
+}
 
-#define luaL_checkstring(L,n)	(luaL_checklstring(L, (n), NULL))
-#define luaL_optstring(L,n,d)	(luaL_optlstring(L, (n), (d), NULL))
+LUA_INL const char* luaL_typename(lua_State* L, int idx) {
+    return lua_typename(L, lua_type(L, idx));
+}
 
-#define luaL_typename(L,i)	lua_typename(L, lua_type(L,(i)))
+LUA_INL bool luaL_dofile(lua_State* L, const char* filename) {
+    return luaL_loadfile(L, filename) || lua_pcall(L, 0, LUA_MULTRET, 0);
+}
 
-#define luaL_dofile(L, fn) \
-	(luaL_loadfile(L, fn) || lua_pcall(L, 0, LUA_MULTRET, 0))
+LUA_INL bool luaL_dostring(lua_State* L, const char* s) {
+    return luaL_loadstring(L, s) || lua_pcall(L, 0, LUA_MULTRET, 0);
+}
 
-#define luaL_dostring(L, s) \
-	(luaL_loadstring(L, s) || lua_pcall(L, 0, LUA_MULTRET, 0))
-
-#define luaL_getmetatable(L,n)	(lua_getfield(L, LUA_REGISTRYINDEX, (n)))
+LUA_INL int luaL_getmetatable(lua_State* L, const char* n) {
+    return lua_getfield(L, LUA_REGISTRYINDEX, n);
+}
 
 #define luaL_opt(L,f,n,d)	(lua_isnoneornil(L,(n)) ? (d) : f(L,(n)))
 
-#define luaL_loadbuffer(L,s,sz,n)	luaL_loadbufferx(L,s,sz,n,NULL)
+LUA_INL int luaL_loadbuffer(lua_State* L, const char* buff,size_t sz, const char* name) {
+    return luaL_loadbufferx(L, buff, sz, name, nullptr);
+}
 
 
 /*
