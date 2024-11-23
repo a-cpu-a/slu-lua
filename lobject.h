@@ -19,16 +19,16 @@
 /*
 ** Extra types for collectable non-values
 */
-#define LUA_TUPVAL	LUA_NUMTYPES  /* upvalues */
-#define LUA_TPROTO	(LUA_NUMTYPES+1)  /* function prototypes */
-#define LUA_TDEADKEY	(LUA_NUMTYPES+2)  /* removed keys in tables */
+constexpr inline int LUA_TUPVAL     = LUA_NUMTYPES;        /* upvalues */
+constexpr inline int LUA_TPROTO     = (LUA_NUMTYPES + 1);  /* function prototypes */
+constexpr inline int LUA_TDEADKEY   = (LUA_NUMTYPES + 2);  /* removed keys in tables */
 
 
 
 /*
 ** number of all possible types (including LUA_TNONE but excluding DEADKEY)
 */
-#define LUA_TOTALTYPES		(LUA_TPROTO + 2)
+constexpr inline int LUA_TOTALTYPES = (LUA_TPROTO + 2);
 
 
 /*
@@ -180,16 +180,16 @@ typedef union {
 */
 
 /* Standard nil */
-#define LUA_VNIL	makevariant(LUA_TNIL, 0)
+constexpr inline int LUA_VNIL       = makevariant(LUA_TNIL, 0);
 
 /* Empty slot (which might be different from a slot containing nil) */
-#define LUA_VEMPTY	makevariant(LUA_TNIL, 1)
+constexpr inline int LUA_VEMPTY	    = makevariant(LUA_TNIL, 1);
 
 /* Value returned for a key not found in a table (absent key) */
-#define LUA_VABSTKEY	makevariant(LUA_TNIL, 2)
+constexpr inline int LUA_VABSTKEY	= makevariant(LUA_TNIL, 2);
 
 /* Special variant to signal that a fast get is accessing a non-table */
-#define LUA_VNOTABLE    makevariant(LUA_TNIL, 3)
+constexpr inline int LUA_VNOTABLE   = makevariant(LUA_TNIL, 3);
 
 
 /* macro to test for (any kind of) nil */
@@ -208,7 +208,7 @@ typedef union {
 #define ttisstrictnil(o)	checktag((o), LUA_VNIL)
 
 
-#define setnilvalue(obj) settt_(obj, LUA_VNIL)
+#define setnilvalue(obj)    settt_(obj, LUA_VNIL)
 
 
 #define isabstkey(v)		checktag((v), LUA_VABSTKEY)
@@ -247,12 +247,12 @@ typedef union {
 */
 
 
-#define LUA_VFALSE	makevariant(LUA_TBOOLEAN, 0)
-#define LUA_VTRUE	makevariant(LUA_TBOOLEAN, 1)
+constexpr inline int LUA_VFALSE = makevariant(LUA_TBOOLEAN, 0);
+constexpr inline int LUA_VTRUE  = makevariant(LUA_TBOOLEAN, 1);
 
 #define ttisboolean(o)		checktype((o), LUA_TBOOLEAN)
 #define ttisfalse(o)		checktag((o), LUA_VFALSE)
-#define ttistrue(o)		checktag((o), LUA_VTRUE)
+#define ttistrue(o)		    checktag((o), LUA_VTRUE)
 
 
 #define l_isfalse(o)	(ttisfalse(o) || ttisnil(o))
@@ -272,11 +272,11 @@ typedef union {
 ** ===================================================================
 */
 
-#define LUA_VTHREAD		makevariant(LUA_TTHREAD, 0)
+constexpr inline int LUA_VTHREAD  = makevariant(LUA_TTHREAD, 0);
 
-#define ttisthread(o)		checktag((o), ctb(LUA_VTHREAD))
+#define ttisthread(o)   checktag((o), ctb(LUA_VTHREAD))
 
-#define thvalue(o)	check_exp(ttisthread(o), gco2th(val_(o).gc))
+#define thvalue(o)	    check_exp(ttisthread(o), gco2th(val_(o).gc))
 
 #define setthvalue(L,obj,x) \
   { TValue *io = (obj); lua_State *x_ = (x); \
@@ -308,7 +308,7 @@ typedef struct GCObject {
 
 
 /* Bit mark for collectable types */
-#define BIT_ISCOLLECTABLE	(1 << 6)
+constexpr inline int BIT_ISCOLLECTABLE = (1 << 6);
 
 #define iscollectable(o)	(rawtt(o) & BIT_ISCOLLECTABLE)
 
@@ -333,8 +333,8 @@ typedef struct GCObject {
 */
 
 /* Variant tags for numbers */
-#define LUA_VNUMINT	makevariant(LUA_TNUMBER, 0)  /* integer numbers */
-#define LUA_VNUMFLT	makevariant(LUA_TNUMBER, 1)  /* float numbers */
+constexpr inline int LUA_VNUMINT = makevariant(LUA_TNUMBER, 0);  /* integer numbers */
+constexpr inline int LUA_VNUMFLT = makevariant(LUA_TNUMBER, 1);  /* float numbers */
 
 #define ttisnumber(o)		checktype((o), LUA_TNUMBER)
 #define ttisfloat(o)		checktag((o), LUA_VNUMFLT)
@@ -370,8 +370,8 @@ typedef struct GCObject {
 */
 
 /* Variant tags for strings */
-#define LUA_VSHRSTR	makevariant(LUA_TSTRING, 0)  /* short strings */
-#define LUA_VLNGSTR	makevariant(LUA_TSTRING, 1)  /* long strings */
+constexpr inline int LUA_VSHRSTR = makevariant(LUA_TSTRING, 0);  /* short strings */
+constexpr inline int LUA_VLNGSTR = makevariant(LUA_TSTRING, 1);  /* long strings */
 
 #define ttisstring(o)		checktype((o), LUA_TSTRING)
 #define ttisshrstring(o)	checktag((o), ctb(LUA_VSHRSTR))
@@ -379,7 +379,7 @@ typedef struct GCObject {
 
 #define tsvalueraw(v)	(gco2ts((v).gc))
 
-#define tsvalue(o)	check_exp(ttisstring(o), gco2ts(val_(o).gc))
+#define tsvalue(o)	    check_exp(ttisstring(o), gco2ts(val_(o).gc))
 
 #define setsvalue(L,obj,x) \
   { TValue *io = (obj); TString *x_ = (x); \
@@ -394,9 +394,9 @@ typedef struct GCObject {
 
 
 /* Kinds of long strings (stored in 'shrlen') */
-#define LSTRREG		-1  /* regular long string */
-#define LSTRFIX		-2  /* fixed external long string */
-#define LSTRMEM		-3  /* external long string with deallocation */
+constexpr inline int LSTRREG = -1;  /* regular long string */
+constexpr inline int LSTRFIX = -2;  /* fixed external long string */
+constexpr inline int LSTRMEM = -3;  /* external long string with deallocation */
 
 
 /*
@@ -455,9 +455,8 @@ typedef struct TString {
 ** Light userdata should be a variant of userdata, but for compatibility
 ** reasons they are also different types.
 */
-#define LUA_VLIGHTUSERDATA	makevariant(LUA_TLIGHTUSERDATA, 0)
-
-#define LUA_VUSERDATA		makevariant(LUA_TUSERDATA, 0)
+constexpr inline int LUA_VLIGHTUSERDATA	= makevariant(LUA_TLIGHTUSERDATA, 0);
+constexpr inline int LUA_VUSERDATA		= makevariant(LUA_TUSERDATA, 0);
 
 #define ttislightuserdata(o)	checktag((o), LUA_VLIGHTUSERDATA)
 #define ttisfulluserdata(o)	checktag((o), ctb(LUA_VUSERDATA))
@@ -535,7 +534,7 @@ typedef struct Udata0 {
 ** ===================================================================
 */
 
-#define LUA_VPROTO	makevariant(LUA_TPROTO, 0)
+constexpr inline int LUA_VPROTO = makevariant(LUA_TPROTO, 0);
 
 
 typedef l_uint32 Instruction;
@@ -582,8 +581,8 @@ typedef struct AbsLineInfo {
 /*
 ** Flags in Prototypes
 */
-#define PF_ISVARARG	1
-#define PF_FIXED	2  /* prototype has parts in fixed memory */
+constexpr inline int PF_ISVARARG	= 1;
+constexpr inline int PF_FIXED       = 2;  /* prototype has parts in fixed memory */
 
 
 /*
@@ -623,13 +622,13 @@ typedef struct Proto {
 ** ===================================================================
 */
 
-#define LUA_VUPVAL	makevariant(LUA_TUPVAL, 0)
+constexpr inline int LUA_VUPVAL = makevariant(LUA_TUPVAL, 0);
 
 
 /* Variant tags for functions */
-#define LUA_VLCL	makevariant(LUA_TFUNCTION, 0)  /* Lua closure */
-#define LUA_VLCF	makevariant(LUA_TFUNCTION, 1)  /* light C function */
-#define LUA_VCCL	makevariant(LUA_TFUNCTION, 2)  /* C closure */
+constexpr inline int LUA_VLCL	= makevariant(LUA_TFUNCTION, 0);  /* Lua closure */
+constexpr inline int LUA_VLCF	= makevariant(LUA_TFUNCTION, 1);  /* light C function */
+constexpr inline int LUA_VCCL	= makevariant(LUA_TFUNCTION, 2);  /* C closure */
 
 #define ttisfunction(o)		checktype(o, LUA_TFUNCTION)
 #define ttisLclosure(o)		checktag((o), ctb(LUA_VLCL))
@@ -717,7 +716,7 @@ typedef union Closure {
 ** ===================================================================
 */
 
-#define LUA_VTABLE	makevariant(LUA_TTABLE, 0)
+constexpr inline int LUA_VTABLE = makevariant(LUA_TTABLE, 0);
 
 #define ttistable(o)		checktag((o), ctb(LUA_VTABLE))
 
@@ -770,7 +769,7 @@ typedef union Node {
 ** is zero); 'alimit' is then used as a hint for #t.
 */
 
-#define BITRAS		(1 << 7)
+constexpr inline int BITRAS = 1 << 7;
 #define isrealasize(t)		(!((t)->flags & BITRAS))
 #define setrealasize(t)		((t)->flags &= cast_byte(~BITRAS))
 #define setnorealasize(t)	((t)->flags |= BITRAS)
@@ -833,7 +832,7 @@ typedef struct Table {
 
 
 /* size of buffer for 'luaO_utf8esc' function */
-#define UTF8BUFFSZ	8
+constexpr inline int UTF8BUFFSZ = 8;
 
 LUAI_FUNC int luaO_utf8esc (char *buff, unsigned long x);
 LUAI_FUNC lu_byte luaO_ceillog2 (unsigned int x);
