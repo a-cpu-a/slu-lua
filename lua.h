@@ -489,7 +489,7 @@ LUA_INL void lua_replace(lua_State* L, int idx) {
 
 #endif
 
-LUA_INL int lua_newuserdata(lua_State* L, size_t sz) {
+LUA_INL void* lua_newuserdata(lua_State* L, size_t sz) {
     return lua_newuserdatauv(L, sz, 1);
 }
 LUA_INL int lua_getuservalue(lua_State* L, int idx) {
