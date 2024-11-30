@@ -770,7 +770,7 @@ l_noret luaG_callerror (lua_State *L, const TValue *o) {
 
 
 l_noret luaG_forerror (lua_State *L, const TValue *o, const char *what) {
-  luaG_runerror(L, LUACC_INVALID "bad" LUACC_STRING_SINGLE " '" LUACC_FOR "for" LUACC_END_SINGLE_STRING " %s (" LUACC_NUMBER "number " LUACC_DEFAULT "expected, got %s)",
+  luaG_runerror(L, LUACC_INVALID "bad " LUACC_STRING_SINGLE "'" LUACC_FOR "for" LUACC_END_SINGLE_STRING " %s (" LUACC_NUMBER "number " LUACC_DEFAULT "expected, got %s)",
                    what, luaT_objtypename(L, o));
 }
 
