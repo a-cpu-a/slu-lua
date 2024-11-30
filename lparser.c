@@ -61,13 +61,13 @@ typedef struct BlockCnt {
 /*
 ** prototypes for recursive non-terminal functions
 */
-static void statement (LexState *ls);
-static void expr (LexState *ls, expdesc *v);
+static void statement (LexState* lState);
+static void expr (LexState* lState, expdesc* v);
 
 
-static l_noret error_expected (LexState *ls, int token) {
-  luaX_syntaxerror(ls,
-      luaO_pushfstring(ls->L, "%s expected", luaX_token2str(ls, token)));
+static l_noret error_expected (LexState* lState, int token) {
+  luaX_syntaxerror(lState,
+      luaO_pushfstring(lState->L, "%s expected", luaX_token2str(lState, token)));
 }
 
 
@@ -92,9 +92,9 @@ void luaY_checklimit (FuncState *fs, int v, int l, const char *what) {
 /*
 ** Test whether next token is 'c'; if so, skip it.
 */
-static int testnext (LexState *ls, int c) {
-  if (ls->t.token == c) {
-    luaX_next(ls);
+static int testnext (LexState* lState, int c) {
+  if (lState->t.token == c) {
+    luaX_next(lState);
     return 1;
   }
   else return 0;
@@ -104,22 +104,22 @@ static int testnext (LexState *ls, int c) {
 /*
 ** Check that next token is 'c'.
 */
-static void check (LexState *ls, int c) {
-  if (ls->t.token != c)
-    error_expected(ls, c);
+static void check (LexState *lState, int c) {
+  if (lState->t.token != c)
+    error_expected(lState, c);
 }
 
 
 /*
 ** Check that next token is 'c' and skip it.
 */
-static void checknext (LexState *ls, int c) {
-  check(ls, c);
-  luaX_next(ls);
+static void checknext (LexState* lState, int c) {
+  check(lState, c);
+  luaX_next(lState);
 }
 
 
-#define check_condition(ls,c,msg)	{ if (!(c)) luaX_syntaxerror(ls, msg); }
+#define check_condition(lState,c,msg)	{ if (!(c)) luaX_syntaxerror(lState, msg); }
 
 
 /*
