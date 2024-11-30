@@ -38,7 +38,7 @@
 #endif
 
 
-#define currIsNewline(ls)	(ls->current == '\n' || ls->current == '\r')
+LUA_INL bool currIsNewline(LexState* ls) { return ls->current == '\n' || ls->current == '\r'; }
 
 
 /* ORDER RESERVED */
