@@ -62,19 +62,19 @@ typedef struct Token {
 /* state of the lexer plus state of the parser when shared by all
    functions */
 typedef struct LexState {
-  int current;  /* current character (charint) */
-  int linenumber;  /* input line counter */
-  int lastline;  /* line of last token 'consumed' */
-  Token t;  /* current token */
-  Token lookahead;  /* look ahead token */
-  struct FuncState *fs;  /* current function (parser) */
+  int current;          /* current character (charint) */
+  int linenumber;       /* input line counter */
+  int lastline;         /* line of last token 'consumed' */
+  Token t;              /* current token */
+  Token lookahead;      /* look ahead token */
+  struct FuncState *fs; /* current function (parser) */
   struct lua_State *L;
-  ZIO *z;  /* input stream */
-  Mbuffer *buff;  /* buffer for tokens */
-  Table *h;  /* to avoid collection/reuse strings */
+  ZIO *z;               /* input stream */
+  Mbuffer *buff;        /* buffer for tokens */
+  Table *h;             /* to avoid collection/reuse strings */
   struct Dyndata *dyd;  /* dynamic structures used by the parser */
-  TString *source;  /* current source name */
-  TString *envn;  /* environment variable name */
+  TString *source;      /* current source name */
+  TString *envn;        /* environment variable name */
 } LexState;
 
 
