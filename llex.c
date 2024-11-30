@@ -29,7 +29,7 @@
 
 
 
-#define next(ls)	(ls->current = zgetc(ls->z))
+LUA_INL void next(LexState* ls) { ls->current = zgetc(ls->z); }
 
 
 /* minimum size for string buffer */
@@ -38,7 +38,7 @@
 #endif
 
 
-LUA_INL bool currIsNewline(LexState* ls) { return ls->current == '\n' || ls->current == '\r'; }
+LUA_INL bool currIsNewline(LexState* lState) { return lState->current == '\n' || lState->current == '\r'; }
 
 
 /* ORDER RESERVED */

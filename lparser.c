@@ -104,17 +104,17 @@ static int testnext (LexState* lState, int c) {
 /*
 ** Check that next token is 'c'.
 */
-static void check (LexState *lState, int c) {
-  if (lState->t.token != c)
-    error_expected(lState, c);
+static void check (LexState *lState, int token) {
+  if (lState->t.token != token)
+    error_expected(lState, token);
 }
 
 
 /*
 ** Check that next token is 'c' and skip it.
 */
-static void checknext (LexState* lState, int c) {
-  check(lState, c);
+static void checknext (LexState* lState, int token) {
+  check(lState, token);
   luaX_next(lState);
 }
 
