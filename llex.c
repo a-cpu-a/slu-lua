@@ -53,9 +53,6 @@ static const char *const luaX_tokens [] = {
 };
 
 
-#define save_and_next(ls) (save(ls, ls->current), next(ls))
-
-
 static l_noret lexerror (LexState *ls, const char *msg, int token);
 
 
@@ -70,6 +67,9 @@ static void save (LexState *ls, int c) {
   }
   b->buffer[luaZ_bufflen(b)++] = cast_char(c);
 }
+
+
+LUA_INL void save_and_next(LexState* ls) { save(ls, ls->current); next(ls); }
 
 
 void luaX_init (lua_State *L) {
