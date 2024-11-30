@@ -32,7 +32,7 @@
 
 /* maximum number of local variables per function (must be smaller
    than 250, due to the bytecode format) */
-#define MAXVARS		200
+constexpr inline int MAXVARS = 200;
 
 
 #define hasmultret(k)		((k) == VCALL || (k) == VVARARG)
@@ -1278,7 +1278,7 @@ static const struct {
    {2, 2}, {1, 1}            /* and, or */
 };
 
-#define UNARY_PRIORITY	12  /* priority for unary operators */
+constexpr inline int UNARY_PRIORITY = 12;  /* priority for unary operators */
 
 
 /*

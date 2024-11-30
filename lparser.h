@@ -87,10 +87,10 @@ typedef struct expdesc {
 
 
 /* kinds of variables */
-#define VDKREG		0   /* regular */
-#define RDKCONST	1   /* constant */
-#define RDKTOCLOSE	2   /* to-be-closed */
-#define RDKCTC		3   /* compile-time constant */
+constexpr inline int VDKREG		= 0;   /* regular */
+constexpr inline int RDKCONST	= 1;   /* constant */
+constexpr inline int RDKTOCLOSE	= 2;   /* to-be-closed */
+constexpr inline int RDKCTC		= 3;   /* compile-time constant */
 
 /* description of an active local variable */
 typedef union Vardesc {
