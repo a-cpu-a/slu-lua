@@ -250,7 +250,7 @@ static int forprep (lua_State *L, StkId ra) {
     if (l_unlikely(!tonumber(pinit, &init)))
       luaG_forerror(L, pinit, "initial value");
     if (step == 0)
-      luaG_runerror(L, "'" LUACC_FOR "for" LUACC_STRING_SINGLE "'" LUACC_DEFAULT " step is " LUACC_NUMBER "zero" LUACC_DEFAULT);
+      luaG_runerror(L, "'" LUACC_FOR "for" LUACC_END_SINGLE_STRING " step is " LUACC_NUMBER "zero" LUACC_DEFAULT);
     if (luai_numlt(0, step) ? luai_numlt(limit, init)
                             : luai_numlt(init, limit))
       return 1;  /* skip the loop */
@@ -318,7 +318,7 @@ lu_byte luaV_finishget (lua_State *L, const TValue *t, TValue *key,
       return tag;  /* done */
     /* else repeat (tail call 'luaV_finishget') */
   }
-  luaG_runerror(L, LUACC_STRING_SINGLE "'" LUACC_DEFAULT "__index" LUACC_STRING_SINGLE "'" LUACC_DEFAULT " chain too long; possible loop");
+  luaG_runerror(L, LUACC_END_SINGLE_STRING "__index" LUACC_END_SINGLE_STRING " chain too long; possible loop");
   return 0;  /* to avoid warnings */
 }
 
@@ -358,7 +358,7 @@ void luaV_finishset (lua_State *L, const TValue *t, TValue *key,
       return;  /* done */
     /* else 'return luaV_finishset(L, t, key, val, slot)' (loop) */
   }
-  luaG_runerror(L, "'" LUACC_DEFAULT "__newindex" LUACC_STRING_SINGLE "'" LUACC_DEFAULT " chain too long; possible loop");
+  luaG_runerror(L, "'" LUACC_DEFAULT "__newindex" LUACC_END_SINGLE_STRING " chain too long; possible loop");
 }
 
 

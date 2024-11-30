@@ -87,7 +87,7 @@ void luaX_init (lua_State *L) {
 const char *luaX_token2str (LexState *ls, int token) {
   if (token < FIRST_RESERVED) {  /* single-byte symbols? */
     if (lisprint(token))
-      return luaO_pushfstring(ls->L, LUACC_START_SINGLE_STRING "%c" LUACC_STRING_SINGLE "'" LUACC_DEFAULT, token);
+      return luaO_pushfstring(ls->L, LUACC_START_SINGLE_STRING "%c" LUACC_END_SINGLE_STRING, token);
     else  /* control character */
       return luaO_pushfstring(ls->L, "'<\\%d>'", token);
   }
@@ -106,7 +106,7 @@ static const char *txtToken (LexState *ls, int token) {
     case TK_NAME: case TK_STRING:
     case TK_FLT: case TK_INT:
       save(ls, '\0');
-      return luaO_pushfstring(ls->L, LUACC_STRING_SINGLE "'" LUACC_DEFAULT "%s" LUACC_STRING_SINGLE "'" LUACC_DEFAULT, luaZ_buffer(ls->buff));
+      return luaO_pushfstring(ls->L, LUACC_END_SINGLE_STRING "%s" LUACC_END_SINGLE_STRING, luaZ_buffer(ls->buff));
     default:
       return luaX_token2str(ls, token);
   }
@@ -349,14 +349,14 @@ static unsigned long readutf8esc (LexState *ls) {
   unsigned long r;
   int i = 4;  /* chars to be removed: '\', 'u', '{', and first digit */
   save_and_next(ls);  /* skip 'u' */
-  esccheck(ls, ls->current == '{', LUACC_INVALID "missing " LUACC_STRING_SINGLE "'" LUACC_BRACKET "{" LUACC_STRING_SINGLE "'" LUACC_DEFAULT);
+  esccheck(ls, ls->current == '{', LUACC_INVALID "missing " LUACC_STRING_SINGLE "'" LUACC_BRACKET "{" LUACC_END_SINGLE_STRING);
   r = cast_ulong(gethexa(ls));  /* must have at least one digit */
   while (cast_void(save_and_next(ls)), lisxdigit(ls->current)) {
     i++;
     esccheck(ls, r <= (0x7FFFFFFFu >> 4), "UTF-8 value too large");
     r = (r << 4) + luaO_hexavalue(ls->current);
   }
-  esccheck(ls, ls->current == '}', LUACC_INVALID "missing " LUACC_STRING_SINGLE "'" LUACC_BRACKET "}" LUACC_STRING_SINGLE "'" LUACC_DEFAULT);
+  esccheck(ls, ls->current == '}', LUACC_INVALID "missing " LUACC_STRING_SINGLE "'" LUACC_BRACKET "}" LUACC_END_SINGLE_STRING);
   next(ls);  /* skip '}' */
   luaZ_buffremove(ls->buff, i);  /* remove saved chars from buffer */
   return r;
