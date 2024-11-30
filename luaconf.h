@@ -840,5 +840,8 @@ constexpr inline int LUAL_BUFFERSIZE = (int)(16 * sizeof(void*) * sizeof(LUA_NUM
 #define LUACC_NIL           LUACC_COL_HEADER "210m" // nil NaN
 
 
+#define LUACC_START_SINGLE_STRING LUACC_STRING_SINGLE "'" LUACC_STRING_INNER
+
+
 #endif
 
