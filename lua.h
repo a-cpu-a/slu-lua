@@ -281,13 +281,19 @@ LUA_API int   (lua_getiuservalue)   (lua_State *L, int idx, int n);
 ** set functions (stack -> Lua)
 */
 LUA_API void  (lua_setglobal)       (lua_State *L, const char *name);
-LUA_API void  (lua_settable)        (lua_State *L, int idx);
+
+// Pop <Key + Value>
+LUA_API void  (lua_settable)        (lua_State *L, int objIdx);
 LUA_API void  (lua_setfield)        (lua_State *L, int idx, const char *k);
 LUA_API void  (lua_seti)            (lua_State *L, int idx, lua_Integer n);
-LUA_API void  (lua_rawset)          (lua_State *L, int idx);
-LUA_API void  (lua_rawseti)         (lua_State *L, int idx, lua_Integer n);
+
+// Pop <Key + Value>
+LUA_API void  (lua_rawset)          (lua_State *L, int objIdx);
+LUA_API void  (lua_rawseti)         (lua_State *L, int objIdx, lua_Integer n);
 LUA_API void  (lua_rawsetp)         (lua_State *L, int idx, const void *p);
-LUA_API int   (lua_setmetatable)    (lua_State *L, int objindex);
+
+// Pop <Table | Nil>
+LUA_API int   (lua_setmetatable)    (lua_State *L, int objIdx);
 LUA_API int   (lua_setiuservalue)   (lua_State *L, int idx, int n);
 
 
