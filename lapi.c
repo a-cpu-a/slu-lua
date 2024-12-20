@@ -1248,7 +1248,8 @@ LUA_API int lua_gc (lua_State *L, int what, ...) {
 ** miscellaneous functions
 */
 
-
+// Pop <Value>
+// Throws lua_Exception
 LUA_API int lua_error (lua_State *L) {
   TValue *errobj;
   lua_lock(L);

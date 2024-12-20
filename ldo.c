@@ -591,7 +591,28 @@ l_sinline int precallC (lua_State *L, StkId func, int nresults,
     luaD_hook(L, LUA_HOOKCALL, -1, 1, narg);
   }
   lua_unlock(L);
-  n = (*f)(L);  /* do the actual call */
+  try {
+    n = (*f)(L);  /* do the actual call */
+  }
+  catch (slua::Error& e)
+  {
+      lua_pushlstring(L, e.msg.data(),e.msg.size());
+      n = lua_error(L);
+  }
+  catch (std::exception& e)
+  {
+      lua_pushstring(L, e.what());
+      n = lua_error(L);
+  }
+  catch (...)
+  {
+      lua_writestringerror("C function threw, not allowed!","");
+      lua_pushliteral(L, "C function threw :(");
+
+      lua_assert(false);
+
+      n = lua_error(L);
+  }
   lua_lock(L);
   api_checknelems(L, n);
   luaD_poscall(L, ci, n);
