@@ -33,7 +33,7 @@
 #include "lvm.h"
 #include "lzio.h"
 
-#include <slua/ErrorType.h>
+#include <slua/ErrorType.hpp>
 
 
 
