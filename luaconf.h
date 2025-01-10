@@ -814,15 +814,6 @@ constexpr inline int LUAL_BUFFERSIZE = (int)(16 * sizeof(void*) * sizeof(LUA_NUM
 #endif
 
 
-/* print a string */
-#define lua_writestring(s,_LEN)   l::luaPrint(std::string(s,_LEN))
-
-/* print a newline and flush the output */
-#define lua_writeline()           l::newLine()
-
-/* print an error message */
-#define lua_writestringerror(s,p) l::luaErr(std::string(s).replace(std::string(s).find("%s"),2,std::string(p)))
-
 
 #define LUACC_COL_HEADER "\x1b[38;5;" //ansi color
 
