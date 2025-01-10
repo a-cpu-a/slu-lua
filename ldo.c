@@ -33,6 +33,8 @@
 #include "lvm.h"
 #include "lzio.h"
 
+#include <slua/ErrorType.h>
+
 
 
 #define errorstatus(s)	((s) > LUA_YIELD)
