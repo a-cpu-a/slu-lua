@@ -280,19 +280,70 @@ LUA_API int   (lua_getiuservalue)   (lua_State *L, int idx, int n);
 /*
 ** set functions (stack -> Lua)
 */
+
+/**
+* Pops a value from the stack and sets it as the new value of global name.
+* 
+* @b Pop <-1: Value>
+* @throws lua_Exception
+*/
 LUA_API void  (lua_setglobal)       (lua_State *L, const char *name);
 
-// Pop <Key + Value>
+/**
+* Does the equivalent to t[k] = v, where t is the value at
+* the given index and v is the value on the top of the stack, 
+* and k is the value just below the top.
+* 
+* This function pops both the key and the value from the stack.
+* As in Lua, this function may trigger a metamethod for the "newindex" event
+* 
+* @b Pop <-1: Value> <-2: Key>
+* @throws lua_Exception
+*/
 LUA_API void  (lua_settable)        (lua_State *L, int objIdx);
+
+/**
+* Does the equivalent to t[k] = v, where t is the value at
+* the given index and v is the value on the top of the stack.
+* 
+* This function pops the value from the stack. As in Lua, this
+* function may trigger a metamethod for the "newindex" event
+* 
+* @b Pop <-1: Value>
+* @throws lua_Exception
+*/
 LUA_API void  (lua_setfield)        (lua_State *L, int idx, const char *k);
+
+/**
+* Does the equivalent to t[n] = v, where t is the value at
+* the given index and v is the value on the top of the stack.
+* 
+* This function pops the value from the stack. As in Lua, this
+* function may trigger a metamethod for the "newindex" event
+* 
+* @b Pop <-1: Value>
+* @throws lua_Exception
+*/
 LUA_API void  (lua_seti)            (lua_State *L, int idx, lua_Integer n);
 
-// Pop <Key + Value>
+/**
+* @b Pop <-1: Value> <-2: Key>
+*/
 LUA_API void  (lua_rawset)          (lua_State *L, int objIdx);
+
+/**
+* @b Pop <-1: Value>
+*/
 LUA_API void  (lua_rawseti)         (lua_State *L, int objIdx, lua_Integer n);
+
+/**
+* @b Pop <-1: Value>
+*/
 LUA_API void  (lua_rawsetp)         (lua_State *L, int idx, const void *p);
 
-// Pop <Table | Nil>
+/**
+* @b Pop <-1: (Meta)Table | Nil>
+*/
 LUA_API int   (lua_setmetatable)    (lua_State *L, int objIdx);
 LUA_API int   (lua_setiuservalue)   (lua_State *L, int idx, int n);
 
