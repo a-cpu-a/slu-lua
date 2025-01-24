@@ -318,7 +318,7 @@ lu_byte luaV_finishget (lua_State *L, const TValue *t, TValue *key,
       return tag;  /* done */
     /* else repeat (tail call 'luaV_finishget') */
   }
-  luaG_runerror(L, LUACC_START_SINGLE_STRING "__index" LUACC_END_SINGLE_STRING " chain too long; possible loop");
+  luaG_runerror(L, LUACC_SINGLE_STRING("__index") " chain too long; possible loop");
   return 0;  /* to avoid warnings */
 }
 
@@ -358,7 +358,7 @@ void luaV_finishset (lua_State *L, const TValue *t, TValue *key,
       return;  /* done */
     /* else 'return luaV_finishset(L, t, key, val, slot)' (loop) */
   }
-  luaG_runerror(L, LUACC_START_SINGLE_STRING "__newindex" LUACC_END_SINGLE_STRING " chain too long; possible loop");
+  luaG_runerror(L, LUACC_SINGLE_STRING("__newindex") " chain too long; possible loop");
 }
 
 
