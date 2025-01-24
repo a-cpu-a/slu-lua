@@ -106,7 +106,7 @@ static const char *txtToken (LexState *ls, int token) {
     case TK_NAME: case TK_STRING:
     case TK_FLT: case TK_INT:
       save(ls, '\0');
-      return luaO_pushfstring(ls->L, LUACC_END_SINGLE_STRING "%s" LUACC_END_SINGLE_STRING, luaZ_buffer(ls->buff));
+      return luaO_pushfstring(ls->L, LUACC_SINGLE_STRING("%s"), luaZ_buffer(ls->buff));
     default:
       return luaX_token2str(ls, token);
   }
