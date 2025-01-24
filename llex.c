@@ -349,14 +349,14 @@ static unsigned long readutf8esc (LexState *ls) {
   unsigned long r;
   int i = 4;  /* chars to be removed: '\', 'u', '{', and first digit */
   save_and_next(ls);  /* skip 'u' */
-  esccheck(ls, ls->current == '{', LUACC_INVALID "missing " LUACC_STRING_SINGLE "'" LUACC_BRACKET "{" LUACC_END_SINGLE_STRING);
+  esccheck(ls, ls->current == '{', LUACC_INVALID "missing " LUACC_SINGLE_STRING_INCOL(LUACC_BRACKET, "{"));
   r = cast_ulong(gethexa(ls));  /* must have at least one digit */
   while (cast_void(save_and_next(ls)), lisxdigit(ls->current)) {
     i++;
     esccheck(ls, r <= (0x7FFFFFFFu >> 4), "UTF-8 value too large");
     r = (r << 4) + luaO_hexavalue(ls->current);
   }
-  esccheck(ls, ls->current == '}', LUACC_INVALID "missing " LUACC_STRING_SINGLE "'" LUACC_BRACKET "}" LUACC_END_SINGLE_STRING);
+  esccheck(ls, ls->current == '}', LUACC_INVALID "missing " LUACC_SINGLE_STRING_INCOL(LUACC_BRACKET, "}"));
   next(ls);  /* skip '}' */
   luaZ_buffremove(ls->buff, i);  /* remove saved chars from buffer */
   return r;
