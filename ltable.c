@@ -369,7 +369,7 @@ static unsigned findindex (lua_State *L, Table *t, TValue *key,
   else {
     const TValue *n = getgeneric(t, key, 1);
     if (l_unlikely(isabstkey(n)))
-      luaG_runerror(L, LUACC_INVALID "invalid" LUACC_DEFAULT " key to " LUACC_SINGLE_STRING("next"));  /* key not found */
+      luaG_runerror(L, LC_invalid " key to " LUACC_SINGLE_STRING("next"));  /* key not found */
     i = cast_uint(nodefromval(n) - gnode(t, 0));  /* key index in hash table */
     /* hash elements are numbered after array ones */
     return (i + 1) + asize;
