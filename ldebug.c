@@ -770,7 +770,7 @@ l_noret luaG_callerror (lua_State *L, const TValue *o) {
 
 
 l_noret luaG_forerror (lua_State *L, const TValue *o, const char *what) {
-  luaG_runerror(L, LUACC_INVALID "bad " LUACC_SINGLE_STRING_INCOL(LUACC_FOR,"for") " %s (" LUACC_NUMBER "number " LUACC_DEFAULT "expected, got %s)",
+  luaG_runerror(L, LUACC_INVALID "bad " LUACC_SINGLE_STRING_INCOL(LUACC_FOR,"for") " %s (" LC_number "expected, got %s)",
                    what, luaT_objtypename(L, o));
 }
 
@@ -796,7 +796,7 @@ l_noret luaG_tointerror (lua_State *L, const TValue *p1, const TValue *p2) {
   lua_Integer temp;
   if (!luaV_tointegerns(p1, &temp, LUA_FLOORN2I))
     p2 = p1;
-  luaG_runerror(L, LUACC_NUMBER "number%s" LUACC_DEFAULT " has no " LUACC_NUMBER "integer" LUACC_DEFAULT " representation", varinfo(L, p2));
+  luaG_runerror(L, LC_number "%s has no " LC_integer " representation", varinfo(L, p2));
 }
 
 

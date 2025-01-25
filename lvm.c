@@ -220,7 +220,7 @@ static int forprep (lua_State *L, StkId ra) {
     lua_Integer step = ivalue(pstep);
     lua_Integer limit;
     if (step == 0)
-      luaG_runerror(L, LUACC_FOR "for" LUACC_DEFAULT " step is " LUACC_NUMBER "zero" LUACC_DEFAULT);
+        luaG_runerror(L, LC_for " step is " LC_zero);
     if (forlimit(L, init, plimit, &limit, step))
       return 1;  /* skip the loop */
     else {  /* prepare loop counter */
@@ -250,7 +250,7 @@ static int forprep (lua_State *L, StkId ra) {
     if (l_unlikely(!tonumber(pinit, &init)))
       luaG_forerror(L, pinit, "initial value");
     if (step == 0)
-      luaG_runerror(L, LUACC_FOR "for" LUACC_DEFAULT " step is " LUACC_NUMBER "zero" LUACC_DEFAULT);
+      luaG_runerror(L, LC_for " step is " LC_zero);
     if (luai_numlt(0, step) ? luai_numlt(limit, init)
                             : luai_numlt(init, limit))
       return 1;  /* skip the loop */
@@ -721,7 +721,7 @@ void luaV_objlen (lua_State *L, StkId ra, const TValue *rb) {
 lua_Integer luaV_idiv (lua_State *L, lua_Integer m, lua_Integer n) {
   if (l_unlikely(l_castS2U(n) + 1u <= 1u)) {  /* special cases: -1 or 0 */
     if (n == 0)
-      luaG_runerror(L, "attempt to divide by " LUACC_NUMBER "zero" LUACC_DEFAULT);
+      luaG_runerror(L, "attempt to divide by " LC_zero);
     return intop(-, 0, m);   /* n==-1; avoid overflow with 0x80000...//-1 */
   }
   else {

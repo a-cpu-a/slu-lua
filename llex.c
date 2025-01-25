@@ -248,7 +248,7 @@ static int read_numeral (LexState *ls, SemInfo *seminfo) {
     save_and_next(ls);  /* force an error */
   save(ls, '\0');
   if (luaO_str2num(luaZ_buffer(ls->buff), &obj) == 0)  /* format error? */
-    lexerror(ls, LUACC_INVALID "malformed " LUACC_NUMBER "number" LUACC_DEFAULT, TK_FLT);
+    lexerror(ls, LUACC_INVALID "malformed " LC_number, TK_FLT);
   if (ttisinteger(&obj)) {
     seminfo->i = ivalue(&obj);
     return TK_INT;
@@ -292,7 +292,7 @@ static void read_long_string (LexState *ls, SemInfo *seminfo, size_t sep) {
       case EOZ: {  /* error */
         const char *what = (seminfo ? LUACC_STRING_DOUBLE "string" LUACC_DEFAULT : "comment");
         const char *msg = luaO_pushfstring(ls->L,
-            LUACC_INVALID "unfinished" LUACC_INVALID " long %s (starting at line %d)", what, line);
+            LC_unfinished " long %s (starting at line %d)", what, line);
         lexerror(ls, msg, TK_EOS);
         break;  /* to avoid warnings */
       }
@@ -423,7 +423,7 @@ static void read_string (LexState *ls, int del, SemInfo *seminfo) {
             goto no_save;
           }
           default: {
-            esccheck(ls, lisdigit(ls->current), LUACC_INVALID "invalid" LUACC_DEFAULT " escape sequence");
+            esccheck(ls, lisdigit(ls->current), LC_invalid " escape sequence");
             c = readdecesc(ls);  /* digital escape '\ddd' */
             goto only_save;
           }
@@ -485,7 +485,7 @@ static int llex (LexState *ls, SemInfo *seminfo) {
           return TK_STRING;
         }
         else if (sep == 0)  /* '[=...' missing second bracket? */
-          lexerror(ls, LUACC_INVALID "invalid" LUACC_DEFAULT " long " LUACC_STRING_DOUBLE "string" LUACC_DEFAULT " delimiter", TK_STRING);
+          lexerror(ls, LC_invalid " long " LUACC_STRING_DOUBLE "string" LUACC_DEFAULT " delimiter", TK_STRING);
         return '[';
       }
       case '=': {
