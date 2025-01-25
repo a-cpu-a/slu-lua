@@ -826,7 +826,7 @@ constexpr inline int LUAL_BUFFERSIZE = (int)(16 * sizeof(void*) * sizeof(LUA_NUM
 #define LUACC_INVALID       LUACC_COL_HEADER "217m" // not missing invalid unfinished malformed bad error
 #define LUACC_FOR           LUACC_COL_HEADER "219m" // for
 #define LUACC_FUNCTION      LUACC_COL_HEADER "167m" // function
-#define LUACC_ARGUMENT      LUACC_COL_HEADER "159m" // argument
+#define LUACC_ARGUMENT      LUACC_COL_HEADER "159m" // "argument", "arguments"
 #define LUACC_BOOLEAN       LUACC_COL_HEADER "81m"  // bool boolean
 #define LUACC_NIL           LUACC_COL_HEADER "210m" // nil NaN
 
@@ -836,6 +836,12 @@ constexpr inline int LUAL_BUFFERSIZE = (int)(16 * sizeof(void*) * sizeof(LUA_NUM
 
 #define LUACC_SINGLE_STRING_INCOL(_COL,_TEXT) LUACC_STRING_SINGLE "'" _COL _TEXT LUACC_END_SINGLE_STRING
 #define LUACC_SINGLE_STRING(_TEXT) LUACC_SINGLE_STRING_INCOL(LUACC_STRING_INNER,_TEXT)
+
+#define LUACC_COL(_COL,_TEXT) _COL _TEXT LUACC_DEFAULT 
+
+#define LC_function LUACC_COL(LUACC_FUNCTION,"function")
+#define LC_argument LUACC_COL(LUACC_ARGUMENT,"argument")
+#define LC_arguments LUACC_COL(LUACC_ARGUMENT,"arguments")
 
 
 #endif
