@@ -17,15 +17,15 @@
 /* data to catch conversion errors */
 #define LUAC_DATA	"\x19\x93\r\n\x1a\n"
 
-#define LUAC_INT	0x5678
-#define LUAC_NUM	cast_num(370.5)
+constexpr inline int LUAC_INT	        = 0x5678;
+constexpr inline lua_Number LUAC_NUM	= cast_num(370.5);
 
 /*
 ** Encode major-minor version in one byte, one nibble for each
 */
-#define LUAC_VERSION	(LUA_VERSION_MAJOR_N*16+LUA_VERSION_MINOR_N)
+constexpr inline int LUAC_VERSION = (LUA_VERSION_MAJOR_N * 16 + LUA_VERSION_MINOR_N);
 
-#define LUAC_FORMAT	0	/* this is the official format */
+constexpr inline int LUAC_FORMAT = 0;	/* this is the official format */
 
 
 /* load one chunk; from lundump.c */

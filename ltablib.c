@@ -25,10 +25,10 @@
 ** Operations that an object must define to mimic a table
 ** (some functions only need some of them)
 */
-#define TAB_R	1			/* read */
-#define TAB_W	2			/* write */
-#define TAB_L	4			/* length */
-#define TAB_RW	(TAB_R | TAB_W)		/* read/write */
+constexpr inline int TAB_R	= 1;			      /* read */
+constexpr inline int TAB_W	= 2;			      /* write */
+constexpr inline int TAB_L	= 4;			      /* length */
+constexpr inline int TAB_RW = (TAB_R | TAB_W);    /* read/write */
 
 
 #define aux_getn(L,n,w)	(checktab(L, n, (w) | TAB_L), luaL_len(L, n))
@@ -255,7 +255,7 @@ typedef unsigned int IdxT;
 
 
 /* arrays larger than 'RANLIMIT' may use randomized pivots */
-#define RANLIMIT	100u
+constexpr inline int RANLIMIT = 100u;
 
 
 static void set2 (lua_State *L, IdxT i, IdxT j) {

@@ -174,22 +174,25 @@ int luaD_rawrunprotected (lua_State *L, Pfunc f, void *ud) {
 */
 
 /* some stack space for error handling */
-#define STACKERRSPACE	200
+constexpr inline int STACKERRSPACE = 200;
 
 
 /* maximum stack size that respects size_t */
-#define MAXSTACK_BYSIZET  ((MAX_SIZET / sizeof(StackValue)) - STACKERRSPACE)
+constexpr inline size_t MAXSTACK_BYSIZET = ((MAX_SIZET / sizeof(StackValue)) - STACKERRSPACE);
 
 /*
 ** Minimum between LUAI_MAXSTACK and MAXSTACK_BYSIZET
 ** (Maximum size for the stack must respect size_t.)
 */
-#define MAXSTACK	cast_int(LUAI_MAXSTACK < MAXSTACK_BYSIZET  \
-			        ? LUAI_MAXSTACK : MAXSTACK_BYSIZET)
+constexpr inline int MAXSTACK = cast_int(
+                LUAI_MAXSTACK < MAXSTACK_BYSIZET
+			        ? LUAI_MAXSTACK
+                    : MAXSTACK_BYSIZET
+            );
 
 
 /* stack size with extra space for error handling */
-#define ERRORSTACKSIZE	(MAXSTACK + STACKERRSPACE)
+constexpr inline int ERRORSTACKSIZE	= (MAXSTACK + STACKERRSPACE);
 
 
 /*

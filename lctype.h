@@ -36,11 +36,11 @@
 #include "llimits.h"
 
 
-#define ALPHABIT	0
-#define DIGITBIT	1
-#define PRINTBIT	2
-#define SPACEBIT	3
-#define XDIGITBIT	4
+constexpr inline int ALPHABIT	= 0;
+constexpr inline int DIGITBIT	= 1;
+constexpr inline int PRINTBIT	= 2;
+constexpr inline int SPACEBIT	= 3;
+constexpr inline int XDIGITBIT	= 4;
 
 
 #define MASK(B)		(1 << (B))

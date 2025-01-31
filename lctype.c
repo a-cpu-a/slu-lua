@@ -19,9 +19,9 @@
 
 #if defined (LUA_UCID)		/* accept UniCode IDentifiers? */
 /* consider all non-ascii codepoints to be alphabetic */
-#define NONA		0x01
+constexpr inline int NONA = 0x01;
 #else
-#define NONA		0x00	/* default */
+constexpr inline int NONA = 0x00;	/* default */
 #endif
 
 

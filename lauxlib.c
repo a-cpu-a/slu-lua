@@ -35,8 +35,8 @@
 */
 
 
-#define LEVELS1	10	/* size of the first part of the stack */
-#define LEVELS2	11	/* size of the second part of the stack */
+constexpr inline int LEVELS1 = 10;	/* size of the first part of the stack */
+constexpr inline int LEVELS2 = 11;	/* size of the second part of the stack */
 
 
 

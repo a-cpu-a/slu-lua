@@ -114,7 +114,7 @@ typedef struct CallInfo CallInfo;
 #define decnny(L)	((L)->nCcalls -= 0x10000)
 
 /* Non-yieldable call increment */
-#define nyci	(0x10000 | 1)
+constexpr inline int nyci = (0x10000 | 1);
 
 
 
@@ -139,7 +139,7 @@ struct lua_longjmp;  /* defined in ldo.c */
 ** there will be a stack check soon after the push. Function frames
 ** never use this extra space, so it does not need to be kept clean.
 */
-#define EXTRA_STACK   5
+constexpr inline int EXTRA_STACK = 5;
 
 
 /*
@@ -159,9 +159,9 @@ struct lua_longjmp;  /* defined in ldo.c */
 
 
 /* kinds of Garbage Collection */
-#define KGC_INC		0	/* incremental gc */
-#define KGC_GENMINOR	1	/* generational gc in minor (regular) mode */
-#define KGC_GENMAJOR	2	/* generational in major mode */
+constexpr inline int KGC_INC		= 0;	/* incremental gc */
+constexpr inline int KGC_GENMINOR	= 1;	/* generational gc in minor (regular) mode */
+constexpr inline int KGC_GENMAJOR	= 2;	/* generational in major mode */
 
 
 typedef struct stringtable {
@@ -213,30 +213,30 @@ struct CallInfo {
 ** Bits in CallInfo status
 */
 /* bits 0-7 are the expected number of results from this function + 1 */
-#define CIST_NRESULTS	0xff
+constexpr inline int CIST_NRESULTS = 0xff;
 /* original value of 'allowhook' */
-#define CIST_OAH	(cast(l_uint32, 1) << 8)
+constexpr inline l_uint32 CIST_OAH = (cast(l_uint32, 1) << 8);
 /* call is running a C function */
-#define CIST_C		(cast(l_uint32, 1) << 9)
+constexpr inline l_uint32 CIST_C = (cast(l_uint32, 1) << 9);
 /* call is on a fresh "luaV_execute" frame */
-#define CIST_FRESH	(cast(l_uint32, 1) << 10)
+constexpr inline l_uint32 CIST_FRESH = (cast(l_uint32, 1) << 10);
 /* call is running a debug hook */
-#define CIST_HOOKED	(cast(l_uint32, 1) << 11)
+constexpr inline l_uint32 CIST_HOOKED = (cast(l_uint32, 1) << 11);
 /* doing a yieldable protected call */
-#define CIST_YPCALL	(cast(l_uint32, 1) << 12)
+constexpr inline l_uint32 CIST_YPCALL = (cast(l_uint32, 1) << 12);
 /* call was tail called */
-#define CIST_TAIL	(cast(l_uint32, 1) << 13)
+constexpr inline l_uint32 CIST_TAIL = (cast(l_uint32, 1) << 13);
 /* last hook called yielded */
-#define CIST_HOOKYIELD	(cast(l_uint32, 1) << 14)
+constexpr inline l_uint32 CIST_HOOKYIELD = (cast(l_uint32, 1) << 14);
 /* function "called" a finalizer */
-#define CIST_FIN	(cast(l_uint32, 1) << 15)
+constexpr inline l_uint32 CIST_FIN = (cast(l_uint32, 1) << 15);
  /* function is closing tbc variables */
-#define CIST_CLSRET	(cast(l_uint32, 1) << 16)
+constexpr inline l_uint32 CIST_CLSRET = (cast(l_uint32, 1) << 16);
 /* Bits 17-19 are used for CIST_RECST (see below) */
-#define CIST_RECST	17  /* the offset, not the mask */
+constexpr inline int CIST_RECST = 17;  /* the offset, not the mask */
 #if defined(LUA_COMPAT_LT_LE)
 /* using __lt for __le */
-#define CIST_LEQ	(cast(l_uint32, 1) << 20)
+constexpr inline l_uint32 CIST_LEQ = (cast(l_uint32, 1) << 20);
 #endif
 
 

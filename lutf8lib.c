@@ -22,9 +22,9 @@
 #include "llimits.h"
 
 
-#define MAXUNICODE	0x10FFFFu
+constexpr inline int MAXUNICODE	= 0x10FFFFu;
 
-#define MAXUTF		0x7FFFFFFFu
+constexpr inline int MAXUTF		= 0x7FFFFFFFu;
 
 
 #define MSGInvalid	"invalid UTF-8 code"
