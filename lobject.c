@@ -331,8 +331,8 @@ static const char *l_str2d (const char *s, lua_Number *result) {
 }
 
 
-#define MAXBY10		cast(lua_Unsigned, LUA_MAXINTEGER / 10)
-#define MAXLASTD	cast_int(LUA_MAXINTEGER % 10)
+constexpr inline lua_Unsigned MAXBY10  = cast(lua_Unsigned, LUA_MAXINTEGER / 10);
+constexpr inline int          MAXLASTD = cast_int(LUA_MAXINTEGER % 10);
 
 static const char *l_str2int (const char *s, lua_Integer *result) {
   lua_Unsigned a = 0;
