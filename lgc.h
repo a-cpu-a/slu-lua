@@ -32,15 +32,15 @@
 /*
 ** Possible states of the Garbage Collector
 */
-#define GCSpropagate	0
-#define GCSenteratomic	1
-#define GCSatomic	2
-#define GCSswpallgc	3
-#define GCSswpfinobj	4
-#define GCSswptobefnz	5
-#define GCSswpend	6
-#define GCScallfin	7
-#define GCSpause	8
+constexpr inline int GCSpropagate	= 0;
+constexpr inline int GCSenteratomic	= 1;
+constexpr inline int GCSatomic		= 2;
+constexpr inline int GCSswpallgc	= 3;
+constexpr inline int GCSswpfinobj	= 4;
+constexpr inline int GCSswptobefnz	= 5;
+constexpr inline int GCSswpend		= 6;
+constexpr inline int GCScallfin		= 7;
+constexpr inline int GCSpause		= 8;
 
 
 #define issweepphase(g)  \
@@ -76,12 +76,12 @@
 ** used for object "age" in generational mode. Last bit is used
 ** by tests.
 */
-#define WHITE0BIT	3  /* object is white (type 0) */
-#define WHITE1BIT	4  /* object is white (type 1) */
-#define BLACKBIT	5  /* object is black */
-#define FINALIZEDBIT	6  /* object has been marked for finalization */
+constexpr inline int WHITE0BIT		= 3;  /* object is white (type 0) */
+constexpr inline int WHITE1BIT		= 4;  /* object is white (type 1) */
+constexpr inline int BLACKBIT		= 5;  /* object is black */
+constexpr inline int FINALIZEDBIT	= 6;  /* object has been marked for finalization */
 
-#define TESTBIT		7
+constexpr inline int TESTBIT		= 7;
 
 
 
@@ -107,15 +107,15 @@
 
 
 /* object age in generational mode */
-#define G_NEW		0	/* created in current cycle */
-#define G_SURVIVAL	1	/* created in previous cycle */
-#define G_OLD0		2	/* marked old by frw. barrier in this cycle */
-#define G_OLD1		3	/* first full cycle as old */
-#define G_OLD		4	/* really old object (not to be visited) */
-#define G_TOUCHED1	5	/* old object touched this cycle */
-#define G_TOUCHED2	6	/* old object touched in previous cycle */
+constexpr inline int G_NEW		= 0;	/* created in current cycle */
+constexpr inline int G_SURVIVAL	= 1;	/* created in previous cycle */
+constexpr inline int G_OLD0		= 2;	/* marked old by frw. barrier in this cycle */
+constexpr inline int G_OLD1		= 3;	/* first full cycle as old */
+constexpr inline int G_OLD		= 4;	/* really old object (not to be visited) */
+constexpr inline int G_TOUCHED1	= 5;	/* old object touched this cycle */
+constexpr inline int G_TOUCHED2 = 6;	/* old object touched in previous cycle */
 
-#define AGEBITS		7  /* all age bits (111) */
+constexpr inline int AGEBITS	= 7;  /* all age bits (111) */
 
 #define getage(o)	((o)->marked & AGEBITS)
 #define setage(o,a)  ((o)->marked = cast_byte(((o)->marked & (~AGEBITS)) | a))
@@ -170,35 +170,35 @@
 ** Minor collections will shift to major ones after LUAI_MINORMAJOR%
 ** bytes become old.
 */
-#define LUAI_MINORMAJOR         70
+constexpr inline int LUAI_MINORMAJOR  = 70;
 
 /*
 ** Major collections will shift to minor ones after a collection
 ** collects at least LUAI_MAJORMINOR% of the new bytes.
 */
-#define LUAI_MAJORMINOR         50
+constexpr inline int LUAI_MAJORMINOR  = 50;
 
 /*
 ** A young (minor) collection will run after creating LUAI_GENMINORMUL%
 ** new bytes.
 */
-#define LUAI_GENMINORMUL         20
+constexpr inline int LUAI_GENMINORMUL = 20;
 
 
 /* incremental */
 
 /* Number of bytes must be LUAI_GCPAUSE% before starting new cycle */
-#define LUAI_GCPAUSE    250
+constexpr inline int LUAI_GCPAUSE = 250;
 
 /*
 ** Step multiplier: The collector handles LUAI_GCMUL% work units for
 ** each new allocated word. (Each "work unit" corresponds roughly to
 ** sweeping one object or traversing one slot.)
 */
-#define LUAI_GCMUL      200
+constexpr inline int LUAI_GCMUL   = 200;
 
 /* How many bytes to allocate before next GC step */
-#define LUAI_GCSTEPSIZE	(200 * sizeof(Table))
+constexpr inline int LUAI_GCSTEPSIZE = (200 * sizeof(Table));
 
 
 #define setgcparam(g,p,v)  (g->gcparams[LUA_GCP##p] = luaO_codeparam(v))
@@ -210,9 +210,9 @@
 /*
 ** Control when GC is running:
 */
-#define GCSTPUSR	1  /* bit true when GC stopped by user */
-#define GCSTPGC		2  /* bit true when GC stopped by itself */
-#define GCSTPCLS	4  /* bit true when closing Lua state */
+constexpr inline int GCSTPUSR	= 1;  /* bit true when GC stopped by user */
+constexpr inline int GCSTPGC	= 2;  /* bit true when GC stopped by itself */
+constexpr inline int GCSTPCLS	= 4;  /* bit true when closing Lua state */
 #define gcrunning(g)	((g)->gcstp == 0)
 
 

@@ -47,7 +47,7 @@
 
 
 /* limit for table tag-method chains (to avoid infinite loops) */
-#define MAXTAGLOOP	2000
+constexpr inline int MAXTAGLOOP = 2000;
 
 
 /*

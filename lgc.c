@@ -31,13 +31,13 @@
 ** (Large enough to dissipate fixed overheads but small enough
 ** to allow small steps for the collector.)
 */
-#define GCSWEEPMAX	20
+constexpr inline int GCSWEEPMAX = 20;
 
 
 /*
 ** Cost (in work units) of running one finalizer.
 */
-#define CWUFIN	10
+constexpr inline int CWUFIN	= 10;
 
 
 /* mask with all color bits */

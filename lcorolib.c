@@ -115,10 +115,10 @@ static int luaB_yield (lua_State *L) {
 }
 
 
-#define COS_RUN		0
-#define COS_DEAD	1
-#define COS_YIELD	2
-#define COS_NORM	3
+constexpr inline int COS_RUN	= 0;
+constexpr inline int COS_DEAD	= 1;
+constexpr inline int COS_YIELD	= 2;
+constexpr inline int COS_NORM	= 3;
 
 
 static const char *const statname[] =

@@ -51,7 +51,7 @@ typedef enum {
 ** corresponding metamethod field. (Bit 6 of the flag indicates that
 ** the table is using the dummy node; bit 7 is used for 'isrealasize'.)
 */
-#define maskflags	cast_byte(~(~0u << (TM_EQ + 1)))
+constexpr inline lu_byte maskflags = cast_byte(~(~0u << (TM_EQ + 1)));
 
 
 /*

@@ -28,8 +28,8 @@
 ** for its hash part.
 */
 
-#define BITDUMMY		(1 << 6)
-#define NOTBITDUMMY		cast_byte(~BITDUMMY)
+constexpr inline lu_byte BITDUMMY    =  (1 << 6);
+constexpr inline lu_byte NOTBITDUMMY =  cast_byte(~BITDUMMY);
 #define isdummy(t)		((t)->flags & BITDUMMY)
 
 #define setnodummy(t)		((t)->flags &= NOTBITDUMMY)
@@ -64,10 +64,10 @@
 
 
 /* results from pset */
-#define HOK		0
-#define HNOTFOUND	1
-#define HNOTATABLE	2
-#define HFIRSTNODE	3
+constexpr inline int HOK		= 0;
+constexpr inline int HNOTFOUND	= 1;
+constexpr inline int HNOTATABLE	= 2;
+constexpr inline int HFIRSTNODE = 3;
 
 /*
 ** 'luaH_get*' operations set 'res', unless the value is absent, and

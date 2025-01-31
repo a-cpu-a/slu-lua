@@ -39,31 +39,31 @@ enum OpMode {iABC, ivABC, iABx, iAsBx, iAx, isJ};
 /*
 ** size and position of opcode arguments.
 */
-#define SIZE_C		8
-#define SIZE_vC		10
-#define SIZE_B		8
-#define SIZE_vB		6
-#define SIZE_Bx		(SIZE_C + SIZE_B + 1)
-#define SIZE_A		8
-#define SIZE_Ax		(SIZE_Bx + SIZE_A)
-#define SIZE_sJ		(SIZE_Bx + SIZE_A)
+constexpr inline int SIZE_C	 =	 8;
+constexpr inline int SIZE_vC =	 10;
+constexpr inline int SIZE_B	 =	 8;
+constexpr inline int SIZE_vB =	 6;
+constexpr inline int SIZE_Bx =	 (SIZE_C + SIZE_B + 1);
+constexpr inline int SIZE_A	 =	 8;
+constexpr inline int SIZE_Ax =	 (SIZE_Bx + SIZE_A);
+constexpr inline int SIZE_sJ =	 (SIZE_Bx + SIZE_A);
 
-#define SIZE_OP		7
+constexpr inline int SIZE_OP = 7;
 
-#define POS_OP		0
+constexpr inline int POS_OP  = 0;
 
-#define POS_A		(POS_OP + SIZE_OP)
-#define POS_k		(POS_A + SIZE_A)
-#define POS_B		(POS_k + 1)
-#define POS_vB		(POS_k + 1)
-#define POS_C		(POS_B + SIZE_B)
-#define POS_vC		(POS_vB + SIZE_vB)
+constexpr inline int POS_A	 =	(POS_OP + SIZE_OP);
+constexpr inline int POS_k	 =	(POS_A + SIZE_A);
+constexpr inline int POS_B	 =	(POS_k + 1);
+constexpr inline int POS_vB	 =	(POS_k + 1);
+constexpr inline int POS_C	 =	(POS_B + SIZE_B);
+constexpr inline int POS_vC	 =	(POS_vB + SIZE_vB);
 
-#define POS_Bx		POS_k
+constexpr inline int POS_Bx	 =	POS_k;
 
-#define POS_Ax		POS_A
+constexpr inline int POS_Ax	 =	POS_A;
 
-#define POS_sJ		POS_A
+constexpr inline int POS_sJ	 =	POS_A;
 
 
 /*
@@ -344,7 +344,7 @@ OP_EXTRAARG/*	Ax	extra (larger) argument for previous opcode	*/
 } OpCode;
 
 
-#define NUM_OPCODES	((int)(OP_EXTRAARG) + 1)
+constexpr inline int NUM_OPCODES = ((int)(OP_EXTRAARG)+1);
 
 
 

@@ -26,7 +26,7 @@
 ** maximum number of upvalues in a closure (both C and Lua). (Value
 ** must fit in a VM register.)
 */
-#define MAXUPVAL	255
+constexpr inline int MAXUPVAL = 255;
 
 
 #define upisopen(up)	((up)->v.p != &(up)->u.value)
@@ -39,12 +39,12 @@
 ** maximum number of misses before giving up the cache of closures
 ** in prototypes
 */
-#define MAXMISS		10
+constexpr inline int MAXMISS = 10;
 
 
 
 /* special status to close upvalues preserving the top of the stack */
-#define CLOSEKTOP	(-1)
+constexpr inline int CLOSEKTOP = (-1);
 
 
 LUAI_FUNC Proto *luaF_newproto (lua_State *L);

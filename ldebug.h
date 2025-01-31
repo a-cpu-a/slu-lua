@@ -24,7 +24,7 @@
 ** mark for entries in 'lineinfo' array that has absolute information in
 ** 'abslineinfo' array
 */
-#define ABSLINEINFO	(-0x80)
+constexpr inline int ABSLINEINFO = (-0x80);
 
 
 /*
