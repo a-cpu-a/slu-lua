@@ -609,15 +609,6 @@ l_sinline int precallC (lua_State *L, StkId func, int nresults,
       lua_pushstring(L, e.what());
       n = lua_error(L);
   }
-  catch (...)
-  {
-      lua_writestringerror("C function threw, not allowed!","");
-      lua_pushliteral(L, "C function threw :(");
-
-      lua_assert(false);
-
-      n = lua_error(L);
-  }
   lua_lock(L);
   api_checknelems(L, n);
   luaD_poscall(L, ci, n);
