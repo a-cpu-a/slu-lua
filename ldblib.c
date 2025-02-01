@@ -418,7 +418,7 @@ static int db_gethook (lua_State *L) {
 }
 
 
-/*
+#if SLUA_DEBUG_LIB_DANGER
 static int db_debug (lua_State *L) {
   for (;;) {
     char buffer[250];
@@ -429,12 +429,12 @@ static int db_debug (lua_State *L) {
     if (luaL_loadbuffer(L, buffer, strlen(buffer), "=(debug command)") ||
         lua_pcall(L, 0, 0, 0))
       lua_writestringerror("%s\n", luaL_tolstring(L, -1, NULL));
-      */
-    //lua_settop(L, 0);  /* remove eventual returns */
-    /*
+      
+    lua_settop(L, 0);  /* remove eventual returns */
+    
   }
 }
-*/
+#endif
 
 
 static int db_traceback (lua_State *L) {
@@ -452,13 +452,13 @@ static int db_traceback (lua_State *L) {
 
 
 static const luaL_Reg dblib[] = {
-  /*
+#if SLUA_DEBUG_LIB_DANGER
   {"debug", db_debug},
-  */
+#endif
   {"getuservalue", db_getuservalue},
-  /*
+#if SLUA_DEBUG_LIB_DANGER
   {"gethook", db_gethook},
-  */
+#endif
   {"getinfo", db_getinfo},
   {"getlocal", db_getlocal},
   {"getregistry", db_getregistry},
@@ -467,9 +467,9 @@ static const luaL_Reg dblib[] = {
   {"upvaluejoin", db_upvaluejoin},
   {"upvalueid", db_upvalueid},
   {"setuservalue", db_setuservalue},
-  /*
+#if SLUA_DEBUG_LIB_DANGER
   {"sethook", db_sethook},
-  */
+#endif
   {"setlocal", db_setlocal},
   {"setmetatable", db_setmetatable},
   {"setupvalue", db_setupvalue},
