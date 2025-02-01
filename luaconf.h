@@ -838,6 +838,7 @@ constexpr inline int LUAL_BUFFERSIZE = (int)(16 * sizeof(void*) * sizeof(LUA_NUM
 #define LUACC_SINGLE_STRING(_TEXT) LUACC_SINGLE_STRING_INCOL(LUACC_STRING_INNER,_TEXT)
 
 #define LUACC_COL(_COL,_TEXT) _COL _TEXT LUACC_DEFAULT 
+#define LUACC_NUM_COL(_TEXT) _COL LUACC_COL(LUACC_NUMBER,_TEXT) 
 
 #define LC_zero LUACC_COL(LUACC_NUMBER,"zero")
 #define LC_double LUACC_COL(LUACC_NUMBER,"double")
@@ -848,6 +849,7 @@ constexpr inline int LUAL_BUFFERSIZE = (int)(16 * sizeof(void*) * sizeof(LUA_NUM
 #define LC_unfinished LUACC_COL(LUACC_INVALID,"unfinished")
 #define LC_not LUACC_COL(LUACC_INVALID,"not")
 #define LC_invalid LUACC_COL(LUACC_INVALID,"invalid")
+#define LC_Invalid LUACC_COL(LUACC_INVALID,"Invalid")
 
 #define LC_for LUACC_COL(LUACC_FOR,"for")
 #define LC_function LUACC_COL(LUACC_FUNCTION,"function")
