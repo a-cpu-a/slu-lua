@@ -290,7 +290,7 @@ static void read_long_string (LexState *ls, SemInfo *seminfo, size_t sep) {
   for (;;) {
     switch (ls->current) {
       case EOZ: {  /* error */
-        const char *what = (seminfo ? LUACC_STRING_DOUBLE "string" LUACC_DEFAULT : "comment");
+        const char *what = (seminfo ? LC_string : "comment");
         const char *msg = luaO_pushfstring(ls->L,
             LC_unfinished " long %s (starting at line %d)", what, line);
         lexerror(ls, msg, TK_EOS);
@@ -389,11 +389,11 @@ static void read_string (LexState *ls, int del, SemInfo *seminfo) {
   while (ls->current != del) {
     switch (ls->current) {
       case EOZ:
-        lexerror(ls, LUACC_INVALID "unfinished " LUACC_STRING_DOUBLE "string" LUACC_DEFAULT, TK_EOS);
+        lexerror(ls, LUACC_INVALID "unfinished " LC_string, TK_EOS);
         break;  /* to avoid warnings */
       case '\n':
       case '\r':
-        lexerror(ls, LUACC_INVALID "unfinished " LUACC_STRING_DOUBLE "string" LUACC_DEFAULT, TK_STRING);
+        lexerror(ls, LUACC_INVALID "unfinished " LC_string, TK_STRING);
         break;  /* to avoid warnings */
       case '\\': {  /* escape sequences */
         int c;  /* final character to be saved */
@@ -485,7 +485,7 @@ static int llex (LexState *ls, SemInfo *seminfo) {
           return TK_STRING;
         }
         else if (sep == 0)  /* '[=...' missing second bracket? */
-          lexerror(ls, LC_invalid " long " LUACC_STRING_DOUBLE "string" LUACC_DEFAULT " delimiter", TK_STRING);
+          lexerror(ls, " long " LC_string " delimiter", TK_STRING);
         return '[';
       }
       case '=': {
