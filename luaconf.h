@@ -632,7 +632,11 @@
 @@ lua_pointer2str converts a pointer to a readable string in a
 ** non-specified way.
 */
-#define lua_pointer2str(buff,sz,p)	l_sprintf(buff,sz,"%s","1234")
+#ifdef SLUA_LEAK_PTRS
+#define lua_pointer2str(buff,sz,p)	l_sprintf(buff,sz,"%s",p)
+#else
+#define lua_pointer2str(buff,sz,p)	((void)p,l_sprintf(buff,sz,"%s","1234"))
+#endif
 
 
 /*
