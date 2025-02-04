@@ -21,11 +21,13 @@
 #include "llimits.h"
 
 
+#if SLUA_DEBUG_LIB_DANGER
 /*
 ** The hook table at registry[HOOKKEY] maps threads to their current
 ** hook function.
 */
 static const char *const HOOKKEY = "_HOOKKEY";
+#endif
 
 
 /*
@@ -317,6 +319,7 @@ static int db_upvaluejoin (lua_State *L) {
 }
 
 
+#if SLUA_DEBUG_LIB_DANGER
 /*
 ** Call hook function registered at hook table for the current
 ** thread (if there is one)
@@ -418,7 +421,6 @@ static int db_gethook (lua_State *L) {
 }
 
 
-#if SLUA_DEBUG_LIB_DANGER
 static int db_debug (lua_State *L) {
   for (;;) {
     char buffer[250];
