@@ -183,6 +183,7 @@ static int luaB_rawset (lua_State *L) {
 }
 
 
+#ifdef SLUA_BASE_DANGER
 static int pushmode (lua_State *L, int oldmode) {
   if (oldmode == -1)
     luaL_pushfail(L);  /* invalid call to 'lua_gc' */
@@ -198,7 +199,7 @@ static int pushmode (lua_State *L, int oldmode) {
 */
 #define checkvalres(res) { if (res == -1) break; }
 
-/*
+
 static int luaB_collectgarbage (lua_State *L) {
   static const char *const opts[] = {"stop", "restart", "collect",
     "count", "step", "isrunning", "generational", "incremental",
@@ -253,12 +254,12 @@ static int luaB_collectgarbage (lua_State *L) {
       return 1;
     }
   }
-  */
-  //luaL_pushfail(L);  /* invalid call (inside a finalizer) */
-  /*
+  
+  luaL_pushfail(L);  /* invalid call (inside a finalizer) */
+  
   return 1;
 }
-*/
+#endif
 
 
 static int luaB_type (lua_State *L) {
@@ -325,36 +326,37 @@ static int luaB_ipairs (lua_State *L) {
 }
 
 
-/*
+
+#ifdef SLUA_BASE_DANGER
 static int load_aux (lua_State *L, int status, int envidx) {
   if (l_likely(status == LUA_OK)) {
-  */
-    //if (envidx != 0) {  /* 'env' parameter? */
-      //lua_pushvalue(L, envidx);  /* environment for loaded function */
-      //if (!lua_setupvalue(L, -2, 1))  /* set it as 1st upvalue */
-        //lua_pop(L, 1);  /* remove 'env' if not used by previous call */
-/*
+  
+    if (envidx != 0) {  /* 'env' parameter? */
+      lua_pushvalue(L, envidx);  /* environment for loaded function */
+      if (!lua_setupvalue(L, -2, 1))  /* set it as 1st upvalue */
+        lua_pop(L, 1);  /* remove 'env' if not used by previous call */
+
 }
     return 1;
   }
-  */
-  //else {  /* error (message is on top of the stack) */
-/*
+  
+  else {  /* error (message is on top of the stack) */
+
     luaL_pushfail(L);
-    */
-    //lua_insert(L, -2);  /* put before error message */
-    //return 2;  /* return fail plus error message */
-/*
+    
+    lua_insert(L, -2);  /* put before error message */
+    return 2;  /* return fail plus error message */
+
   }
 }
-*/
 
-/*
+
+
 static const char *getMode (lua_State *L, int idx) {
   const char *mode = luaL_optstring(L, idx, "bt");
-  */
-  //if (strchr(mode, 'B') != NULL)  /* Lua code cannot use fixed buffers */
-  /*
+  
+  if (strchr(mode, 'B') != NULL)  /* Lua code cannot use fixed buffers */
+  
     luaL_argerror(L, idx, "invalid mode");
   return mode;
 }
@@ -363,13 +365,13 @@ static const char *getMode (lua_State *L, int idx) {
 static int luaB_loadfile (lua_State *L) {
   const char *fname = luaL_optstring(L, 1, NULL);
   const char *mode = getMode(L, 2);
-  */
-  //int env = (!lua_isnone(L, 3) ? 3 : 0);  /* 'env' index or 0 if no 'env' */
-  /*
+  
+  int env = (!lua_isnone(L, 3) ? 3 : 0);  /* 'env' index or 0 if no 'env' */
+  
   int status = luaL_loadfilex(L, fname, mode);
   return load_aux(L, status, env);
 }
-*/
+#endif
 
 
 /*
@@ -387,6 +389,7 @@ static int luaB_loadfile (lua_State *L) {
 #define RESERVEDSLOT	5
 
 
+#ifdef SLUA_BASE_DANGER
 /*
 ** Reader for generic 'load' function: 'lua_load' uses the
 ** stack for internal stuff, so the reader cannot change the
@@ -410,46 +413,46 @@ static const char *generic_reader (lua_State *L, void *ud, size_t *size) {
 }
 
 
-/*
+
 static int luaB_load (lua_State *L) {
   int status;
   size_t l;
   const char *s = lua_tolstring(L, 1, &l);
   const char *mode = getMode(L, 3);
   int env = (!lua_isnone(L, 4) ? 4 : 0);  /* 'env' index or 0 if no 'env' */
-  // if (s != NULL) {  /* loading a string? */
-  /*
+   if (s != NULL) {  /* loading a string? */
+  
     const char* chunkname = luaL_optstring(L, 2, s);
     status = luaL_loadbufferx(L, s, l, chunkname, mode);
   }
-  */
-//  else {  /* loading from a reader function */
-/*
+  
+  else {  /* loading from a reader function */
+
 const char *chunkname = luaL_optstring(L, 2, "=(load)");
     luaL_checktype(L, 1, LUA_TFUNCTION);
-    */
-//    lua_settop(L, RESERVEDSLOT);  /* create reserved slot */
-/*
+    
+    lua_settop(L, RESERVEDSLOT);  /* create reserved slot */
+
 status = lua_load(L, generic_reader, NULL, chunkname, mode);
   }
   return load_aux(L, status, env);
 }
-*/
+
 
 /* }====================================================== */
 
 
-/*
+
 static int dofilecont (lua_State *L, int d1, lua_KContext d2) {
-*/
-  //(void)d1;  (void)d2;  /* only to match 'lua_Kfunction' prototype */
-/*
+
+  (void)d1;  (void)d2;  /* only to match 'lua_Kfunction' prototype */
+
 return lua_gettop(L) - 1;
 }
-*/
 
 
-/*
+
+
 static int luaB_dofile (lua_State *L) {
   const char *fname = luaL_optstring(L, 1, NULL);
   lua_settop(L, 1);
@@ -458,7 +461,7 @@ static int luaB_dofile (lua_State *L) {
   lua_callk(L, 0, LUA_MULTRET, 0, dofilecont);
   return dofilecont(L, 0, 0);
 }
-*/
+#endif
 
 
 static int luaB_assert (lua_State *L) {
@@ -544,17 +547,21 @@ static int luaB_tostring (lua_State *L) {
 
 static const luaL_Reg base_funcs[] = {
   {"assert", luaB_assert},
-  /*
+
+#ifdef SLUA_BASE_DANGER
   {"collectgarbage", luaB_collectgarbage},
   {"dofile", luaB_dofile},
-  */
+#endif // SLUA_BASE_DANGER
+
   {"error", luaB_error},
   {"getmetatable", luaB_getmetatable},
   {"ipairs", luaB_ipairs},
-  /*
+
+#ifdef SLUA_BASE_DANGER
   {"loadfile", luaB_loadfile},
   {"load", luaB_load},
-  */
+#endif // SLUA_BASE_DANGER
+
   {"next", luaB_next},
   {"pairs", luaB_pairs},
   {"pcall", luaB_pcall},
