@@ -35,12 +35,14 @@
 #define L_MODEEXT	"b"
 #endif
 
+#ifdef SLUA_IO_LIB
 /* Check whether 'mode' matches '[rwa]%+?[L_MODEEXT]*' */
 static int l_checkmode (const char *mode) {
   return (*mode != '\0' && strchr("rwa", *(mode++)) != NULL &&
          (*mode != '+' || ((void)(++mode), 1)) &&  /* skip if char is '+' */
          (strspn(mode, L_MODEEXT) == strlen(mode)));  /* check extensions */
 }
+#endif
 
 #endif
 
