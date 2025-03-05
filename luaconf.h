@@ -844,18 +844,21 @@ constexpr inline int LUAL_BUFFERSIZE = (int)(16 * sizeof(void*) * sizeof(LUA_NUM
 #define LUACC_COL(_COL,_TEXT) _COL _TEXT LUACC_DEFAULT 
 #define LUACC_NUM_COL(_TEXT) LUACC_COL(LUACC_NUMBER,_TEXT) 
 
+//Order: len, letter, caps
+
 #define LC_string LUACC_COL(LUACC_STRING_DOUBLE,"string")
 
-#define LC_zero LUACC_COL(LUACC_NUMBER,"zero")
 #define LC_double LUACC_COL(LUACC_NUMBER,"double")
-#define LC_number LUACC_COL(LUACC_NUMBER,"number")
+#define LC_Integer LUACC_COL(LUACC_NUMBER,"Integer")
 #define LC_integer LUACC_COL(LUACC_NUMBER,"integer")
+#define LC_number LUACC_COL(LUACC_NUMBER,"number")
+#define LC_zero LUACC_COL(LUACC_NUMBER,"zero")
 
 #define LC_error LUACC_COL(LUACC_INVALID,"error")
-#define LC_unfinished LUACC_COL(LUACC_INVALID,"unfinished")
-#define LC_not LUACC_COL(LUACC_INVALID,"not")
-#define LC_invalid LUACC_COL(LUACC_INVALID,"invalid")
 #define LC_Invalid LUACC_COL(LUACC_INVALID,"Invalid")
+#define LC_invalid LUACC_COL(LUACC_INVALID,"invalid")
+#define LC_not LUACC_COL(LUACC_INVALID,"not")
+#define LC_unfinished LUACC_COL(LUACC_INVALID,"unfinished")
 
 #define LC_for LUACC_COL(LUACC_FOR,"for")
 #define LC_function LUACC_COL(LUACC_FUNCTION,"function")
