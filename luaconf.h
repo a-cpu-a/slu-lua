@@ -861,6 +861,7 @@ constexpr inline int LUAL_BUFFERSIZE = (int)(16 * sizeof(void*) * sizeof(LUA_NUM
 #define LC_unfinished LUACC_COL(LUACC_INVALID,"unfinished")
 
 #define LC_for LUACC_COL(LUACC_FOR,"for")
+#define LC_Function LUACC_COL(LUACC_FUNCTION,"Function")
 #define LC_function LUACC_COL(LUACC_FUNCTION,"function")
 
 #define LC_argument LUACC_COL(LUACC_ARGUMENT,"argument")
