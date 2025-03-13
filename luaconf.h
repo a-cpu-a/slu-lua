@@ -802,16 +802,6 @@ constexpr inline int LUAL_BUFFERSIZE = (int)(16 * sizeof(void*) * sizeof(LUA_NUM
 
 
 
-
-/* =================================================================== */
-
-/*
-** Local configuration. You can use this space to add your redefinitions
-** without modifying the main part of the file.
-*/
-
-
-
 /* sLua -> helper thingy */
 #ifndef NDEBUG
 #define LUA_USE_APICHECK
@@ -866,6 +856,16 @@ constexpr inline int LUAL_BUFFERSIZE = (int)(16 * sizeof(void*) * sizeof(LUA_NUM
 
 #define LC_argument LUACC_COL(LUACC_ARGUMENT,"argument")
 #define LC_arguments LUACC_COL(LUACC_ARGUMENT,"arguments")
+
+
+/* =================================================================== */
+
+/*
+** Local configuration. You can use this space to add your redefinitions
+** without modifying the main part of the file.
+*/
+
+
 
 
 #endif
