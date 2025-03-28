@@ -302,18 +302,32 @@ LUA_CEXP void setempty(TValue* v) {
 constexpr inline int LUA_VFALSE = makevariant(LUA_TBOOLEAN, 0);
 constexpr inline int LUA_VTRUE = makevariant(LUA_TBOOLEAN, 1);
 
-#define ttisboolean(o)		checktype((o), LUA_TBOOLEAN)
-#define ttisfalse(o)		checktag((o), LUA_VFALSE)
-#define ttistrue(o)		    checktag((o), LUA_VTRUE)
+LUA_CEXP bool ttisboolean(const TValue* o) {
+	return checktype(o, LUA_TBOOLEAN);
+}
+LUA_CEXP bool ttisfalse(const TValue* o) {
+	return checktag(o, LUA_VFALSE);
+}
+LUA_CEXP bool ttistrue(const TValue* o) {
+	return checktag(o, LUA_VTRUE);
+}
 
 
-#define l_isfalse(o)	(ttisfalse(o) || ttisnil(o))
-#define tagisfalse(t)	((t) == LUA_VFALSE || novariant(t) == LUA_TNIL)
+LUA_CEXP bool l_isfalse(const TValue* o) {
+	return ttisfalse(o) || ttisnil(o);
+}
+LUA_CEXP bool tagisfalse(lu_byte t) {
+	return t == LUA_VFALSE || novariant(t) == LUA_TNIL;
+}
 
 
 
-#define setbfvalue(obj)		settt_(obj, LUA_VFALSE)
-#define setbtvalue(obj)		settt_(obj, LUA_VTRUE)
+LUA_CEXP void setbfvalue(TValue* obj) {
+	return settt_(obj, LUA_VFALSE);
+}
+LUA_CEXP void setbtvalue(TValue* obj) {
+	return settt_(obj, LUA_VTRUE);
+}
 
 /* }================================================================== */
 
