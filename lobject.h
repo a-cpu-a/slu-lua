@@ -462,9 +462,15 @@ LUA_CEXP void chgivalue(TValue* io, lua_Integer x) {
 constexpr inline int LUA_VSHRSTR = makevariant(LUA_TSTRING, 0);  /* short strings */
 constexpr inline int LUA_VLNGSTR = makevariant(LUA_TSTRING, 1);  /* long strings */
 
-#define ttisstring(o)		checktype((o), LUA_TSTRING)
-#define ttisshrstring(o)	checktag((o), ctb(LUA_VSHRSTR))
-#define ttislngstring(o)	checktag((o), ctb(LUA_VLNGSTR))
+LUA_CEXP bool ttisstring(const TValue* o) {
+	return checktype(o, LUA_TSTRING);
+}
+LUA_CEXP bool ttisshrstring(const TValue* o) {
+	return checktag(o, ctb(LUA_VSHRSTR));
+}
+LUA_CEXP bool ttislngstring(const TValue* o) {
+	return checktag(o, ctb(LUA_VLNGSTR));
+}
 
 #define tsvalueraw(v)	(gco2ts((v).gc))
 
@@ -508,29 +514,41 @@ typedef struct TString
 } TString;
 
 
-#define strisshr(ts)	((ts)->shrlen >= 0)
+LUA_CEXP bool strisshr(const TString* ts) {
+	return ts->shrlen >= 0;
+}
 
 
 /*
 ** Get the actual string (array of bytes) from a 'TString'. (Generic
 ** version and specialized versions for long and short strings.)
 */
-#define rawgetshrstr(ts)  (cast_charp(&(ts)->contents))
-#define getshrstr(ts)	check_exp(strisshr(ts), rawgetshrstr(ts))
-#define getlngstr(ts)	check_exp(!strisshr(ts), (ts)->contents)
-#define getstr(ts) 	(strisshr(ts) ? rawgetshrstr(ts) : (ts)->contents)
+LUA_CEXP char* rawgetshrstr(const TString* ts) {
+	return cast_charp(&ts->contents);
+}
+LUA_CEXP char* getshrstr(const TString* ts) {
+	return check_exp(strisshr(ts), rawgetshrstr(ts));
+}
+LUA_CEXP char* getlngstr(const TString* ts) {
+	return check_exp(!strisshr(ts), ts->contents);
+}
+LUA_CEXP char* getstr(const TString* ts) {
+	return strisshr(ts) ? rawgetshrstr(ts) : ts->contents;
+}
 
 
 /* get string length from 'TString *ts' */
-#define tsslen(ts)  \
-	(strisshr(ts) ? cast_sizet((ts)->shrlen) : (ts)->u.lnglen)
+LUA_CEXP size_t tsslen(const TString* ts) {
+	return strisshr(ts) ? cast_sizet((ts)->shrlen) : (ts)->u.lnglen;
+}
 
 /*
 ** Get string and length */
-#define getlstr(ts, len)  \
-	(strisshr(ts) \
-	? (cast_void((len) = cast_sizet((ts)->shrlen)), rawgetshrstr(ts)) \
-	: (cast_void((len) = (ts)->u.lnglen), (ts)->contents))
+LUA_CEXP char* getlstr(const TString* ts,size_t& len) {
+	return (strisshr(ts) \
+		? (cast_void((len) = cast_sizet((ts)->shrlen)), rawgetshrstr(ts)) \
+		: (cast_void((len) = (ts)->u.lnglen), (ts)->contents));
+}
 
 /* }================================================================== */
 
