@@ -409,29 +409,45 @@ LUA_CEXP bool ttisthread(const TValue* o) {
 constexpr inline int LUA_VNUMINT = makevariant(LUA_TNUMBER, 0);  /* integer numbers */
 constexpr inline int LUA_VNUMFLT = makevariant(LUA_TNUMBER, 1);  /* float numbers */
 
-#define ttisnumber(o)		checktype((o), LUA_TNUMBER)
-#define ttisfloat(o)		checktag((o), LUA_VNUMFLT)
-#define ttisinteger(o)		checktag((o), LUA_VNUMINT)
+LUA_CEXP bool ttisnumber(const TValue* o) {
+	return checktype(o, LUA_TNUMBER);
+}
+LUA_CEXP bool ttisfloat(const TValue* o) {
+	return checktag(o, LUA_VNUMFLT);
+}
+LUA_CEXP bool ttisinteger(const TValue* o) {
+	return checktag(o, LUA_VNUMINT);
+}
 
 #define nvalue(o)	check_exp(ttisnumber(o), \
 	(ttisinteger(o) ? cast_num(ivalue(o)) : fltvalue(o)))
 #define fltvalue(o)	check_exp(ttisfloat(o), val_(o).n)
 #define ivalue(o)	check_exp(ttisinteger(o), val_(o).i)
 
-#define fltvalueraw(v)	((v).n)
-#define ivalueraw(v)	((v).i)
+LUA_CEXP lua_Number fltvalueraw(const Value v) {
+	return v.n;
+}
+LUA_CEXP lua_Integer ivalueraw(const Value v) {
+	return v.i;
+}
 
-#define setfltvalue(obj,x) \
-  { TValue *io=(obj); val_(io).n=(x); settt_(io, LUA_VNUMFLT); }
+LUA_CEXP void setfltvalue(TValue* io,lua_Number x) {
+	val_(io).n = x; 
+	settt_(io, LUA_VNUMFLT);
+}
+LUA_CEXP void chgfltvalue(TValue* io, lua_Number x) {
+	lua_assert(ttisfloat(io)); 
+	val_(io).n = x;
+}
 
-#define chgfltvalue(obj,x) \
-  { TValue *io=(obj); lua_assert(ttisfloat(io)); val_(io).n=(x); }
-
-#define setivalue(obj,x) \
-  { TValue *io=(obj); val_(io).i=(x); settt_(io, LUA_VNUMINT); }
-
-#define chgivalue(obj,x) \
-  { TValue *io=(obj); lua_assert(ttisinteger(io)); val_(io).i=(x); }
+LUA_CEXP void setivalue(TValue* io, lua_Integer x) {
+	val_(io).i = x;
+	settt_(io, LUA_VNUMINT);
+}
+LUA_CEXP void chgivalue(TValue* io, lua_Integer x) {
+	lua_assert(ttisinteger(io));
+	val_(io).i = x;
+}
 
 /* }================================================================== */
 
