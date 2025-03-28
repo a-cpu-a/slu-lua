@@ -1661,7 +1661,7 @@ void luaV_execute (lua_State *L, CallInfo *ci) {
       vmcase(OP_TESTSET) {
         StkId ra = RA(i);
         TValue *rb = vRB(i);
-        if (l_isfalse(rb) == GETARG_k(i))
+        if (l_isfalse(rb) == (bool)GETARG_k(i))
           pc++;
         else {
           setobj2s(L, ra, rb);
