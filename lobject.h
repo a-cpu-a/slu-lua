@@ -334,28 +334,6 @@ LUA_CEXP void setbtvalue(TValue* obj) {
 
 /*
 ** {==================================================================
-** Threads
-** ===================================================================
-*/
-
-constexpr inline int LUA_VTHREAD = makevariant(LUA_TTHREAD, 0);
-
-#define ttisthread(o)   checktag((o), ctb(LUA_VTHREAD))
-
-#define thvalue(o)	    check_exp(ttisthread(o), gco2th(val_(o).gc))
-
-#define setthvalue(L,obj,x) \
-  { TValue *io = (obj); lua_State *x_ = (x); \
-    val_(io).gc = obj2gco(x_); settt_(io, ctb(LUA_VTHREAD)); \
-    checkliveness(L,io); }
-
-#define setthvalue2s(L,o,t)	setthvalue(L,s2v(o),t)
-
-/* }================================================================== */
-
-
-/*
-** {==================================================================
 ** Collectable Objects
 ** ===================================================================
 */
@@ -391,6 +369,30 @@ constexpr inline int BIT_ISCOLLECTABLE = (1 << 6);
     val_(io).gc = i_g; settt_(io, ctb(i_g->tt)); }
 
 /* }================================================================== */
+
+/*
+** {==================================================================
+** Threads
+** ===================================================================
+*/
+
+constexpr inline int LUA_VTHREAD = makevariant(LUA_TTHREAD, 0);
+
+LUA_CEXP bool ttisthread(const TValue* o) {
+	return checktag(o, ctb(LUA_VTHREAD));
+}
+
+#define thvalue(o)	    check_exp(ttisthread(o), gco2th(val_(o).gc))
+
+#define setthvalue(L,obj,x) \
+  { TValue *io = (obj); lua_State *x_ = (x); \
+    val_(io).gc = obj2gco(x_); settt_(io, ctb(LUA_VTHREAD)); \
+    checkliveness(L,io); }
+
+#define setthvalue2s(L,o,t)	setthvalue(L,s2v(o),t)
+
+/* }================================================================== */
+
 
 
 /*
