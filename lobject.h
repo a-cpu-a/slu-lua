@@ -39,8 +39,9 @@ constexpr inline int LUA_TOTALTYPES = (LUA_TPROTO + 2);
 */
 
 /* add variant bits to a type */
-#define makevariant(t,v)	((t) | ((v) << 4))
-
+LUA_CEXP int makevariant(int t,int v) {
+	return t | (v << 4);
+}
 
 
 /*
@@ -70,28 +71,54 @@ typedef struct TValue
 	TValuefields;
 } TValue;
 
+extern "C++" {
+	LUA_CEXP Value val_(const TValue* o) {
+		return o->value_;
+	}
+	LUA_CEXP Value& val_(TValue* o) {
+		return o->value_;
+	}
 
-#define val_(o)		((o)->value_)
-#define valraw(o)	(val_(o))
-
+	//Unused: ?
+	LUA_CEXP Value valraw(const TValue* o) {
+		return val_(o);
+	}
+	LUA_CEXP Value& valraw(TValue* o) {
+		return val_(o);
+	}
+}
 
 /* raw type tag of a TValue */
-#define rawtt(o)	((o)->tt_)
+LUA_CEXP lu_byte rawtt(const TValue* o) {
+	return o->tt_;
+}
 
 /* tag with no variants (bits 0-3) */
-#define novariant(t)	((t) & 0x0F)
+LUA_CEXP lu_byte novariant(lu_byte t) {
+	return t & 0x0F;
+}
 
 /* type tag of a TValue (bits 0-3 for tags + variant bits 4-5) */
-#define withvariant(t)	((t) & 0x3F)
-#define ttypetag(o)	withvariant(rawtt(o))
+LUA_CEXP lu_byte withvariant(lu_byte t) {
+	return t & 0x3F;
+}
+LUA_CEXP lu_byte ttypetag(const TValue* o) {
+	return withvariant(rawtt(o));
+}
 
 /* type of a TValue */
-#define ttype(o)	(novariant(rawtt(o)))
+LUA_CEXP lu_byte ttype(const TValue* o) {
+	return novariant(rawtt(o));
+}
 
 
 /* Macros to test type */
-#define checktag(o,t)		(rawtt(o) == (t))
-#define checktype(o,t)		(ttype(o) == (t))
+LUA_CEXP bool checktag(const TValue* o, lu_byte t) {
+	return rawtt(o) == t;
+}
+LUA_CEXP bool checktype(const TValue* o, lu_byte t) {
+	return ttype(o) == t;
+}
 
 
 /* Macros for internal tests */
@@ -113,7 +140,9 @@ typedef struct TValue
 /* Macros to set values */
 
 /* set a value's tag */
-#define settt_(o,t)	((o)->tt_=(t))
+LUA_CEXP void settt_(TValue* o, lu_byte t) {
+	o->tt_ = t;
+}
 
 
 /* main macro to copy values (from 'obj2' to 'obj1') */
@@ -174,7 +203,9 @@ typedef union
 
 
 /* convert a 'StackValue' to a 'TValue' */
-#define s2v(o)	(&(o)->val)
+LUA_CEXP TValue* s2v(StackValue* o) {
+	return &o->val;
+}
 
 
 
@@ -198,7 +229,9 @@ constexpr inline int LUA_VNOTABLE = makevariant(LUA_TNIL, 3);
 
 
 /* macro to test for (any kind of) nil */
-#define ttisnil(v)		checktype((v), LUA_TNIL)
+LUA_CEXP bool ttisnil(const TValue* v) {
+	return checktype(v, LUA_TNIL);
+}
 
 /*
 ** Macro to test the result of a table access. Formally, it should
@@ -206,23 +239,33 @@ constexpr inline int LUA_VNOTABLE = makevariant(LUA_TNIL, 3);
 ** other tags. As currently nil is equivalent to LUA_VEMPTY, it is
 ** simpler to just test whether the value is nil.
 */
-#define tagisempty(tag)		(novariant(tag) == LUA_TNIL)
+LUA_CEXP bool tagisempty(lu_byte tag) {
+	return novariant(tag) == LUA_TNIL;
+}
 
 
 /* macro to test for a standard nil */
-#define ttisstrictnil(o)	checktag((o), LUA_VNIL)
+LUA_CEXP bool ttisstrictnil(const TValue* o) {
+	return checktag(o, LUA_VNIL);
+}
 
 
-#define setnilvalue(obj)    settt_(obj, LUA_VNIL)
+LUA_CEXP void setnilvalue(TValue* obj) {
+	return settt_(obj, LUA_VNIL);
+}
 
 
-#define isabstkey(v)		checktag((v), LUA_VABSTKEY)
+LUA_CEXP bool isabstkey(const TValue* v) {
+	return checktag(v, LUA_VABSTKEY);
+}
 
 
 /*
 ** macro to detect non-standard nils (used only in assertions)
 */
-#define isnonstrictnil(v)	(ttisnil(v) && !ttisstrictnil(v))
+LUA_CEXP bool isnonstrictnil(const TValue* v) {
+	return ttisnil(v) && !ttisstrictnil(v);
+}
 
 
 /*
@@ -230,7 +273,9 @@ constexpr inline int LUA_VNOTABLE = makevariant(LUA_TNIL, 3);
 ** (In any definition, values associated with absent keys must also
 ** be accepted as empty.)
 */
-#define isempty(v)		ttisnil(v)
+LUA_CEXP bool isempty(const TValue* v) {
+	return ttisnil(v);
+}
 
 
 /* macro defining a value corresponding to an absent key */
@@ -238,7 +283,9 @@ constexpr inline int LUA_VNOTABLE = makevariant(LUA_TNIL, 3);
 
 
 /* mark an entry as empty */
-#define setempty(v)		settt_(v, LUA_VEMPTY)
+LUA_CEXP void setempty(TValue* v) {
+	return settt_(v, LUA_VEMPTY);
+}
 
 
 
