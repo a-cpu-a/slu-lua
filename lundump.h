@@ -15,7 +15,7 @@
 
 
 /* data to catch conversion errors */
-#define LUAC_DATA	"\x19\x93\r\n\x1a\n"
+static const char LUAC_DATA[] = "\x19\x93\r\n\x1a\n";
 
 constexpr inline int LUAC_INT	        = 0x5678;
 constexpr inline lua_Number LUAC_NUM	= cast_num(370.5);

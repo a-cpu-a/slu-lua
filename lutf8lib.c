@@ -26,8 +26,7 @@ constexpr inline int MAXUNICODE	= 0x10FFFFu;
 
 constexpr inline int MAXUTF		= 0x7FFFFFFFu;
 
-
-#define MSGInvalid	"invalid UTF-8 code"
+static const char MSGInvalid[] = "invalid UTF-8 code";
 
 
 #define iscont(c)	(((c) & 0xC0) == 0x80)
@@ -267,7 +266,7 @@ static int iter_codes (lua_State *L) {
 
 
 /* pattern to match a single UTF-8 character */
-#define UTF8PATT	"[\0-\x7F\xC2-\xFD][\x80-\xBF]*"
+static const char UTF8PATT[] = "[\0-\x7F\xC2-\xFD][\x80-\xBF]*";
 
 
 static const luaL_Reg funcs[] = {

@@ -44,14 +44,14 @@
 #define LUA_POF		"luaopen_"
 
 /* separator for open functions in C libraries */
-#define LUA_OFSEP	"_"
+static const char LUA_OFSEP[] = "_";
 
 
 /*
 ** key for table in the registry that keeps handles
 ** for all loaded C libraries
 */
-static const char *const CLIBS = "_CLIBS";
+static const char CLIBS[] = "_CLIBS";
 
 #define LIB_FAIL	"open"
 
