@@ -32,17 +32,33 @@ typedef long l_mem;
 typedef unsigned long lu_mem;
 #endif				/* } */
 
-#define MAX_LMEM  \
-	cast(l_mem, (cast(lu_mem, 1) << (sizeof(l_mem) * 8 - 1)) - 1)
+/* type casts (a macro highlights casts in the code) */
+#define cast(t, exp)	((t)(exp))
+
+#define cast_void(i)	cast(void, (i))
+#define cast_voidp(i)	cast(void *, (i))
+#define cast_num(i)	cast(lua_Number, (i))
+#define cast_int(i)	cast(int, (i))
+#define cast_uint(i)	cast(unsigned int, (i))
+#define cast_ulong(i)	cast(unsigned long, (i))
+#define cast_byte(i)	cast(lu_byte, (i))
+#define cast_uchar(i)	cast(unsigned char, (i))
+#define cast_char(i)	cast(char, (i))
+#define cast_charp(i)	cast(char *, (i))
+#define cast_sizet(i)	cast(size_t, (i))
+
+constexpr inline l_mem MAX_LMEM = 
+    cast(l_mem, (cast(lu_mem, 1) << (sizeof(l_mem) * 8 - 1)) - 1);
 
 
 /* chars used as small naturals (so that 'char' is reserved for characters) */
-typedef unsigned char lu_byte;
-typedef signed char ls_byte;
+using lu_byte = unsigned char;
+using ls_byte = signed char;
 
 
+#undef MAX_SIZET //Just in case...
 /* maximum value for size_t */
-#define MAX_SIZET	((size_t)(~(size_t)0))
+constexpr inline size_t MAX_SIZET = ((size_t)(~(size_t)0));
 
 /*
 ** Maximum size for strings and userdata visible for Lua; should be
@@ -120,21 +136,6 @@ typedef LUAI_UACINT l_uacInt;
 #define UNUSED(x)	((void)(x))
 #endif
 
-
-/* type casts (a macro highlights casts in the code) */
-#define cast(t, exp)	((t)(exp))
-
-#define cast_void(i)	cast(void, (i))
-#define cast_voidp(i)	cast(void *, (i))
-#define cast_num(i)	cast(lua_Number, (i))
-#define cast_int(i)	cast(int, (i))
-#define cast_uint(i)	cast(unsigned int, (i))
-#define cast_ulong(i)	cast(unsigned long, (i))
-#define cast_byte(i)	cast(lu_byte, (i))
-#define cast_uchar(i)	cast(unsigned char, (i))
-#define cast_char(i)	cast(char, (i))
-#define cast_charp(i)	cast(char *, (i))
-#define cast_sizet(i)	cast(size_t, (i))
 
 
 /* cast a signed lua_Integer to lua_Unsigned */
