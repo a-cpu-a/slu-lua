@@ -85,7 +85,7 @@ constexpr inline int POS_sJ	 =	POS_A;
 #define MAXARG_Bx	INT_MAX
 #endif
 
-#define OFFSET_sBx	(MAXARG_Bx>>1)         /* 'sBx' is signed */
+constexpr inline int OFFSET_sBx	= (MAXARG_Bx>>1); /* 'sBx' is signed */
 
 
 #if L_INTHASBITS(SIZE_Ax)
@@ -100,25 +100,29 @@ constexpr inline int POS_sJ	 =	POS_A;
 #define MAXARG_sJ	INT_MAX
 #endif
 
-#define OFFSET_sJ	(MAXARG_sJ >> 1)
+constexpr inline int OFFSET_sJ	= (MAXARG_sJ >> 1);
 
 
-#define MAXARG_A	((1<<SIZE_A)-1)
-#define MAXARG_B	((1<<SIZE_B)-1)
-#define MAXARG_vB	((1<<SIZE_vB)-1)
-#define MAXARG_C	((1<<SIZE_C)-1)
-#define MAXARG_vC	((1<<SIZE_vC)-1)
-#define OFFSET_sC	(MAXARG_C >> 1)
+constexpr inline int MAXARG_A	= ((1<<SIZE_A)-1);
+constexpr inline int MAXARG_B	= ((1<<SIZE_B)-1);
+constexpr inline int MAXARG_vB	= ((1<<SIZE_vB)-1);
+constexpr inline int MAXARG_C	= ((1<<SIZE_C)-1);
+constexpr inline int MAXARG_vC	= ((1<<SIZE_vC)-1);
+constexpr inline int OFFSET_sC	= (MAXARG_C >> 1);
 
 #define int2sC(i)	((i) + OFFSET_sC)
 #define sC2int(i)	((i) - OFFSET_sC)
 
 
 /* creates a mask with 'n' 1 bits at position 'p' */
-#define MASK1(n,p)	((~((~(Instruction)0)<<(n)))<<(p))
+LUA_CEXP Instruction MASK1(int n, int p) {
+	return (~((~(Instruction)0) << n)) << p;
+}
 
 /* creates a mask with 'n' 0 bits at position 'p' */
-#define MASK0(n,p)	(~MASK1(n,p))
+LUA_CEXP Instruction MASK0(int n, int p) {
+	return ~MASK1(n, p);
+}
 
 
 
@@ -131,12 +135,12 @@ constexpr inline int POS_sJ	 =	POS_A;
 ** Maximum size for the stack of a Lua function. It must fit in 8 bits.
 ** The highest valid register is one less than this value.
 */
-#define MAX_FSTACK	MAXARG_A
+constexpr inline int MAX_FSTACK	= MAXARG_A;
 
 /*
 ** Invalid register (one more than last valid register).
 */
-#define NO_REG		MAX_FSTACK
+constexpr inline int NO_REG		= MAX_FSTACK;
 
 
 
@@ -275,19 +279,36 @@ constexpr inline int NUM_OPCODES = ((int)(OP_EXTRAARG)+1);
 ** the following macros help to manipulate instructions
 */
 
-#define GET_OPCODE(i)	(cast(OpCode, ((i)>>POS_OP) & MASK1(SIZE_OP,0)))
-#define SET_OPCODE(i,o)	((i) = (((i)&MASK0(SIZE_OP,POS_OP)) | \
-		((cast(Instruction, o)<<POS_OP)&MASK1(SIZE_OP,POS_OP))))
+LUA_CEXP OpCode GET_OPCODE(Instruction i) {
+	return cast(OpCode, ((i) >> POS_OP) & MASK1(SIZE_OP, 0));
+}
+LUA_CEXP Instruction& SET_OPCODE(Instruction& i,OpCode o) {
+	return ((i) = (((i)&MASK0(SIZE_OP, POS_OP)) | \
+		((cast(Instruction, o) << POS_OP) & MASK1(SIZE_OP, POS_OP))));
+}
 
-#define checkopm(i,m)	(getOpMode(GET_OPCODE(i)) == m)
+/* Forward declare */
+OpMode getOpMode(OpCode m);
+
+LUA_INL bool checkopm(Instruction i, OpMode m) {
+	return getOpMode(GET_OPCODE(i)) == m;
+}
 
 
-#define getarg(i,pos,size)	(cast_int(((i)>>(pos)) & MASK1(size,0)))
-#define setarg(i,v,pos,size)	((i) = (((i)&MASK0(size,pos)) | \
-                ((cast(Instruction, v)<<pos)&MASK1(size,pos))))
+LUA_CEXP int getarg(Instruction i, int pos, int size) {
+	return cast_int(((i) >> (pos)) & MASK1(size, 0));
+}
+LUA_CEXP Instruction& setarg(Instruction& i,int v, int pos, int size) {
+	return ((i) = (((i)&MASK0(size, pos)) | \
+		((cast(Instruction, v) << pos) & MASK1(size, pos))));
+}
 
-#define GETARG_A(i)	getarg(i, POS_A, SIZE_A)
-#define SETARG_A(i,v)	setarg(i, v, POS_A, SIZE_A)
+LUA_CEXP int GETARG_A(Instruction i) {
+	return getarg(i, POS_A, SIZE_A);
+}
+LUA_CEXP Instruction& SETARG_A(Instruction& i, int v) {
+	return setarg(i, v, POS_A, SIZE_A);
+}
 
 #define GETARG_B(i)  \
 	check_exp(checkopm(i, iABC), getarg(i, POS_B, SIZE_B))
@@ -414,7 +435,9 @@ constexpr inline int NUM_OPCODES = ((int)(OP_EXTRAARG)+1);
 
 LUAI_DDEC(const lu_byte luaP_opmodes[NUM_OPCODES];)
 
-#define getOpMode(m)	(cast(enum OpMode, luaP_opmodes[m] & 7))
+LUA_INL OpMode getOpMode(OpCode m) {
+	return cast(enum OpMode, luaP_opmodes[m] & 7);
+}
 #define testAMode(m)	(luaP_opmodes[m] & (1 << 3))
 #define testTMode(m)	(luaP_opmodes[m] & (1 << 4))
 #define testITMode(m)	(luaP_opmodes[m] & (1 << 5))
