@@ -355,10 +355,14 @@ typedef struct GCObject
 /* Bit mark for collectable types */
 constexpr inline int BIT_ISCOLLECTABLE = (1 << 6);
 
-#define iscollectable(o)	(rawtt(o) & BIT_ISCOLLECTABLE)
+LUA_CEXP bool iscollectable(const TValue* o) {
+	return rawtt(o) & BIT_ISCOLLECTABLE;
+}
 
 /* mark a tag as collectable */
-#define ctb(t)			((t) | BIT_ISCOLLECTABLE)
+LUA_CEXP lu_byte ctb(lu_byte t) {
+	return t | BIT_ISCOLLECTABLE;
+}
 
 #define gcvalue(o)	check_exp(iscollectable(o), val_(o).gc)
 
