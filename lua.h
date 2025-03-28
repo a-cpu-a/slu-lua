@@ -1,4 +1,4 @@
-/*
+﻿/*
 ** $Id: lua.h $
 ** Lua - A Scripting Language
 ** Lua.org, PUC-Rio, Brazil (www.lua.org)
@@ -286,90 +286,157 @@ LUA_API int   (lua_getiuservalue)   (lua_State *L, int idx, int n);
 */
 
 /**
-* Pops a value from the stack and sets it as the new value of global name.
-* 
-* @b May run lua code
-* 
-* @b Pops Value from -1
-* @throws lua_Exception
+ * Pops a value from the stack and sets it as the new value of global name.
+ * 
+ * @brief ㅤ
+ * 
+ * @b May run lua code
+ * 
+ * @b Pops Value from -1
+ * @throws lua_Exception
+ * 
+ * @param name The name of the global.
 */
 LUA_API void  (lua_setglobal)       (lua_State *L, const char *name);
 
 /**
-* Does the equivalent to t[k] = v, where t is the value at
-* the given index and v is the value on the top of the stack, 
-* and k is the value just below the top.
-* 
-* This function pops both the key and the value from the stack.
-* As in Lua, this function may trigger a metamethod for the "newindex" event
-* 
-* @.
-* 
-* @b May run lua code
-* 
-* @b Pops Value from -1
-* 
-* @b Pops Key from -2
-* @throws lua_Exception
+ * Does the equivalent to `t[k] = v`, where t is the value at
+ * the given index and v is the value on the top of the stack, 
+ * and k is the value just below the top.
+ * 
+ * This function pops both the key and the value from the stack.
+ * As in Lua, this function may trigger a metamethod for the "newindex" event
+ * 
+ * @brief ㅤ
+ * 
+ * @b May run lua code
+ * 
+ * @b Pops Value from -1
+ * 
+ * @b Pops Key from -2
+ * @throws lua_Exception
+ * 
+ * @param objIdx The index of the table.
 */
 LUA_API void  (lua_settable)        (lua_State *L, int objIdx);
 
 /**
-* Does the equivalent to t[k] = v, where t is the value at
-* the given index and v is the value on the top of the stack.
-* 
-* This function pops the value from the stack. As in Lua, this
-* function may trigger a metamethod for the "newindex" event
-* 
-* @.
-* 
-* @b May run lua code
-* 
-* @b Pops Value from -1
-* @throws lua_Exception
+ * Does the equivalent to `t[k] = v`, where t is the value at
+ * the given index and v is the value on the top of the stack.
+ * 
+ * This function pops the value from the stack. As in Lua, this
+ * function may trigger a metamethod for the "newindex" event
+ * 
+ * @brief ㅤ
+ * 
+ * @b May run lua code
+ * 
+ * @b Pops Value from -1
+ * @throws lua_Exception
+ * 
+ * @param objIdx The index of the table.
+ * @param k The string key.
 */
-LUA_API void  (lua_setfield)        (lua_State *L, int idx, const char *k);
+LUA_API void  (lua_setfield)        (lua_State *L, int objIdx, const char *k);
 
 /**
-* Does the equivalent to t[n] = v, where t is the value at
-* the given index and v is the value on the top of the stack.
-* 
-* This function pops the value from the stack. As in Lua, this
-* function may trigger a metamethod for the "newindex" event
-* 
-* @.
-* 
-* @b May run lua code
-* 
-* @b Pops Value from -1
-* @throws lua_Exception
+ * Does the equivalent to `t[n] = v`, where t is the value at
+ * the given index and v is the value on the top of the stack.
+ * 
+ * This function pops the value from the stack. As in Lua, this
+ * function may trigger a metamethod for the "newindex" event
+ * 
+ * @brief ㅤ
+ * 
+ * @b May run lua code
+ * 
+ * @b Pops Value from -1
+ * @throws lua_Exception
+ * 
+ * @param objIdx The index of the table.
+ * @param n The integer key.
 */
-LUA_API void  (lua_seti)            (lua_State *L, int idx, lua_Integer n);
+LUA_API void  (lua_seti)            (lua_State *L, int objIdx, lua_Integer n);
 
 /**
-* @b Pops Value from -1
-* 
-* @b Pops Key from -2
-* @throws lua_MemoryException
+ * 
+ * Similar to `lua_settable`, but does a raw assignment (i.e., without metamethods).
+ * The value at index must be a table.
+ * 
+ * @brief ㅤ
+ * 
+ * @b Pops Value from -1
+ * 
+ * @b Pops Key from -2
+ * @throws lua_MemoryException
+ * 
+ * @param objIdx The index of the table.
 */
 LUA_API void  (lua_rawset)          (lua_State *L, int objIdx);
 
 /**
-* @b Pops Value from -1
-* @throws lua_MemoryException
+ * 
+ * Does the equivalent of `t[i] = v`, where t is the table at 
+ * the given index and v is the value on the top of the stack.
+ *
+ * This function pops the value from the stack.
+ * The assignment is raw, that is, it does not use the `__newindex` metavalue.
+ * 
+ * @brief ㅤ
+ * 
+ * @b Pops Value from -1
+ * @throws lua_MemoryException
+ * 
+ * @param objIdx The index of the table.
+ * @param n The integer key.
 */
 LUA_API void  (lua_rawseti)         (lua_State *L, int objIdx, lua_Integer n);
 
 /**
-* @b Pops Value from -1
-* @throws lua_MemoryException
+ * 
+ * Does the equivalent of `t[p] = v`, where t is the table at the
+ * given index, p is encoded as a light userdata, and v is the value on the top of the stack.
+ *
+ * This function pops the value from the stack. 
+ * The assignment is raw, that is, it does not use the `__newindex` metavalue.
+ * 
+ * @brief ㅤ
+ * 
+ * @b Pops Value from -1
+ * @throws lua_MemoryException
+ * 
+ * @param idx The index of the table.
+ * @param p The light user-data value key.
 */
 LUA_API void  (lua_rawsetp)         (lua_State *L, int idx, const void *p);
 
 /**
-* @b Pops Value(Table | Nil) from -1
-*/
+ * Pops a table or nil from the stack and sets that value as the
+ * new metatable for the value at the given index. (nil means no metatable.)
+ *
+ * (For historical reasons, this function returns an int, which now is always 1.) 
+ * 
+ * @brief ㅤ
+ * 
+ * @b Pops Value(Table | Nil) from -1
+ * 
+ * @param objIdx The index of the target value.
+ * @returns Always 1
+ */
 LUA_API int   (lua_setmetatable)    (lua_State *L, int objIdx);
+/**
+ * Pops a value from the stack and sets it as the new n-th
+ * user value associated to the full userdata at the given index.
+ * Returns 0 if the userdata does not have that value.
+ * 
+ * @brief ㅤ
+ * 
+ * @b Pops Value from -1
+ * 
+ * @param idx The index of the userdata.
+ * @param n The index inside the userdata.
+ * @returns 0 if the userdata does not have that value.
+ */
 LUA_API int   (lua_setiuservalue)   (lua_State *L, int idx, int n);
 
 
