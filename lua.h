@@ -32,7 +32,7 @@ constexpr inline int LUA_VERSION_RELEASE_NUM = LUA_VERSION_NUM * 100 + LUA_VERSI
 
 
 /* mark for precompiled code ('<esc>Lua') */
-#define LUA_SIGNATURE	"\x1bLua"
+inline const char LUA_SIGNATURE[] = "\x1bLua";
 
 /* option for multiple returns in 'lua_pcall' and 'lua_call' */
 constexpr inline int LUA_MULTRET = -1;
@@ -44,7 +44,10 @@ constexpr inline int LUA_MULTRET = -1;
 ** space after that to help overflow detection)
 */
 constexpr inline int LUA_REGISTRYINDEX = -LUAI_MAXSTACK - 1000;
-#define lua_upvalueindex(i)	(LUA_REGISTRYINDEX - (i))
+LUA_CEXP int lua_upvalueindex(int i)
+{
+    return LUA_REGISTRYINDEX - i;
+}
 
 
 /* thread status */
@@ -602,6 +605,7 @@ struct lua_Debug {
 #define LUAI_TOSTRAUX(x)	#x
 #define LUAI_TOSTR(x)		LUAI_TOSTRAUX(x)
 
+//TODO: fix these lol
 #define LUA_VERSION_MAJOR	LUAI_TOSTR(LUA_VERSION_MAJOR_N)
 #define LUA_VERSION_MINOR	LUAI_TOSTR(LUA_VERSION_MINOR_N)
 #define LUA_VERSION_RELEASE	LUAI_TOSTR(LUA_VERSION_RELEASE_N)
