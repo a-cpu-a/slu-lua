@@ -514,7 +514,31 @@ constexpr inline int LUA_GCPSTEPSIZE	= 5;  /* GC granularity */
 /* number of parameters */
 constexpr inline int LUA_GCPN = 6;
 
-
+/**
+ * @brief Controls the garbage collector.
+ * 
+ * @brief This function performs several tasks, according to
+ * @brief the value of the parameter what.
+ * @brief For options that need extra arguments, they are listed after the option.
+ * @brief For more details about these options, see collectgarbage.
+ * 
+ * @brief This function should not be called by a finalizer.
+ * 
+ * @brief `LUA_GCCOLLECT`:  Performs a full garbage-collection cycle.
+ * @brief `LUA_GCSTOP`:     Stops the garbage collector.
+ * @brief `LUA_GCRESTART`:  Restarts the garbage collector.
+ * @brief `LUA_GCCOUNT`:    Returns the current amount of memory (in Kbytes) in use by Lua.
+ * @brief `LUA_GCCOUNTB`:   Returns the remainder of dividing the current amount of bytes of memory in use by Lua by 1024.
+ * @brief `LUA_GCISRUNNING`:Returns a boolean that tells whether the collector is running (i.e., not stopped).
+ * @brief `LUA_GCSTEP(int stepsize)`: Performs an incremental step of garbage collection, corresponding to the allocation of stepsize Kbytes.
+ * @brief `LUA_GCINC(int pause, int stepmul, stepsize)`: Changes the collector to incremental mode with the given parameters (see §2.5.1). Returns the previous mode (`LUA_GCGEN` or `LUA_GCINC`).
+ * @brief `LUA_GCGEN(int minormul, int majormul)`: Changes the collector to generational mode with the given parameters (see §2.5.2). Returns the previous mode (`LUA_GCGEN` or `LUA_GCINC`).
+ * 
+ * @param what The action (`LUA_GC...`).
+ * @param ... The arguments for the action, for `LUA_GCSTEP`,`LUA_GCINC` and `LUA_GCGEN`
+ * @returns Depends on the action.
+ * @returns -1 on error, 0 by default.
+ */
 LUA_API int (lua_gc) (lua_State *L, int what, ...);
 
 
@@ -522,6 +546,16 @@ LUA_API int (lua_gc) (lua_State *L, int what, ...);
 ** miscellaneous functions
 */
 
+/**
+ * 
+ * Raises a Lua error, using the value on the top of the stack as the error object.
+ * This function does a long jump, and therefore never returns (see `luaL_error`).
+ * 
+ * @brief ㅤ
+ * 
+ * @b Pops Value from -1
+ * @throws lua_Exception
+*/
 LUA_API int   (lua_error)   (lua_State *L);
 
 LUA_API int   (lua_next)    (lua_State *L, int idx);
