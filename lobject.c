@@ -217,7 +217,7 @@ static int isneg (const char **s) {
 
 /* maximum number of significant digits to read (to avoid overflows
    even with single floats) */
-#define MAXSIGDIG	30
+constexpr static int MAXSIGDIG = 30;
 
 /*
 ** convert a hexadecimal numeric string to a number, following
@@ -477,7 +477,7 @@ void luaO_tostring (lua_State *L, TValue *obj) {
 ** (LUA_IDSIZE + LUA_N2SBUFFSZ) + a minimal space for basic messages,
 ** so that 'luaG_addinfo' can work directly on the static buffer.
 */
-#define BUFVFS		cast_uint(LUA_IDSIZE + LUA_N2SBUFFSZ + 95)
+constexpr unsigned int BUFVFS = cast_uint(LUA_IDSIZE + LUA_N2SBUFFSZ + 95);
 
 /*
 ** Buffer used by 'luaO_pushvfstring'. 'err' signals an error while

@@ -13,9 +13,9 @@
 #include "lopcodes.h"
 
 
-#define opmode(mm,ot,it,t,a,m)  \
-    (((mm) << 7) | ((ot) << 6) | ((it) << 5) | ((t) << 4) | ((a) << 3) | (m))
-
+consteval lu_byte opmode(bool mm, bool ot, bool it, bool t, bool a, OpMode m) {
+    return (((mm) << 7) | ((ot) << 6) | ((it) << 5) | ((t) << 4) | ((a) << 3) | (m));
+}
 
 /* ORDER OP */
 
