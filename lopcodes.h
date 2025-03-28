@@ -120,82 +120,6 @@ constexpr inline int POS_sJ	 =	POS_A;
 /* creates a mask with 'n' 0 bits at position 'p' */
 #define MASK0(n,p)	(~MASK1(n,p))
 
-/*
-** the following macros help to manipulate instructions
-*/
-
-#define GET_OPCODE(i)	(cast(OpCode, ((i)>>POS_OP) & MASK1(SIZE_OP,0)))
-#define SET_OPCODE(i,o)	((i) = (((i)&MASK0(SIZE_OP,POS_OP)) | \
-		((cast(Instruction, o)<<POS_OP)&MASK1(SIZE_OP,POS_OP))))
-
-#define checkopm(i,m)	(getOpMode(GET_OPCODE(i)) == m)
-
-
-#define getarg(i,pos,size)	(cast_int(((i)>>(pos)) & MASK1(size,0)))
-#define setarg(i,v,pos,size)	((i) = (((i)&MASK0(size,pos)) | \
-                ((cast(Instruction, v)<<pos)&MASK1(size,pos))))
-
-#define GETARG_A(i)	getarg(i, POS_A, SIZE_A)
-#define SETARG_A(i,v)	setarg(i, v, POS_A, SIZE_A)
-
-#define GETARG_B(i)  \
-	check_exp(checkopm(i, iABC), getarg(i, POS_B, SIZE_B))
-#define GETARG_vB(i)  \
-	check_exp(checkopm(i, ivABC), getarg(i, POS_vB, SIZE_vB))
-#define GETARG_sB(i)	sC2int(GETARG_B(i))
-#define SETARG_B(i,v)	setarg(i, v, POS_B, SIZE_B)
-#define SETARG_vB(i,v)	setarg(i, v, POS_vB, SIZE_vB)
-
-#define GETARG_C(i)  \
-	check_exp(checkopm(i, iABC), getarg(i, POS_C, SIZE_C))
-#define GETARG_vC(i)  \
-	check_exp(checkopm(i, ivABC), getarg(i, POS_vC, SIZE_vC))
-#define GETARG_sC(i)	sC2int(GETARG_C(i))
-#define SETARG_C(i,v)	setarg(i, v, POS_C, SIZE_C)
-#define SETARG_vC(i,v)	setarg(i, v, POS_vC, SIZE_vC)
-
-#define TESTARG_k(i)	(cast_int(((i) & (1u << POS_k))))
-#define GETARG_k(i)	getarg(i, POS_k, 1)
-#define SETARG_k(i,v)	setarg(i, v, POS_k, 1)
-
-#define GETARG_Bx(i)	check_exp(checkopm(i, iABx), getarg(i, POS_Bx, SIZE_Bx))
-#define SETARG_Bx(i,v)	setarg(i, v, POS_Bx, SIZE_Bx)
-
-#define GETARG_Ax(i)	check_exp(checkopm(i, iAx), getarg(i, POS_Ax, SIZE_Ax))
-#define SETARG_Ax(i,v)	setarg(i, v, POS_Ax, SIZE_Ax)
-
-#define GETARG_sBx(i)  \
-	check_exp(checkopm(i, iAsBx), getarg(i, POS_Bx, SIZE_Bx) - OFFSET_sBx)
-#define SETARG_sBx(i,b)	SETARG_Bx((i),cast_uint((b)+OFFSET_sBx))
-
-#define GETARG_sJ(i)  \
-	check_exp(checkopm(i, isJ), getarg(i, POS_sJ, SIZE_sJ) - OFFSET_sJ)
-#define SETARG_sJ(i,j) \
-	setarg(i, cast_uint((j)+OFFSET_sJ), POS_sJ, SIZE_sJ)
-
-
-#define CREATE_ABCk(o,a,b,c,k)	((cast(Instruction, o)<<POS_OP) \
-			| (cast(Instruction, a)<<POS_A) \
-			| (cast(Instruction, b)<<POS_B) \
-			| (cast(Instruction, c)<<POS_C) \
-			| (cast(Instruction, k)<<POS_k))
-
-#define CREATE_vABCk(o,a,b,c,k)	((cast(Instruction, o)<<POS_OP) \
-			| (cast(Instruction, a)<<POS_A) \
-			| (cast(Instruction, b)<<POS_vB) \
-			| (cast(Instruction, c)<<POS_vC) \
-			| (cast(Instruction, k)<<POS_k))
-
-#define CREATE_ABx(o,a,bc)	((cast(Instruction, o)<<POS_OP) \
-			| (cast(Instruction, a)<<POS_A) \
-			| (cast(Instruction, bc)<<POS_Bx))
-
-#define CREATE_Ax(o,a)		((cast(Instruction, o)<<POS_OP) \
-			| (cast(Instruction, a)<<POS_Ax))
-
-#define CREATE_sJ(o,j,k)	((cast(Instruction, o) << POS_OP) \
-			| (cast(Instruction, j) << POS_sJ) \
-			| (cast(Instruction, k) << POS_k))
 
 
 #if !defined(MAXINDEXRK)  /* (for debugging only) */
@@ -347,6 +271,82 @@ OP_EXTRAARG/*	Ax	extra (larger) argument for previous opcode	*/
 constexpr inline int NUM_OPCODES = ((int)(OP_EXTRAARG)+1);
 
 
+/*
+** the following macros help to manipulate instructions
+*/
+
+#define GET_OPCODE(i)	(cast(OpCode, ((i)>>POS_OP) & MASK1(SIZE_OP,0)))
+#define SET_OPCODE(i,o)	((i) = (((i)&MASK0(SIZE_OP,POS_OP)) | \
+		((cast(Instruction, o)<<POS_OP)&MASK1(SIZE_OP,POS_OP))))
+
+#define checkopm(i,m)	(getOpMode(GET_OPCODE(i)) == m)
+
+
+#define getarg(i,pos,size)	(cast_int(((i)>>(pos)) & MASK1(size,0)))
+#define setarg(i,v,pos,size)	((i) = (((i)&MASK0(size,pos)) | \
+                ((cast(Instruction, v)<<pos)&MASK1(size,pos))))
+
+#define GETARG_A(i)	getarg(i, POS_A, SIZE_A)
+#define SETARG_A(i,v)	setarg(i, v, POS_A, SIZE_A)
+
+#define GETARG_B(i)  \
+	check_exp(checkopm(i, iABC), getarg(i, POS_B, SIZE_B))
+#define GETARG_vB(i)  \
+	check_exp(checkopm(i, ivABC), getarg(i, POS_vB, SIZE_vB))
+#define GETARG_sB(i)	sC2int(GETARG_B(i))
+#define SETARG_B(i,v)	setarg(i, v, POS_B, SIZE_B)
+#define SETARG_vB(i,v)	setarg(i, v, POS_vB, SIZE_vB)
+
+#define GETARG_C(i)  \
+	check_exp(checkopm(i, iABC), getarg(i, POS_C, SIZE_C))
+#define GETARG_vC(i)  \
+	check_exp(checkopm(i, ivABC), getarg(i, POS_vC, SIZE_vC))
+#define GETARG_sC(i)	sC2int(GETARG_C(i))
+#define SETARG_C(i,v)	setarg(i, v, POS_C, SIZE_C)
+#define SETARG_vC(i,v)	setarg(i, v, POS_vC, SIZE_vC)
+
+#define TESTARG_k(i)	(cast_int(((i) & (1u << POS_k))))
+#define GETARG_k(i)	getarg(i, POS_k, 1)
+#define SETARG_k(i,v)	setarg(i, v, POS_k, 1)
+
+#define GETARG_Bx(i)	check_exp(checkopm(i, iABx), getarg(i, POS_Bx, SIZE_Bx))
+#define SETARG_Bx(i,v)	setarg(i, v, POS_Bx, SIZE_Bx)
+
+#define GETARG_Ax(i)	check_exp(checkopm(i, iAx), getarg(i, POS_Ax, SIZE_Ax))
+#define SETARG_Ax(i,v)	setarg(i, v, POS_Ax, SIZE_Ax)
+
+#define GETARG_sBx(i)  \
+	check_exp(checkopm(i, iAsBx), getarg(i, POS_Bx, SIZE_Bx) - OFFSET_sBx)
+#define SETARG_sBx(i,b)	SETARG_Bx((i),cast_uint((b)+OFFSET_sBx))
+
+#define GETARG_sJ(i)  \
+	check_exp(checkopm(i, isJ), getarg(i, POS_sJ, SIZE_sJ) - OFFSET_sJ)
+#define SETARG_sJ(i,j) \
+	setarg(i, cast_uint((j)+OFFSET_sJ), POS_sJ, SIZE_sJ)
+
+
+#define CREATE_ABCk(o,a,b,c,k)	((cast(Instruction, o)<<POS_OP) \
+			| (cast(Instruction, a)<<POS_A) \
+			| (cast(Instruction, b)<<POS_B) \
+			| (cast(Instruction, c)<<POS_C) \
+			| (cast(Instruction, k)<<POS_k))
+
+#define CREATE_vABCk(o,a,b,c,k)	((cast(Instruction, o)<<POS_OP) \
+			| (cast(Instruction, a)<<POS_A) \
+			| (cast(Instruction, b)<<POS_vB) \
+			| (cast(Instruction, c)<<POS_vC) \
+			| (cast(Instruction, k)<<POS_k))
+
+#define CREATE_ABx(o,a,bc)	((cast(Instruction, o)<<POS_OP) \
+			| (cast(Instruction, a)<<POS_A) \
+			| (cast(Instruction, bc)<<POS_Bx))
+
+#define CREATE_Ax(o,a)		((cast(Instruction, o)<<POS_OP) \
+			| (cast(Instruction, a)<<POS_Ax))
+
+#define CREATE_sJ(o,j,k)	((cast(Instruction, o) << POS_OP) \
+			| (cast(Instruction, j) << POS_sJ) \
+			| (cast(Instruction, k) << POS_k))
 
 /*===========================================================================
   Notes:
