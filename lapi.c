@@ -1249,7 +1249,7 @@ LUA_API int lua_gc (lua_State *L, int what, ...) {
 */
 
 /**
-* @b Pop <Value>
+* @b Pops Value from -1
 * @throws lua_Exception
 */
 LUA_API int lua_error (lua_State *L) {

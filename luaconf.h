@@ -802,16 +802,6 @@ constexpr inline int LUAL_BUFFERSIZE = (int)(16 * sizeof(void*) * sizeof(LUA_NUM
 
 
 
-
-/* =================================================================== */
-
-/*
-** Local configuration. You can use this space to add your redefinitions
-** without modifying the main part of the file.
-*/
-
-
-
 /* sLua -> helper thingy */
 #ifndef NDEBUG
 #define LUA_USE_APICHECK
@@ -833,10 +823,13 @@ constexpr inline int LUAL_BUFFERSIZE = (int)(16 * sizeof(void*) * sizeof(LUA_NUM
 #define LUACC_ARGUMENT      LUACC_COL_HEADER "159m" // "argument", "arguments"
 #define LUACC_BOOLEAN       LUACC_COL_HEADER "81m"  // bool boolean
 #define LUACC_NIL           LUACC_COL_HEADER "210m" // nil NaN
+#define LUACC_PATH			LUACC_COL_HEADER "251m"
+#define LUACC_STACKTRACE	LUACC_PATH
 
 
-#define LUACC_START_SINGLE_STRING LUACC_STRING_SINGLE "'" LUACC_STRING_INNER
-#define LUACC_END_SINGLE_STRING LUACC_STRING_SINGLE "'" LUACC_DEFAULT
+#define LUACC_SINGLE_STRING_STARTER LUACC_STRING_SINGLE "'" 
+#define LUACC_START_SINGLE_STRING LUACC_SINGLE_STRING_STARTER LUACC_STRING_INNER
+#define LUACC_END_SINGLE_STRING LUACC_SINGLE_STRING_STARTER LUACC_DEFAULT
 
 #define LUACC_SINGLE_STRING_INCOL(_COL,_TEXT) LUACC_STRING_SINGLE "'" _COL _TEXT LUACC_END_SINGLE_STRING
 #define LUACC_SINGLE_STRING(_TEXT) LUACC_SINGLE_STRING_INCOL(LUACC_STRING_INNER,_TEXT)
@@ -855,16 +848,28 @@ constexpr inline int LUAL_BUFFERSIZE = (int)(16 * sizeof(void*) * sizeof(LUA_NUM
 #define LC_zero LUACC_COL(LUACC_NUMBER,"zero")
 
 #define LC_error LUACC_COL(LUACC_INVALID,"error")
+#define LC_failed LUACC_COL(LUACC_INVALID,"failed")
 #define LC_Invalid LUACC_COL(LUACC_INVALID,"Invalid")
 #define LC_invalid LUACC_COL(LUACC_INVALID,"invalid")
 #define LC_not LUACC_COL(LUACC_INVALID,"not")
 #define LC_unfinished LUACC_COL(LUACC_INVALID,"unfinished")
 
 #define LC_for LUACC_COL(LUACC_FOR,"for")
+#define LC_Function LUACC_COL(LUACC_FUNCTION,"Function")
 #define LC_function LUACC_COL(LUACC_FUNCTION,"function")
 
 #define LC_argument LUACC_COL(LUACC_ARGUMENT,"argument")
 #define LC_arguments LUACC_COL(LUACC_ARGUMENT,"arguments")
+
+
+/* =================================================================== */
+
+/*
+** Local configuration. You can use this space to add your redefinitions
+** without modifying the main part of the file.
+*/
+
+
 
 
 #endif

@@ -286,7 +286,7 @@ LUA_API int   (lua_getiuservalue)   (lua_State *L, int idx, int n);
 * 
 * @b May run lua code
 * 
-* @b Pop <-1: Value>
+* @b Pops Value from -1
 * @throws lua_Exception
 */
 LUA_API void  (lua_setglobal)       (lua_State *L, const char *name);
@@ -299,9 +299,13 @@ LUA_API void  (lua_setglobal)       (lua_State *L, const char *name);
 * This function pops both the key and the value from the stack.
 * As in Lua, this function may trigger a metamethod for the "newindex" event
 * 
+* @.
+* 
 * @b May run lua code
 * 
-* @b Pop <-1: Value> <-2: Key>
+* @b Pops Value from -1
+* 
+* @b Pops Key from -2
 * @throws lua_Exception
 */
 LUA_API void  (lua_settable)        (lua_State *L, int objIdx);
@@ -313,9 +317,11 @@ LUA_API void  (lua_settable)        (lua_State *L, int objIdx);
 * This function pops the value from the stack. As in Lua, this
 * function may trigger a metamethod for the "newindex" event
 * 
+* @.
+* 
 * @b May run lua code
 * 
-* @b Pop <-1: Value>
+* @b Pops Value from -1
 * @throws lua_Exception
 */
 LUA_API void  (lua_setfield)        (lua_State *L, int idx, const char *k);
@@ -327,33 +333,37 @@ LUA_API void  (lua_setfield)        (lua_State *L, int idx, const char *k);
 * This function pops the value from the stack. As in Lua, this
 * function may trigger a metamethod for the "newindex" event
 * 
+* @.
+* 
 * @b May run lua code
 * 
-* @b Pop <-1: Value>
+* @b Pops Value from -1
 * @throws lua_Exception
 */
 LUA_API void  (lua_seti)            (lua_State *L, int idx, lua_Integer n);
 
 /**
-* @b Pop <-1: Value> <-2: Key>
+* @b Pops Value from -1
+* 
+* @b Pops Key from -2
 * @throws lua_MemoryException
 */
 LUA_API void  (lua_rawset)          (lua_State *L, int objIdx);
 
 /**
-* @b Pop <-1: Value>
+* @b Pops Value from -1
 * @throws lua_MemoryException
 */
 LUA_API void  (lua_rawseti)         (lua_State *L, int objIdx, lua_Integer n);
 
 /**
-* @b Pop <-1: Value>
+* @b Pops Value from -1
 * @throws lua_MemoryException
 */
 LUA_API void  (lua_rawsetp)         (lua_State *L, int idx, const void *p);
 
 /**
-* @b Pop <-1: (Meta)Table | Nil>
+* @b Pops Value(Table | Nil) from -1
 */
 LUA_API int   (lua_setmetatable)    (lua_State *L, int objIdx);
 LUA_API int   (lua_setiuservalue)   (lua_State *L, int idx, int n);

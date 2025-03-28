@@ -41,10 +41,12 @@ static void checkstack (lua_State *L, lua_State *L1, int n) {
 }
 
 
+#if SLUA_DEBUG_LIB_DANGER
 static int db_getregistry (lua_State *L) {
   lua_pushvalue(L, LUA_REGISTRYINDEX);
   return 1;
 }
+#endif
 
 
 static int db_getmetatable (lua_State *L) {
@@ -463,7 +465,9 @@ static const luaL_Reg dblib[] = {
 #endif
   {"getinfo", db_getinfo},
   {"getlocal", db_getlocal},
+#if SLUA_DEBUG_LIB_DANGER
   {"getregistry", db_getregistry},
+#endif
   {"getmetatable", db_getmetatable},
   {"getupvalue", db_getupvalue},
   {"upvaluejoin", db_upvaluejoin},
