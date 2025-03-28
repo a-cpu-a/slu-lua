@@ -13,6 +13,7 @@
 #include <stddef.h>
 
 #define LUA_INL inline
+#define LUA_CEXP constexpr //Also inline
 
 
 #define LUA_COPYRIGHT	LUA_RELEASE "  Copyright (C) 1994-2024 Lua.org, PUC-Rio"
