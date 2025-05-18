@@ -1,4 +1,4 @@
-/*
+﻿/*
 ** $Id: ldblib.c $
 ** Interface from Lua to its debug API
 ** See Copyright Notice in lua.h
@@ -21,7 +21,7 @@
 #include "llimits.h"
 
 
-#if SLUA_DEBUG_LIB_DANGER
+#if SLU_DEBUG_LIB_DANGER
 /*
 ** The hook table at registry[HOOKKEY] maps threads to their current
 ** hook function.
@@ -41,7 +41,7 @@ static void checkstack (lua_State *L, lua_State *L1, int n) {
 }
 
 
-#if SLUA_DEBUG_LIB_DANGER
+#if SLU_DEBUG_LIB_DANGER
 static int db_getregistry (lua_State *L) {
   lua_pushvalue(L, LUA_REGISTRYINDEX);
   return 1;
@@ -321,7 +321,7 @@ static int db_upvaluejoin (lua_State *L) {
 }
 
 
-#if SLUA_DEBUG_LIB_DANGER
+#if SLU_DEBUG_LIB_DANGER
 /*
 ** Call hook function registered at hook table for the current
 ** thread (if there is one)
@@ -456,16 +456,16 @@ static int db_traceback (lua_State *L) {
 
 
 static const luaL_Reg dblib[] = {
-#if SLUA_DEBUG_LIB_DANGER
+#if SLU_DEBUG_LIB_DANGER
   {"debug", db_debug},
 #endif
   {"getuservalue", db_getuservalue},
-#if SLUA_DEBUG_LIB_DANGER
+#if SLU_DEBUG_LIB_DANGER
   {"gethook", db_gethook},
 #endif
   {"getinfo", db_getinfo},
   {"getlocal", db_getlocal},
-#if SLUA_DEBUG_LIB_DANGER
+#if SLU_DEBUG_LIB_DANGER
   {"getregistry", db_getregistry},
 #endif
   {"getmetatable", db_getmetatable},
@@ -473,7 +473,7 @@ static const luaL_Reg dblib[] = {
   {"upvaluejoin", db_upvaluejoin},
   {"upvalueid", db_upvalueid},
   {"setuservalue", db_setuservalue},
-#if SLUA_DEBUG_LIB_DANGER
+#if SLU_DEBUG_LIB_DANGER
   {"sethook", db_sethook},
 #endif
   {"setlocal", db_setlocal},

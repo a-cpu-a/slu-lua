@@ -1,4 +1,4 @@
-/*
+﻿/*
 ** $Id: luaconf.h $
 ** Configuration file for Lua
 ** See Copyright Notice in lua.h
@@ -632,7 +632,7 @@
 @@ lua_pointer2str converts a pointer to a readable string in a
 ** non-specified way.
 */
-#ifdef SLUA_LEAK_PTRS
+#ifdef SLU_LEAK_PTRS
 #define lua_pointer2str(buff,sz,p)	l_sprintf(buff,sz,"%s",p)
 #else
 #define lua_pointer2str(buff,sz,p)	((void)p,l_sprintf(buff,sz,"%s","1234"))

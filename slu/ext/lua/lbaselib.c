@@ -1,4 +1,4 @@
-/*
+﻿/*
 ** $Id: lbaselib.c $
 ** Basic library
 ** See Copyright Notice in lua.h
@@ -183,7 +183,7 @@ static int luaB_rawset (lua_State *L) {
 }
 
 
-#ifdef SLUA_BASE_DANGER
+#ifdef SLU_BASE_DANGER
 static int pushmode (lua_State *L, int oldmode) {
   if (oldmode == -1)
     luaL_pushfail(L);  /* invalid call to 'lua_gc' */
@@ -327,7 +327,7 @@ static int luaB_ipairs (lua_State *L) {
 
 
 
-#ifdef SLUA_BASE_DANGER
+#ifdef SLU_BASE_DANGER
 static int load_aux (lua_State *L, int status, int envidx) {
   if (l_likely(status == LUA_OK)) {
   
@@ -389,7 +389,7 @@ static int luaB_loadfile (lua_State *L) {
 #define RESERVEDSLOT	5
 
 
-#ifdef SLUA_BASE_DANGER
+#ifdef SLU_BASE_DANGER
 /*
 ** Reader for generic 'load' function: 'lua_load' uses the
 ** stack for internal stuff, so the reader cannot change the
@@ -548,19 +548,19 @@ static int luaB_tostring (lua_State *L) {
 static const luaL_Reg base_funcs[] = {
   {"assert", luaB_assert},
 
-#ifdef SLUA_BASE_DANGER
+#ifdef SLU_BASE_DANGER
   {"collectgarbage", luaB_collectgarbage},
   {"dofile", luaB_dofile},
-#endif // SLUA_BASE_DANGER
+#endif // SLU_BASE_DANGER
 
   {"error", luaB_error},
   {"getmetatable", luaB_getmetatable},
   {"ipairs", luaB_ipairs},
 
-#ifdef SLUA_BASE_DANGER
+#ifdef SLU_BASE_DANGER
   {"loadfile", luaB_loadfile},
   {"load", luaB_load},
-#endif // SLUA_BASE_DANGER
+#endif // SLU_BASE_DANGER
 
   {"next", luaB_next},
   {"pairs", luaB_pairs},

@@ -1,4 +1,4 @@
-/*
+﻿/*
 ** $Id: loadlib.c $
 ** Dynamic library loader for Lua
 ** See Copyright Notice in lua.h
@@ -385,7 +385,7 @@ static int lookforfunc (lua_State *L, const char *path, const char *sym) {
 }
 
 
-#ifdef SLUA_LOADLIB_DANGER
+#ifdef SLU_LOADLIB_DANGER
 static int ll_loadlib (lua_State *L) {
   const char *path = luaL_checkstring(L, 1);
   const char *init = luaL_checkstring(L, 2);
@@ -488,7 +488,7 @@ static const char *searchpath (lua_State *L, const char *name,
 }
 
 
-#ifdef SLUA_LOADLIB_DANGER
+#ifdef SLU_LOADLIB_DANGER
 static int ll_searchpath (lua_State *L) {
   const char *f = searchpath(L, luaL_checkstring(L, 1),
                                 luaL_checkstring(L, 2),
@@ -610,7 +610,7 @@ static int searcher_preload (lua_State *L) {
 }
 
 
-#ifdef SLUA_LOADLIB_DANGER
+#ifdef SLU_LOADLIB_DANGER
 static void findloader (lua_State *L, const char *name) {
   int i;
   luaL_Buffer msg;  /* to build error message */
@@ -690,7 +690,7 @@ static int ll_require (lua_State *L) {
 
 
 static const luaL_Reg pk_funcs[] = {
-#ifdef SLUA_LOADLIB_DANGER
+#ifdef SLU_LOADLIB_DANGER
   {"loadlib", ll_loadlib},
   {"searchpath", ll_searchpath},
   /* placeholders */
@@ -705,7 +705,7 @@ static const luaL_Reg pk_funcs[] = {
 
 
 static const luaL_Reg ll_funcs[] = {
-#ifdef SLUA_LOADLIB_DANGER
+#ifdef SLU_LOADLIB_DANGER
   {"require", ll_require},
 #endif
   {NULL, NULL}

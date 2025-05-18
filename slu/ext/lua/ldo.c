@@ -599,7 +599,7 @@ l_sinline int precallC (lua_State *L, StkId func, int nresults,
   try {
     n = (*f)(L);  /* do the actual call */
   }
-  catch (slua::Error& e)
+  catch (slu::Error& e)
   {
       lua_pushlstring(L, e.msg.data(),e.msg.size());
       n = lua_error(L);
