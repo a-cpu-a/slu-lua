@@ -1,4 +1,4 @@
-/*
+﻿/*
 ** $Id: ldo.c $
 ** Stack and Call structure of Lua
 ** See Copyright Notice in lua.h
@@ -33,7 +33,7 @@
 #include "lvm.h"
 #include "lzio.h"
 
-#include <slua/ErrorType.hpp>
+#include <slu/ErrorType.hpp>
 
 
 
