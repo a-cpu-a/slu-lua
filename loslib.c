@@ -22,7 +22,7 @@
 #include "lualib.h"
 #include "llimits.h"
 
-#ifdef SLUA_OS_LIB
+#ifdef SLU_OS_LIB
 
 /*
 ** {==================================================================
@@ -409,7 +409,7 @@ static int os_exit (lua_State *L) {
 
 static const luaL_Reg syslib[] = {
 
-#ifdef SLUA_OS_LIB
+#ifdef SLU_OS_LIB
 
   {"clock",     os_clock},
   {"date",      os_date},

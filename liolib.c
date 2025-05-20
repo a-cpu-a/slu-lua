@@ -35,7 +35,7 @@
 #define L_MODEEXT	"b"
 #endif
 
-#ifdef SLUA_IO_LIB
+#ifdef SLU_IO_LIB
 /* Check whether 'mode' matches '[rwa]%+?[L_MODEEXT]*' */
 static int l_checkmode (const char *mode) {
   return (*mode != '\0' && strchr("rwa", *(mode++)) != NULL &&
@@ -152,7 +152,7 @@ static int l_checkmode (const char *mode) {
 #define IO_INPUT	(IO_PREFIX "input")
 #define IO_OUTPUT	(IO_PREFIX "output")
 
-#ifdef SLUA_IO_LIB
+#ifdef SLU_IO_LIB
 
 typedef luaL_Stream LStream;
 
@@ -306,7 +306,9 @@ static int io_popen (lua_State *L) {
   const char *mode = luaL_optstring(L, 2, "r");
   LStream *p = newprefile(L);
   luaL_argcheck(L, l_checkmodep(mode), 2, "invalid mode");
+  
   errno = 0;
+  
   p->f = l_popen(L, filename, mode);
   
   p->closef = &io_pclose;
@@ -316,7 +318,9 @@ static int io_popen (lua_State *L) {
 
 static int io_tmpfile (lua_State *L) {
   LStream *p = newfile(L);
+  
   errno = 0;
+  
   p->f = tmpfile();
   
   return (p->f == NULL) ? luaL_fileresult(L, 0, NULL) : 1;
@@ -778,7 +782,7 @@ static int f_flush (lua_State *L) {
 ** functions for 'io' library
 */
 static const luaL_Reg iolib[] = {
-#ifdef SLUA_IO_LIB
+#ifdef SLU_IO_LIB
   {"close", io_close},
   {"flush", io_flush},
   {"input", io_input},
@@ -799,7 +803,7 @@ static const luaL_Reg iolib[] = {
 ** methods for file handles
 */
 static const luaL_Reg meth[] = {
-#ifdef SLUA_IO_LIB
+#ifdef SLU_IO_LIB
   {"read", f_read},
   {"write", f_write},
   {"lines", f_lines},
@@ -819,7 +823,7 @@ static const luaL_Reg metameth[] = {
   
   {"__index", NULL},  /* placeholder */
   
-#ifdef SLUA_IO_LIB
+#ifdef SLU_IO_LIB
 
   {"__gc", f_gc},
   {"__close", f_gc},
@@ -841,7 +845,7 @@ static void createmeta (lua_State *L) {
 }
 
 
-#ifdef SLUA_IO_LIB
+#ifdef SLU_IO_LIB
 /*
 ** function to (not) close the standard files stdin, stdout, and stderr
 */
@@ -871,7 +875,7 @@ static void createstdfile (lua_State *L, FILE *f, const char *k,
 LUAMOD_API int luaopen_io (lua_State *L) {
   luaL_newlib(L, iolib);  /* new module */
   createmeta(L);
-#ifdef SLUA_IO_LIB
+#ifdef SLU_IO_LIB
   /* create (and set) default files */
   createstdfile(L, stdin, IO_INPUT, "stdin");
   createstdfile(L, stdout, IO_OUTPUT, "stdout");
